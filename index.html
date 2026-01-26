@@ -83,6 +83,7 @@
             text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
             background: linear-gradient(45deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 2px;
         }
@@ -151,11 +152,13 @@
             justify-content: space-around;
             width: 90%;
             margin: 30px 0;
+            flex-wrap: wrap;
         }
         
         .feature {
             text-align: center;
             max-width: 200px;
+            margin: 10px;
         }
         
         .feature-icon {
@@ -203,6 +206,7 @@
             justify-content: space-between;
             width: 100%;
             margin-bottom: 10px;
+            flex-wrap: wrap;
         }
         
         .score {
@@ -213,6 +217,9 @@
             font-size: 18px;
             font-weight: bold;
             border: 2px solid white;
+            margin: 5px;
+            min-width: 150px;
+            text-align: center;
         }
         
         .timer {
@@ -223,6 +230,9 @@
             font-size: 18px;
             font-weight: bold;
             border: 2px solid white;
+            margin: 5px;
+            min-width: 150px;
+            text-align: center;
         }
         
         .abilities {
@@ -230,6 +240,7 @@
             justify-content: space-between;
             width: 100%;
             margin: 10px 0;
+            flex-wrap: wrap;
         }
         
         .ability {
@@ -241,6 +252,8 @@
             text-align: center;
             min-width: 200px;
             border: 2px solid white;
+            margin: 5px;
+            flex: 1;
         }
         
         .ability.cooldown {
@@ -253,6 +266,7 @@
             justify-content: center;
             gap: 10px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
         
         .game-controls button {
@@ -268,13 +282,6 @@
         
         .game-controls button:hover {
             background-color: #45a049;
-        }
-        
-        .game-mode {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin: 10px 0;
         }
         
         .fullscreen-btn {
@@ -308,6 +315,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            padding: 20px;
         }
         
         .winner-trophy {
@@ -323,6 +331,7 @@
             text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
             background: linear-gradient(45deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
@@ -336,6 +345,8 @@
             display: flex;
             gap: 15px;
             margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         
         .final-buttons button {
@@ -419,6 +430,60 @@
             max-height: 100%;
             overflow-y: auto;
         }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            #game-container {
+                width: 95vw;
+                height: 80vh;
+            }
+            
+            .title {
+                font-size: 42px;
+            }
+            
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .feature {
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #game-container {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+            }
+            
+            .title {
+                font-size: 32px;
+            }
+            
+            .subtitle {
+                font-size: 18px;
+            }
+            
+            .menu-btn {
+                width: 200px;
+                padding: 12px 30px;
+                font-size: 16px;
+            }
+            
+            .score-board, .abilities {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .score, .timer, .ability {
+                width: 90%;
+                min-width: unset;
+                margin: 5px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -450,6 +515,7 @@
                 
                 <button class="menu-btn" id="start-btn">JOGAR RÁPIDO</button>
                 <button class="menu-btn" id="multiplayer-btn">MULTIPLAYER</button>
+                <button class="menu-btn" id="instructions-btn">INSTRUÇÕES</button>
                 
                 <div class="footer">
                     Football Manager School 3D © 2025 - Desenvolvido por Jogos II - XXT STUDIO
@@ -509,12 +575,81 @@
         </div>
     </div>
 
+    <div class="screen" id="instructions-screen" style="display: none;">
+        <button class="back-btn" id="instructions-back-btn">← Voltar</button>
+        <h1 class="title">INSTRUÇÕES</h1>
+        <div class="instructions-content" style="max-width: 800px; text-align: left; padding: 20px;">
+            <h2>🎮 CONTROLES</h2>
+            <p><strong>Jogador 1 (Jogador Principal):</strong></p>
+            <ul>
+                <li><strong>WASD</strong> - Movimentação</li>
+                <li><strong>ESPAÇO</strong> - Pulo / Congelar (habilidade)</li>
+            </ul>
+            
+            <p><strong>Jogador 2 (Multiplayer):</strong></p>
+            <ul>
+                <li><strong>SETA ↑↓←→</strong> - Movimentação</li>
+                <li><strong>M</strong> - Pulo / Congelar (habilidade)</li>
+            </ul>
+            
+            <h2>⚽ MECÂNICAS DO JOGO</h2>
+            <ul>
+                <li>Marque gols para pontuar</li>
+                <li>Cada partida dura 2 minutos</li>
+                <li>Use a habilidade CONGELAR para parar o oponente por 3 segundos</li>
+                <li>Habilidade tem recarga de 10 segundos</li>
+            </ul>
+            
+            <h2>🎯 DIFICULDADES</h2>
+            <ul>
+                <li><strong>Fácil:</strong> Oponente mais lento e menos preciso</li>
+                <li><strong>Médio:</strong> Desafio balanceado</li>
+                <li><strong>Difícil:</strong> Oponente rápido e muito preciso</li>
+            </ul>
+        </div>
+    </div>
+
     <script>
+        // Configurações do jogo
+        const CONFIG = {
+            GAME_TIME: 120, // 2 minutos em segundos
+            ABILITY_COOLDOWN: 10000, // 10 segundos em milissegundos
+            FREEZE_DURATION: 3000, // 3 segundos em milissegundos
+            FIELD_BOUNDS: {
+                X_MIN: -55,
+                X_MAX: 55,
+                Z_MIN: -25,
+                Z_MAX: 25
+            },
+            GOAL_BOUNDS: {
+                X: 58,
+                Z: 10,
+                HEIGHT: 12
+            },
+            DIFFICULTY_SETTINGS: {
+                easy: {
+                    speed: 0.25,
+                    reactionTime: 800,
+                    accuracy: 0.7
+                },
+                medium: {
+                    speed: 0.35,
+                    reactionTime: 500,
+                    accuracy: 0.8
+                },
+                hard: {
+                    speed: 0.45,
+                    reactionTime: 300,
+                    accuracy: 0.9
+                }
+            }
+        };
+
         // Variáveis globais do jogo
         let scene, camera, renderer;
         let player, opponent, ball;
         let playerScore = 0, opponentScore = 0;
-        let gameTime = 120; // 2 minutos em segundos
+        let gameTime = CONFIG.GAME_TIME;
         let playerAbilityCooldown = 0, opponentAbilityCooldown = 0;
         let frozenPlayer = null;
         let freezeTimer = null;
@@ -522,25 +657,7 @@
         let twoPlayersMode = false;
         let gameRunning = false;
         let gameInterval;
-
-        // Configurações de dificuldade
-        const difficultySettings = {
-            easy: {
-                speed: 0.25,
-                reactionTime: 800,
-                accuracy: 0.7
-            },
-            medium: {
-                speed: 0.35,
-                reactionTime: 500,
-                accuracy: 0.8
-            },
-            hard: {
-                speed: 0.45,
-                reactionTime: 300,
-                accuracy: 0.9
-            }
-        };
+        let audioEnabled = true;
 
         // Variáveis de física
         let playerVelocity = { x: 0, z: 0 };
@@ -548,59 +665,91 @@
         let ballVelocity = { x: 0, z: 0, y: 0 };
         let playerJumpForce = 0;
         let opponentJumpForce = 0;
-        let ballJumpForce = 0;
 
         // Controles
         const keys = {};
 
         // Inicialização do Three.js
         function initGame() {
-            // Configurar cena
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(55, 1000/700, 0.1, 1000);
-            camera.position.set(0, 25, 70);
+            try {
+                // Configurar cena
+                scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(55, 1000/700, 0.1, 1000);
+                camera.position.set(0, 25, 70);
 
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(1000, 700);
-            document.getElementById('three-game').appendChild(renderer.domElement);
+                renderer = new THREE.WebGLRenderer({ 
+                    antialias: true,
+                    alpha: true 
+                });
+                renderer.setSize(1000, 700);
+                renderer.setClearColor(0x000000, 0);
+                
+                const gameContainer = document.getElementById('three-game');
+                gameContainer.innerHTML = '';
+                gameContainer.appendChild(renderer.domElement);
 
-            // Luz
-            const light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set(50, 100, 80);
-            scene.add(light);
-            scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+                // Iluminação
+                createLighting();
 
-            // Criar campo
-            createField();
+                // Criar campo
+                createField();
 
-            // Criar jogadores
-            player = createPlayer(0x00ff00, -35);
-            opponent = createPlayer(0xff0000, 35);
+                // Criar jogadores
+                player = createPlayer(0x00ff00, -35);
+                opponent = createPlayer(0xff0000, 35);
 
-            // Criar bola
-            ball = createBall();
+                // Criar bola
+                ball = createBall();
 
-            // Configurar física
-            resetPositions();
+                // Criar ambientação (estádio)
+                createStadium();
 
-            // Input
-            document.addEventListener("keydown", e => keys[e.key] = true);
-            document.addEventListener("keyup", e => keys[e.key] = false);
+                // Configurar física
+                resetPositions();
 
-            // Iniciar loop do jogo
-            gameRunning = true;
-            animate();
+                // Configurar controles
+                setupControls();
 
-            // Timer do jogo
-            gameInterval = setInterval(updateGameTimer, 1000);
+                // Iniciar loop do jogo
+                gameRunning = true;
+                animate();
+
+                // Timer do jogo
+                gameInterval = setInterval(updateGameTimer, 1000);
+                
+                console.log("Jogo inicializado com sucesso!");
+            } catch (error) {
+                console.error("Erro ao inicializar o jogo:", error);
+                alert("Erro ao carregar o jogo. Por favor, recarregue a página.");
+            }
+        }
+
+        function createLighting() {
+            // Luz principal
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+            directionalLight.position.set(50, 100, 50);
+            scene.add(directionalLight);
+
+            // Luz ambiente
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            // Luz de preenchimento
+            const fillLight = new THREE.DirectionalLight(0xffffff, 0.3);
+            fillLight.position.set(-50, 50, -50);
+            scene.add(fillLight);
         }
 
         function createField() {
-            // Campo principal
+            // Campo principal (gramado)
             const fieldGeo = new THREE.PlaneGeometry(120, 60);
-            const fieldMat = new THREE.MeshPhongMaterial({ color: 0x2ecc71 });
+            const fieldMat = new THREE.MeshPhongMaterial({ 
+                color: 0x2ecc71,
+                shininess: 30
+            });
             const field = new THREE.Mesh(fieldGeo, fieldMat);
             field.rotation.x = -Math.PI / 2;
+            field.position.y = 0.1;
             scene.add(field);
 
             // Linhas do campo
@@ -614,27 +763,42 @@
         }
 
         function drawFieldLines() {
-            const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+            const lineMaterial = new THREE.LineBasicMaterial({ 
+                color: 0xffffff,
+                linewidth: 2
+            });
             
-            // Linhas externas
-            const outerPoints = [
-                new THREE.Vector3(-60, 0.1, -30),
-                new THREE.Vector3(60, 0.1, -30),
-                new THREE.Vector3(60, 0.1, 30),
-                new THREE.Vector3(-60, 0.1, 30),
-                new THREE.Vector3(-60, 0.1, -30)
+            // Linha lateral superior
+            const topLinePoints = [
+                new THREE.Vector3(-60, 0.2, -30),
+                new THREE.Vector3(60, 0.2, -30)
             ];
-            const outerGeometry = new THREE.BufferGeometry().setFromPoints(outerPoints);
-            const outerLine = new THREE.Line(outerGeometry, lineMaterial);
-            scene.add(outerLine);
-
+            const topLine = new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(topLinePoints),
+                lineMaterial
+            );
+            scene.add(topLine);
+            
+            // Linha lateral inferior
+            const bottomLinePoints = [
+                new THREE.Vector3(-60, 0.2, 30),
+                new THREE.Vector3(60, 0.2, 30)
+            ];
+            const bottomLine = new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(bottomLinePoints),
+                lineMaterial
+            );
+            scene.add(bottomLine);
+            
             // Linha do meio
-            const midPoints = [
-                new THREE.Vector3(0, 0.1, -30),
-                new THREE.Vector3(0, 0.1, 30)
+            const midLinePoints = [
+                new THREE.Vector3(0, 0.2, -30),
+                new THREE.Vector3(0, 0.2, 30)
             ];
-            const midGeometry = new THREE.BufferGeometry().setFromPoints(midPoints);
-            const midLine = new THREE.Line(midGeometry, lineMaterial);
+            const midLine = new THREE.Line(
+                new THREE.BufferGeometry().setFromPoints(midLinePoints),
+                lineMaterial
+            );
             scene.add(midLine);
 
             // Círculo central
@@ -645,21 +809,20 @@
             });
             const circle = new THREE.Mesh(circleGeometry, circleMaterial);
             circle.rotation.x = -Math.PI / 2;
-            circle.position.y = 0.05;
+            circle.position.y = 0.15;
             scene.add(circle);
         }
 
         function createGoal(x, z) {
             const goalGroup = new THREE.Group();
             
-            // Estrutura do gol
-            const goalMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0xffffff, 
-                transparent: true, 
-                opacity: 0.5 
+            const goalMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.8
             });
             
-            // Traves
+            // Traves verticais
             const leftPost = new THREE.Mesh(
                 new THREE.CylinderGeometry(0.5, 0.5, 12, 8),
                 goalMaterial
@@ -674,6 +837,7 @@
             rightPost.position.set(x > 0 ? x-1 : x+1, 6, 5);
             goalGroup.add(rightPost);
             
+            // Travessão
             const crossbar = new THREE.Mesh(
                 new THREE.BoxGeometry(10, 0.5, 0.5),
                 goalMaterial
@@ -681,40 +845,152 @@
             crossbar.position.set(x > 0 ? x-1 : x+1, 12, 0);
             goalGroup.add(crossbar);
             
+            // Rede (simplificada)
+            const netGeometry = new THREE.BoxGeometry(10, 6, 0.1);
+            const netMaterial = new THREE.MeshPhongMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.3
+            });
+            const net = new THREE.Mesh(netGeometry, netMaterial);
+            net.position.set(x > 0 ? x-5 : x+5, 3, 0);
+            goalGroup.add(net);
+            
             return goalGroup;
+        }
+
+        function createStadium() {
+            // Arquibancada inferior
+            const lowerStandGeometry = new THREE.BoxGeometry(140, 10, 80);
+            const lowerStandMaterial = new THREE.MeshPhongMaterial({ color: 0x8B4513 });
+            const lowerStand = new THREE.Mesh(lowerStandGeometry, lowerStandMaterial);
+            lowerStand.position.set(0, -5, 0);
+            scene.add(lowerStand);
+
+            // Arquibancada superior
+            const upperStandGeometry = new THREE.BoxGeometry(150, 15, 90);
+            const upperStandMaterial = new THREE.MeshPhongMaterial({ color: 0xA0522D });
+            const upperStand = new THREE.Mesh(upperStandGeometry, upperStandMaterial);
+            upperStand.position.set(0, 7.5, 0);
+            scene.add(upperStand);
+
+            // Céu/Background
+            const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
+            const skyMaterial = new THREE.MeshBasicMaterial({ 
+                color: 0x87CEEB,
+                side: THREE.BackSide
+            });
+            const sky = new THREE.Mesh(skyGeometry, skyMaterial);
+            scene.add(sky);
+
+            // Luzes do estádio
+            for (let i = 0; i < 8; i++) {
+                const angle = (i / 8) * Math.PI * 2;
+                const x = Math.cos(angle) * 70;
+                const z = Math.sin(angle) * 40;
+                
+                const light = new THREE.PointLight(0xffffff, 0.8, 200);
+                light.position.set(x, 40, z);
+                scene.add(light);
+                
+                // Suporte da luz
+                const lightStand = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.5, 0.5, 40, 8),
+                    new THREE.MeshPhongMaterial({ color: 0x666666 })
+                );
+                lightStand.position.set(x, 20, z);
+                scene.add(lightStand);
+            }
         }
 
         function createPlayer(color, x) {
             const group = new THREE.Group();
 
-            // Corpo
-            const body = new THREE.Mesh(
-                new THREE.CylinderGeometry(2, 3, 6, 16),
-                new THREE.MeshPhongMaterial({ color })
-            );
+            // Corpo (cilindro)
+            const bodyGeometry = new THREE.CylinderGeometry(2, 3, 6, 16);
+            const bodyMaterial = new THREE.MeshPhongMaterial({ 
+                color: color,
+                shininess: 100
+            });
+            const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
             body.position.y = 3;
-
-            // Cabeça
-            const head = new THREE.Mesh(
-                new THREE.SphereGeometry(2.3, 32, 32),
-                new THREE.MeshPhongMaterial({ color: 0xffe0bd })
-            );
-            head.position.y = 7;
-
             group.add(body);
+
+            // Cabeça (esfera)
+            const headGeometry = new THREE.SphereGeometry(2.3, 32, 32);
+            const headMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xffe0bd,
+                shininess: 50
+            });
+            const head = new THREE.Mesh(headGeometry, headMaterial);
+            head.position.y = 7;
             group.add(head);
+
+            // Braços
+            const armGeometry = new THREE.CylinderGeometry(0.5, 0.5, 4, 8);
+            const armMaterial = new THREE.MeshPhongMaterial({ color: color });
+            
+            const leftArm = new THREE.Mesh(armGeometry, armMaterial);
+            leftArm.position.set(-3, 3, 0);
+            leftArm.rotation.z = Math.PI / 4;
+            group.add(leftArm);
+            
+            const rightArm = new THREE.Mesh(armGeometry, armMaterial);
+            rightArm.position.set(3, 3, 0);
+            rightArm.rotation.z = -Math.PI / 4;
+            group.add(rightArm);
+
+            // Pernas
+            const legGeometry = new THREE.CylinderGeometry(0.8, 0.8, 5, 8);
+            const legMaterial = new THREE.MeshPhongMaterial({ color: 0x000000 });
+            
+            const leftLeg = new THREE.Mesh(legGeometry, legMaterial);
+            leftLeg.position.set(-1, -1.5, 0);
+            group.add(leftLeg);
+            
+            const rightLeg = new THREE.Mesh(legGeometry, legMaterial);
+            rightLeg.position.set(1, -1.5, 0);
+            group.add(rightLeg);
+
             group.position.set(x, 5, 0);
             scene.add(group);
             return group;
         }
 
         function createBall() {
-            const ballGeo = new THREE.SphereGeometry(2.2, 32, 32);
-            const ballMat = new THREE.MeshPhongMaterial({ color: 0xffffff });
-            const ball = new THREE.Mesh(ballGeo, ballMat);
+            const ballGeometry = new THREE.SphereGeometry(2.2, 32, 32);
+            const ballMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xffffff,
+                shininess: 100
+            });
+            const ball = new THREE.Mesh(ballGeometry, ballMaterial);
             ball.position.set(0, 5, 0);
+            
+            // Adicionar padrão à bola
+            const patternGeometry = new THREE.SphereGeometry(2.3, 32, 32);
+            const patternMaterial = new THREE.MeshPhongMaterial({
+                color: 0x000000,
+                transparent: true,
+                opacity: 0.3,
+                wireframe: true
+            });
+            const pattern = new THREE.Mesh(patternGeometry, patternMaterial);
+            ball.add(pattern);
+            
             scene.add(ball);
             return ball;
+        }
+
+        function setupControls() {
+            document.addEventListener("keydown", e => {
+                keys[e.key] = true;
+                keys[e.code] = true;
+            });
+            
+            document.addEventListener("keyup", e => {
+                keys[e.key] = false;
+                keys[e.code] = false;
+            });
         }
 
         function animate() {
@@ -764,17 +1040,16 @@
                 return;
             }
             
-            // Resetar velocidade
             playerVelocity.x = 0;
             playerVelocity.z = 0;
             
-            // Controles WASD
-            if (keys["w"] || keys["W"]) playerVelocity.z = -difficultySettings[currentDifficulty].speed;
-            if (keys["s"] || keys["S"]) playerVelocity.z = difficultySettings[currentDifficulty].speed;
-            if (keys["a"] || keys["A"]) playerVelocity.x = -difficultySettings[currentDifficulty].speed;
-            if (keys["d"] || keys["D"]) playerVelocity.x = difficultySettings[currentDifficulty].speed;
+            const speed = CONFIG.DIFFICULTY_SETTINGS[currentDifficulty].speed;
             
-            // Pulo
+            if (keys["w"] || keys["W"] || keys["ArrowUp"]) playerVelocity.z = -speed;
+            if (keys["s"] || keys["S"] || keys["ArrowDown"]) playerVelocity.z = speed;
+            if (keys["a"] || keys["A"] || keys["ArrowLeft"]) playerVelocity.x = -speed;
+            if (keys["d"] || keys["D"] || keys["ArrowRight"]) playerVelocity.x = speed;
+            
             if ((keys[" "] || keys["Spacebar"]) && player.position.y <= 5.1) {
                 playerJumpForce = 0.5;
             }
@@ -792,10 +1067,8 @@
             player.position.z += playerVelocity.z;
             
             // Limites do campo
-            if (player.position.x < -55) player.position.x = -55;
-            if (player.position.x > 55) player.position.x = 55;
-            if (player.position.z < -25) player.position.z = -25;
-            if (player.position.z > 25) player.position.z = 25;
+            player.position.x = Math.max(CONFIG.FIELD_BOUNDS.X_MIN, Math.min(CONFIG.FIELD_BOUNDS.X_MAX, player.position.x));
+            player.position.z = Math.max(CONFIG.FIELD_BOUNDS.Z_MIN, Math.min(CONFIG.FIELD_BOUNDS.Z_MAX, player.position.z));
         }
 
         function updateOpponentPlayer() {
@@ -805,24 +1078,21 @@
                 return;
             }
             
-            // Resetar velocidade
             opponentVelocity.x = 0;
             opponentVelocity.z = 0;
             
-            // Controles setas
-            if (keys["ArrowUp"]) opponentVelocity.z = -difficultySettings[currentDifficulty].speed;
-            if (keys["ArrowDown"]) opponentVelocity.z = difficultySettings[currentDifficulty].speed;
-            if (keys["ArrowLeft"]) opponentVelocity.x = -difficultySettings[currentDifficulty].speed;
-            if (keys["ArrowRight"]) opponentVelocity.x = difficultySettings[currentDifficulty].speed;
+            const speed = CONFIG.DIFFICULTY_SETTINGS[currentDifficulty].speed;
             
-            // Pulo
-            if (keys["m"] || keys["M"]) {
-                if (opponent.position.y <= 5.1) {
-                    opponentJumpForce = 0.5;
-                }
+            // Controles alternativos para multiplayer
+            if (keys["i"] || keys["I"]) opponentVelocity.z = -speed;
+            if (keys["k"] || keys["K"]) opponentVelocity.z = speed;
+            if (keys["j"] || keys["J"]) opponentVelocity.x = -speed;
+            if (keys["l"] || keys["L"]) opponentVelocity.x = speed;
+            
+            if ((keys["m"] || keys["M"]) && opponent.position.y <= 5.1) {
+                opponentJumpForce = 0.5;
             }
             
-            // Aplicar gravidade
             opponentJumpForce -= 0.02;
             opponent.position.y += opponentJumpForce;
             if (opponent.position.y < 5) {
@@ -830,15 +1100,11 @@
                 opponentJumpForce = 0;
             }
             
-            // Aplicar movimento
             opponent.position.x += opponentVelocity.x;
             opponent.position.z += opponentVelocity.z;
             
-            // Limites do campo
-            if (opponent.position.x < -55) opponent.position.x = -55;
-            if (opponent.position.x > 55) opponent.position.x = 55;
-            if (opponent.position.z < -25) opponent.position.z = -25;
-            if (opponent.position.z > 25) opponent.position.z = 25;
+            opponent.position.x = Math.max(CONFIG.FIELD_BOUNDS.X_MIN, Math.min(CONFIG.FIELD_BOUNDS.X_MAX, opponent.position.x));
+            opponent.position.z = Math.max(CONFIG.FIELD_BOUNDS.Z_MIN, Math.min(CONFIG.FIELD_BOUNDS.Z_MAX, opponent.position.z));
         }
 
         function updateOpponentAI() {
@@ -848,29 +1114,25 @@
                 return;
             }
             
-            const settings = difficultySettings[currentDifficulty];
+            const settings = CONFIG.DIFFICULTY_SETTINGS[currentDifficulty];
             const ballX = ball.position.x;
             const ballZ = ball.position.z;
             const oppX = opponent.position.x;
             const oppZ = opponent.position.z;
             
-            // Movimento mais inteligente baseado na dificuldade
             let targetX = ballX;
             let targetZ = ballZ;
             
-            // Prever movimento da bola
             if (Math.abs(ballVelocity.x) > 0.5 || Math.abs(ballVelocity.z) > 0.5) {
                 targetX = ballX + ballVelocity.x * 0.3;
                 targetZ = ballZ + ballVelocity.z * 0.3;
             }
             
-            // Se a bola está longe, voltar para posição defensiva
             if (Math.sqrt(Math.pow(oppX - ballX, 2) + Math.pow(oppZ - ballZ, 2)) > 30) {
                 targetX = 35;
                 targetZ = 0;
             }
             
-            // Calcular direção
             const dx = targetX - oppX;
             const dz = targetZ - oppZ;
             const distance = Math.sqrt(dx * dx + dz * dz);
@@ -883,12 +1145,10 @@
                 opponentVelocity.z = 0;
             }
             
-            // Pulo inteligente
             if (ball.position.y > 8 && opponent.position.y <= 5.1) {
                 opponentJumpForce = 0.5;
             }
             
-            // Aplicar gravidade
             opponentJumpForce -= 0.02;
             opponent.position.y += opponentJumpForce;
             if (opponent.position.y < 5) {
@@ -896,46 +1156,34 @@
                 opponentJumpForce = 0;
             }
             
-            // Aplicar movimento
             opponent.position.x += opponentVelocity.x;
             opponent.position.z += opponentVelocity.z;
             
-            // Limites do campo
-            if (opponent.position.x < -55) opponent.position.x = -55;
-            if (opponent.position.x > 55) opponent.position.x = 55;
-            if (opponent.position.z < -25) opponent.position.z = -25;
-            if (opponent.position.z > 25) opponent.position.z = 25;
+            opponent.position.x = Math.max(CONFIG.FIELD_BOUNDS.X_MIN, Math.min(CONFIG.FIELD_BOUNDS.X_MAX, opponent.position.x));
+            opponent.position.z = Math.max(CONFIG.FIELD_BOUNDS.Z_MIN, Math.min(CONFIG.FIELD_BOUNDS.Z_MAX, opponent.position.z));
         }
 
         function updateBallPhysics() {
-            // Aplicar velocidade
             ball.position.x += ballVelocity.x;
             ball.position.z += ballVelocity.z;
             ball.position.y += ballVelocity.y;
             
-            // Aplicar gravidade
             ballVelocity.y -= 0.015;
             
-            // Atrito
             ballVelocity.x *= 0.98;
             ballVelocity.z *= 0.98;
             
-            // Colisão com o chão
             if (ball.position.y < 2.2) {
                 ball.position.y = 2.2;
-                ballVelocity.y *= -0.6; // Rebote
-                
-                // Mais atrito quando toca no chão
+                ballVelocity.y *= -0.6;
                 ballVelocity.x *= 0.9;
                 ballVelocity.z *= 0.9;
             }
             
-            // Limites laterais (tiro de meta)
             if (ball.position.x < -60 || ball.position.x > 60) {
                 resetPositions();
             }
             
-            // Limites verticais
             if (ball.position.z < -30) {
                 ball.position.z = -30;
                 ballVelocity.z *= -0.8;
@@ -944,13 +1192,16 @@
                 ball.position.z = 30;
                 ballVelocity.z *= -0.8;
             }
+            
+            // Rotação da bola
+            if (Math.abs(ballVelocity.x) > 0.1 || Math.abs(ballVelocity.z) > 0.1) {
+                ball.rotation.x += ballVelocity.z * 0.1;
+                ball.rotation.z += ballVelocity.x * 0.1;
+            }
         }
 
         function checkCollisions() {
-            // Colisão jogador-bola
             checkPlayerBallCollision(player);
-            
-            // Colisão oponente-bola
             checkPlayerBallCollision(opponent);
         }
 
@@ -962,24 +1213,27 @@
             const distance = Math.sqrt(dx * dx + dz * dz + dy * dy);
             
             if (distance < 5) {
-                // Calcular direção do chute
                 const force = 0.6;
                 ballVelocity.x = (dx / distance) * force;
                 ballVelocity.z = (dz / distance) * force;
-                ballVelocity.y = (dy / distance) * force + 0.1; // Pequeno impulso para cima
+                ballVelocity.y = (dy / distance) * force + 0.1;
             }
         }
 
         function checkGoals() {
-            // Gol do jogador (bola entrou no gol do oponente)
-            if (ball.position.x > 58 && Math.abs(ball.position.z) < 10 && ball.position.y < 12) {
+            // Gol do jogador
+            if (ball.position.x > CONFIG.GOAL_BOUNDS.X && 
+                Math.abs(ball.position.z) < CONFIG.GOAL_BOUNDS.Z && 
+                ball.position.y < CONFIG.GOAL_BOUNDS.HEIGHT) {
                 playerScore++;
                 updateScoreUI();
                 resetPositions();
             }
             
-            // Gol do oponente (bola entrou no gol do jogador)
-            if (ball.position.x < -58 && Math.abs(ball.position.z) < 10 && ball.position.y < 12) {
+            // Gol do oponente
+            if (ball.position.x < -CONFIG.GOAL_BOUNDS.X && 
+                Math.abs(ball.position.z) < CONFIG.GOAL_BOUNDS.Z && 
+                ball.position.y < CONFIG.GOAL_BOUNDS.HEIGHT) {
                 opponentScore++;
                 updateScoreUI();
                 resetPositions();
@@ -1001,6 +1255,9 @@
             
             playerJumpForce = 0;
             opponentJumpForce = 0;
+            
+            // Resetar rotação da bola
+            ball.rotation.set(0, 0, 0);
         }
 
         function updateGameTimer() {
@@ -1011,22 +1268,19 @@
             const seconds = gameTime % 60;
             const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             
-            // Atualizar timer HTML
             document.getElementById('game-timer').textContent = timeString;
         }
 
         function checkAbilities() {
-            // Habilidade do jogador 1 - Congelar
             if (keys[" "] && playerAbilityCooldown <= 0) {
                 useFreezeAbility(player, opponent);
-                playerAbilityCooldown = 10000; // 10 segundos
+                playerAbilityCooldown = CONFIG.ABILITY_COOLDOWN;
                 updateAbilityUI('player1-ability', playerAbilityCooldown);
             }
             
-            // Habilidade do jogador 2 - Congelar (apenas multiplayer)
             if (twoPlayersMode && keys["m"] && opponentAbilityCooldown <= 0) {
                 useFreezeAbility(opponent, player);
-                opponentAbilityCooldown = 10000; // 10 segundos
+                opponentAbilityCooldown = CONFIG.ABILITY_COOLDOWN;
                 updateAbilityUI('player2-ability', opponentAbilityCooldown);
             }
         }
@@ -1035,10 +1289,9 @@
             frozenPlayer = target;
             
             // Efeito visual
-            target.children[0].material.color.set(0x8888ff); // Corpo
-            target.children[1].material.color.set(0x8888ff); // Cabeça
+            target.children[0].material.color.set(0x8888ff);
+            target.children[1].material.color.set(0x8888ff);
             
-            // Timer para descongelar
             if (freezeTimer) {
                 clearTimeout(freezeTimer);
             }
@@ -1051,7 +1304,7 @@
                     target.children[0].material.color.set(0xff0000);
                 }
                 target.children[1].material.color.set(0xffe0bd);
-            }, 3000);
+            }, CONFIG.FREEZE_DURATION);
         }
 
         function updateCooldowns() {
@@ -1074,63 +1327,94 @@
             const element = document.getElementById(elementId);
             if (cooldown > 0) {
                 const seconds = Math.ceil(cooldown / 1000);
-                element.textContent = elementId === 'player1-ability' ? 
+                const text = elementId === 'player1-ability' ? 
                     `Jogador 1: CONGELAR (Espaço)\nRecarrega em ${seconds}s` :
                     `Jogador 2: CONGELAR (Tecla M)\nRecarrega em ${seconds}s`;
+                element.textContent = text;
                 element.className = 'ability cooldown';
             } else {
-                element.textContent = elementId === 'player1-ability' ? 
+                const text = elementId === 'player1-ability' ? 
                     'Jogador 1: CONGELAR (Espaço)\nPronto para usar!' :
                     'Jogador 2: CONGELAR (Tecla M)\nPronto para usar!';
+                element.textContent = text;
                 element.className = 'ability';
             }
         }
 
         function updateScoreUI() {
             document.getElementById('player-score').textContent = 'Jogador: ' + playerScore;
-            document.getElementById('opponent-score').textContent = 'Oponente: ' + opponentScore;
+            document.getElementById('opponent-score').textContent = twoPlayersMode ? 
+                'Jogador 2: ' + opponentScore : 
+                'Oponente: ' + opponentScore;
         }
 
         function endGame() {
             gameRunning = false;
             clearInterval(gameInterval);
             
-            // Determinar vencedor
-            let winnerText, resultText, trophyColor;
+            let winnerText, resultText;
             
             if (playerScore > opponentScore) {
                 winnerText = "JOGADOR VENCEU!";
-                resultText = `Jogador: ${playerScore} x ${opponentScore} Oponente`;
-                trophyColor = "#00ff00";
+                resultText = `Jogador: ${playerScore} x ${opponentScore} ${twoPlayersMode ? 'Jogador 2' : 'Oponente'}`;
             } else if (opponentScore > playerScore) {
                 winnerText = twoPlayersMode ? "JOGADOR 2 VENCEU!" : "OPONENTE VENCEU!";
                 resultText = `${twoPlayersMode ? 'Jogador 2' : 'Oponente'}: ${opponentScore} x ${playerScore} Jogador`;
-                trophyColor = twoPlayersMode ? "#0000ff" : "#ff0000";
             } else {
                 winnerText = "EMPATE!";
-                resultText = `Jogador: ${playerScore} x ${opponentScore} Oponente`;
+                resultText = `Jogador: ${playerScore} x ${opponentScore} ${twoPlayersMode ? 'Jogador 2' : 'Oponente'}`;
                 document.getElementById('winner-trophy').textContent = "🤝";
             }
             
-            // Atualizar tela final
             document.getElementById('winner-title').textContent = winnerText;
             document.getElementById('final-score').textContent = resultText;
-            document.getElementById('winner-trophy').style.color = trophyColor;
-            
-            // Mostrar tela final
             document.getElementById('final-screen').style.display = 'flex';
+        }
+
+        function cleanupGame() {
+            gameRunning = false;
+            if (gameInterval) {
+                clearInterval(gameInterval);
+                gameInterval = null;
+            }
+            
+            if (freezeTimer) {
+                clearTimeout(freezeTimer);
+                freezeTimer = null;
+            }
+            
+            if (scene) {
+                while(scene.children.length > 0) { 
+                    scene.remove(scene.children[0]); 
+                }
+            }
+            
+            if (renderer) {
+                renderer.dispose();
+            }
         }
 
         // Controles da interface
         document.getElementById('start-btn').addEventListener('click', () => {
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('difficulty-screen').style.display = 'flex';
+            twoPlayersMode = false;
         });
 
         document.getElementById('multiplayer-btn').addEventListener('click', () => {
             twoPlayersMode = true;
             document.getElementById('main-menu').style.display = 'none';
             document.getElementById('difficulty-screen').style.display = 'flex';
+        });
+
+        document.getElementById('instructions-btn').addEventListener('click', () => {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById('instructions-screen').style.display = 'flex';
+        });
+
+        document.getElementById('instructions-back-btn').addEventListener('click', () => {
+            document.getElementById('instructions-screen').style.display = 'none';
+            document.getElementById('main-menu').style.display = 'flex';
         });
 
         document.getElementById('back-btn').addEventListener('click', () => {
@@ -1146,7 +1430,22 @@
                 document.getElementById('game-screen').style.display = 'flex';
                 document.getElementById('game-ui').style.display = 'block';
                 
+                // Resetar variáveis
+                playerScore = 0;
+                opponentScore = 0;
+                gameTime = CONFIG.GAME_TIME;
+                playerAbilityCooldown = 0;
+                opponentAbilityCooldown = 0;
+                frozenPlayer = null;
+                
+                // Atualizar UI
+                updateScoreUI();
+                document.getElementById('game-timer').textContent = '02:00';
+                updateAbilityUI('player1-ability', 0);
+                updateAbilityUI('player2-ability', 0);
+                
                 // Iniciar o jogo
+                cleanupGame();
                 initGame();
             });
         });
@@ -1155,7 +1454,7 @@
             // Reiniciar variáveis
             playerScore = 0;
             opponentScore = 0;
-            gameTime = 120;
+            gameTime = CONFIG.GAME_TIME;
             playerAbilityCooldown = 0;
             opponentAbilityCooldown = 0;
             frozenPlayer = null;
@@ -1167,15 +1466,7 @@
             updateAbilityUI('player2-ability', 0);
             
             // Reiniciar jogo
-            if (gameRunning) {
-                clearInterval(gameInterval);
-            }
-            
-            // Limpar cena
-            while(scene.children.length > 0) { 
-                scene.remove(scene.children[0]); 
-            }
-            
+            cleanupGame();
             initGame();
         });
 
@@ -1184,18 +1475,7 @@
             document.getElementById('game-ui').style.display = 'none';
             document.getElementById('main-menu').style.display = 'flex';
             
-            // Parar jogo
-            gameRunning = false;
-            if (gameInterval) {
-                clearInterval(gameInterval);
-            }
-            
-            // Limpar cena
-            if (scene) {
-                while(scene.children.length > 0) { 
-                    scene.remove(scene.children[0]); 
-                }
-            }
+            cleanupGame();
         });
 
         document.getElementById('final-play-again').addEventListener('click', () => {
@@ -1204,7 +1484,7 @@
             // Reiniciar variáveis
             playerScore = 0;
             opponentScore = 0;
-            gameTime = 120;
+            gameTime = CONFIG.GAME_TIME;
             playerAbilityCooldown = 0;
             opponentAbilityCooldown = 0;
             frozenPlayer = null;
@@ -1216,15 +1496,7 @@
             updateAbilityUI('player2-ability', 0);
             
             // Reiniciar jogo
-            if (gameRunning) {
-                clearInterval(gameInterval);
-            }
-            
-            // Limpar cena
-            while(scene.children.length > 0) { 
-                scene.remove(scene.children[0]); 
-            }
-            
+            cleanupGame();
             initGame();
         });
 
@@ -1234,18 +1506,7 @@
             document.getElementById('game-ui').style.display = 'none';
             document.getElementById('main-menu').style.display = 'flex';
             
-            // Parar jogo
-            gameRunning = false;
-            if (gameInterval) {
-                clearInterval(gameInterval);
-            }
-            
-            // Limpar cena
-            if (scene) {
-                while(scene.children.length > 0) { 
-                    scene.remove(scene.children[0]); 
-                }
-            }
+            cleanupGame();
         });
 
         document.getElementById('fullscreen-btn').addEventListener('click', () => {
@@ -1259,8 +1520,26 @@
             }
         });
 
-        // Inicializar
-        document.getElementById('main-menu').style.display = 'flex';
+        // Lidar com mudanças de tela cheia
+        document.addEventListener('fullscreenchange', () => {
+            const container = document.getElementById('game-container');
+            if (document.fullscreenElement) {
+                container.classList.add('fullscreen');
+            } else {
+                container.classList.remove('fullscreen');
+            }
+        });
+
+        // Inicializar jogo quando a página carregar
+        window.addEventListener('load', () => {
+            document.getElementById('main-menu').style.display = 'flex';
+            
+            // Limpar qualquer instância anterior do Three.js
+            cleanupGame();
+        });
+
+        // Limpar ao sair da página
+        window.addEventListener('beforeunload', cleanupGame);
     </script>
 </body>
 </html>
