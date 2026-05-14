@@ -7,9 +7,11 @@
 <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Arial',sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298);display:flex;justify-content:center;align-items:center;min-height:100vh;color:white;overflow:hidden;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{font-family:'Arial',sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298);display:flex;justify-content:center;align-items:center;min-height:100vh;min-height:100dvh;color:white;overflow:hidden;}
 #game-container{position:relative;width:1000px;height:700px;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.5);}
-#game-container.fullscreen{width:100vw;height:100vh;border-radius:0;}
+body.game-playing{display:block;background:#000;}
+body.game-playing #game-container,#game-container.fullscreen{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;border-radius:0;box-shadow:none;}
 .screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;}
 
 /* MENU */
@@ -107,9 +109,11 @@ body{font-family:'Arial',sans-serif;background:linear-gradient(135deg,#1e3c72,#2
 .msg-btn:nth-child(3){border-left:3px solid #FFD700;}
 
 /* GAME */
-.game-screen{display:none;}
-#phaser-game{width:100%;height:100%;}
-.fullscreen-btn{position:absolute;bottom:50px;right:12px;padding:5px 9px;background:rgba(0,0,0,.65);color:white;border:1px solid rgba(255,255,255,.45);border-radius:5px;cursor:pointer;font-size:10px;}
+.game-screen{display:none;padding:0!important;overflow:hidden;}
+#phaser-game{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;background:#000;}
+#phaser-game canvas{display:block!important;width:100%!important;height:100%!important;touch-action:none;}
+body.game-playing .game-ui{position:fixed;}
+.fullscreen-btn{position:absolute;bottom:50px;right:12px;padding:5px 9px;background:rgba(0,0,0,.65);color:white;border:1px solid rgba(255,255,255,.45);border-radius:5px;cursor:pointer;font-size:10px;z-index:80;}
 
 /* GAME UI */
 .game-ui{display:none;position:absolute;bottom:6px;left:0;width:100%;z-index:10;padding:0 14px;}
@@ -322,9 +326,39 @@ let game=null, gameScene=null, isFullscreen=false;
 let currentGameSettings={difficulty:'medium',challenge:null,multiplayer:false,gameMode:'1v1',team1:'ifma',team2:'cmcb',selectedPlayer:'luis',selectedPlayer2:'pedrog'};
 // Global player selection state (outside DOMContentLoaded so it's truly global)
 let _selPlayer='luis', _selPlayer2='pedrog';
-const GW=1000, GH=700, BORDER=28;
-const GOAL_HEIGHT=160, GOAL_DEPTH=22;
-const GOAL_Y_TOP=(GH-GOAL_HEIGHT)/2, GOAL_Y_BOT=GOAL_Y_TOP+GOAL_HEIGHT;
+let GW=1000, GH=700, BORDER=28;
+let GOAL_HEIGHT=160, GOAL_DEPTH=22;
+let GOAL_Y_TOP=(GH-GOAL_HEIGHT)/2, GOAL_Y_BOT=GOAL_Y_TOP+GOAL_HEIGHT;
+
+function updateViewportConstants(){
+  GW=Math.max(720, Math.floor(window.innerWidth || document.documentElement.clientWidth || 1000));
+  GH=Math.max(480, Math.floor(window.innerHeight || document.documentElement.clientHeight || 700));
+  BORDER=Math.max(22, Math.min(42, Math.round(Math.min(GW,GH)*0.04)));
+  GOAL_HEIGHT=Math.max(130, Math.min(220, Math.round(GH*0.24)));
+  GOAL_DEPTH=Math.max(22, Math.min(34, Math.round(GW*0.025)));
+  GOAL_Y_TOP=(GH-GOAL_HEIGHT)/2;
+  GOAL_Y_BOT=GOAL_Y_TOP+GOAL_HEIGHT;
+}
+
+function resizeGameToViewport(){
+  updateViewportConstants();
+  const container=document.getElementById('game-container');
+  const phaserBox=document.getElementById('phaser-game');
+  if(container&&document.body.classList.contains('game-playing')) container.classList.add('fullscreen');
+  if(phaserBox){
+    phaserBox.style.width='100vw';
+    phaserBox.style.height='100dvh';
+  }
+  if(game&&game.scale){
+    game.scale.resize(GW,GH);
+    const canvas=game.canvas;
+    if(canvas){
+      canvas.style.width='100vw';
+      canvas.style.height='100dvh';
+      canvas.style.display='block';
+    }
+  }
+}
 
 // ═══════════════════════════════════════════════════════
 //  FUNÇÕES DE DESENHO STANDALONE (usadas em Phaser + HTML)
@@ -1822,13 +1856,24 @@ class GameScene extends Phaser.Scene {
 //  INIT PHASER
 // ═══════════════════════════════════════════════════════
 function initGame(){
+  resizeGameToViewport();
+  const phaserBox=document.getElementById('phaser-game');
+  if(phaserBox) phaserBox.innerHTML='';
   if(game){game.destroy(true);game=null;gameScene=null;}
   game=new Phaser.Game({
-    type:Phaser.AUTO, width:isFullscreen?window.innerWidth:GW, height:isFullscreen?window.innerHeight:GH,
-    parent:'phaser-game', physics:{default:'arcade',arcade:{gravity:{y:0},debug:false}},
-    scene:GameScene, backgroundColor:'#000'
+    type:Phaser.AUTO,
+    width:GW,
+    height:GH,
+    parent:'phaser-game',
+    scale:{mode:Phaser.Scale.RESIZE,width:GW,height:GH,autoCenter:Phaser.Scale.CENTER_BOTH},
+    physics:{default:'arcade',arcade:{gravity:{y:0},debug:false}},
+    scene:GameScene,
+    backgroundColor:'#000'
   });
-  game.events.once('ready',()=>{gameScene=game.scene.getScene('GameScene');});
+  game.events.once('ready',()=>{
+    gameScene=game.scene.getScene('GameScene');
+    resizeGameToViewport();
+  });
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1989,12 +2034,16 @@ document.addEventListener('DOMContentLoaded',function(){
     document.getElementById('player-select-screen').style.display='flex';
   }
 
-  function startGame(){
+  async function startGame(){
     currentGameSettings={...pending,team1:sel1||'ifma',team2:sel2||'cmcb',selectedPlayer:_selPlayer||'luis',selectedPlayer2:_selPlayer2||'pedrog'};
     hideAll();
+    document.body.classList.add('game-playing');
+    document.getElementById('game-container').classList.add('fullscreen');
     document.getElementById('game-screen').style.display='block';
     document.getElementById('game-ui').style.display='block';
     document.getElementById('final-screen').style.display='none';
+    await enterPageFullscreen();
+    resizeGameToViewport();
     initGame();
   }
 
@@ -2033,24 +2082,42 @@ document.addEventListener('DOMContentLoaded',function(){
 
   document.addEventListener('fullscreenchange',onFSChange);
   document.addEventListener('webkitfullscreenchange',onFSChange);
+  document.addEventListener('mozfullscreenchange',onFSChange);
+  window.addEventListener('resize',()=>resizeGameToViewport());
+  window.addEventListener('orientationchange',()=>setTimeout(resizeGameToViewport,250));
 });
 
 function onFSChange(){
-  if(!document.fullscreenElement&&!document.webkitFullscreenElement){
-    isFullscreen=false;
-    document.getElementById('game-container').classList.remove('fullscreen');
-    if(game)game.scale.resize(GW,GH);
+  isFullscreen=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement);
+  if(document.body.classList.contains('game-playing')){
+    document.getElementById('game-container').classList.add('fullscreen');
   }
+  resizeGameToViewport();
 }
 
-function toggleFS(){
+async function enterPageFullscreen(){
+  document.body.classList.add('game-playing');
   const c=document.getElementById('game-container');
-  if(!isFullscreen){
-    (c.requestFullscreen||c.webkitRequestFullscreen||c.mozRequestFullScreen).call(c);
-    isFullscreen=true;c.classList.add('fullscreen');
-    if(game)game.scale.resize(window.innerWidth,window.innerHeight);
+  if(c)c.classList.add('fullscreen');
+  const el=document.documentElement;
+  if(!document.fullscreenElement&&!document.webkitFullscreenElement&&!document.mozFullScreenElement){
+    try{
+      const fn=el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen;
+      if(fn) await fn.call(el);
+    }catch(e){
+      // Se o navegador bloquear a API de fullscreen, o jogo ainda usa 100vw/100dvh.
+    }
+  }
+  isFullscreen=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement);
+  resizeGameToViewport();
+}
+
+async function toggleFS(){
+  if(!document.fullscreenElement&&!document.webkitFullscreenElement&&!document.mozFullScreenElement){
+    await enterPageFullscreen();
   } else {
-    (document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen).call(document);
+    const fn=document.exitFullscreen||document.webkitExitFullscreen||document.mozCancelFullScreen;
+    if(fn) fn.call(document);
   }
 }
 </script>
