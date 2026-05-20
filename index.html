@@ -312,7 +312,7 @@ const TEAMS = {
 //  JOGADORES DO IFMA
 // ═══════════════════════════════════════════════════════
 const IFMA_PLAYERS = {
-  luis:  { id:'luis',   name:'Luis',    number:'10', skin:'#f0c8a0', hair:'#3a2200', hairStyle:'streak_spiky', shoe:'#111',    shirtAccent:'#FFD700', beard:false, traitIcon:'⭐', trait:'Craque',     celebrate:'arms_up' },
+  luis:  { id:'luis',   name:'Luís',    number:'10', skin:'#f0c8a0', hair:'#3a2200', hairStyle:'streak_spiky', shoe:'#111',    shirtAccent:'#FFD700', beard:false, traitIcon:'⭐', trait:'Técnico',    posicao:'Meia', pe:'Direito', estilo:'Técnico / Criativo', celebrate:'arms_up' },
   pedrog:{ id:'pedrog', name:'Pedro G', number:'9',  skin:'#b87a3a', hair:'#2a1200', hairStyle:'curly_short',  shoe:'#4a2200', shirtAccent:'#ffffff', beard:true,  traitIcon:'🔥', trait:'Artilheiro', celebrate:'run'     },
   pedrol:{ id:'pedrol', name:'Pedro L', number:'7',  skin:'#d4956a', hair:'#3d1a00', hairStyle:'swept',        shoe:'#222',    shirtAccent:'#aaffcc', beard:false, traitIcon:'⚡', trait:'Driblador',  celebrate:'spin'    },
   italo: { id:'italo',  name:'Italo',   number:'11', skin:'#2d1408', hair:'#0a0402', hairStyle:'afro',         shoe:'#111',    shirtAccent:'#00ff88', beard:false, traitIcon:'💨', trait:'Veloz',      celebrate:'slide'   },
@@ -326,8 +326,13 @@ const IFMA_PLAYERS = {
 const PLAYER_IMAGE_ASSETS = {
   ifma: {
     luis: {
-      sprite: 'assets/players/ifma/luis/sprite.png',
-      portrait: 'assets/players/ifma/luis/portrait.png'
+      sprite:    'assets/characters/luis/principal.png',
+      portrait:  'assets/characters/luis/principal.png',
+      running:   'assets/characters/luis/corrida.png',
+      kicking:   'assets/characters/luis/chute.png',
+      dribbling: 'assets/characters/luis/drible.png',
+      side:      'assets/characters/luis/lado.png',
+      back:      'assets/characters/luis/costas.png',
     }
   }
 };
@@ -660,6 +665,12 @@ class GameScene extends Phaser.Scene {
         if(data.sprite){
           this.load.image(`player_${teamId}_${playerId}`, data.sprite);
         }
+        // Carrega variantes de estado do sprite
+        ['running','kicking','dribbling','side','back'].forEach(state=>{
+          if(data[state]){
+            this.load.image(`player_${teamId}_${playerId}_${state}`, data[state]);
+          }
+        });
       });
     });
   }
@@ -927,6 +938,9 @@ class GameScene extends Phaser.Scene {
     c.body.setSize(24,40).setCollideWorldBounds(true);
     c.setDepth(5);
     c._lk=0;
+    c._sprite=sprite;    // referência ao sprite interno para troca de textura
+    c._texBase=texKey;   // textura padrão (idle)
+    c._kickTimer=0;      // timestamp do último chute (para exibir sprite de chute)
     return c;
   }
 
@@ -965,6 +979,61 @@ class GameScene extends Phaser.Scene {
     this.time.addEvent({delay:500,loop:true,callback:()=>{if(this._tmr)this.updTimer(this._tmr.getRemainingSeconds());}});
   }
 
+  // ── TROCA DE SPRITES DO LUÍS ──────────────────────
+  _updatePlayerSprites(){
+    // Só atua se o time for IFMA e o jogador tiver _sprite (PNG)
+    if(!this.p1||!this.p1._sprite||this.T1.id!=='ifma') return;
+    const playerId=this.selectedPlayer;
+    const assets=PLAYER_IMAGE_ASSETS?.ifma?.[playerId];
+    if(!assets) return;
+
+    const p=this.p1;
+    const vx=p.body?p.body.velocity.x:0;
+    const vy=p.body?p.body.velocity.y:0;
+    const spd=Math.sqrt(vx*vx+vy*vy);
+    const isMoving=spd>18;
+    const now=this.time?this.time.now:0;
+    const isKicking=p._kickTimer&&now<p._kickTimer;
+    const ballDist=this.ball?Phaser.Math.Distance.Between(p.x,p.y,this.ball.x,this.ball.y):999;
+    const nearBall=ballDist<68;
+
+    let newKey=p._texBase; // padrão: idle/principal.png
+
+    if(isKicking){
+      const k=`player_ifma_${playerId}_kicking`;
+      if(this.textures.exists(k)) newKey=k;
+    } else if(isMoving&&nearBall){
+      const k=`player_ifma_${playerId}_dribbling`;
+      if(this.textures.exists(k)) newKey=k;
+      p._sprite.setFlipX(false);
+    } else if(isMoving){
+      const absVx=Math.abs(vx), absVy=Math.abs(vy);
+      if(absVx>absVy*1.2){
+        // Movimento lateral → lado.png, espelhado se for para a esquerda
+        const k=`player_ifma_${playerId}_side`;
+        if(this.textures.exists(k)){
+          newKey=k;
+          p._sprite.setFlipX(vx<0);
+        }
+      } else if(vy<-20){
+        // Subindo na tela (costas para o espectador) → costas.png
+        const k=`player_ifma_${playerId}_back`;
+        if(this.textures.exists(k)){ newKey=k; p._sprite.setFlipX(false); }
+      } else {
+        // Correndo para baixo / diagonal → corrida.png
+        const k=`player_ifma_${playerId}_running`;
+        if(this.textures.exists(k)){ newKey=k; p._sprite.setFlipX(false); }
+      }
+    } else {
+      // Parado → reseta flip
+      p._sprite.setFlipX(false);
+    }
+
+    if(p._sprite.texture&&p._sprite.texture.key!==newKey){
+      p._sprite.setTexture(newKey);
+    }
+  }
+
   update(){
     if(this.isReplaying) return;
     this.moveP(this.p1,this.kW,this.kS,this.kA,this.kD);
@@ -995,6 +1064,7 @@ class GameScene extends Phaser.Scene {
     this.checkKeys();
     this.checkEnd();
     this.checkChallenge();
+    this._updatePlayerSprites(); // troca sprite do Luís por estado
   }
 
   moveP(p,u,d,l,r){
@@ -1163,6 +1233,8 @@ class GameScene extends Phaser.Scene {
     const now=this.time.now;
     if(now-player._lk<270) return;
     player._lk=now; this.lastTouch=player;
+    // Marca o timer de chute para troca de sprite
+    if(player._kickTimer!==undefined) player._kickTimer=now+420;
     const ang=Math.atan2(this.ball.y-player.y,this.ball.x-player.x);
     let force=320;
     this.ball.x+=Math.cos(ang)*25; this.ball.y+=Math.sin(ang)*25;
@@ -1961,9 +2033,9 @@ document.addEventListener('DOMContentLoaded',function(){
   // ── TELA DE SELEÇÃO DE JOGADOR ─────────────────────
   function createPlayerCardVisual(p){
     const asset=getPlayerImageAsset('ifma',p.id);
-    if(asset&&asset.sprite){
+    if(asset&&(asset.portrait||asset.sprite)){
       const img=document.createElement('img');
-      img.src=asset.sprite;
+      img.src=asset.portrait||asset.sprite; // usa retrato se disponível
       img.alt=p.name;
       img.className='pcard-canvas';
       img.onerror=()=>{
