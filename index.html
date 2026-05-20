@@ -932,6 +932,10 @@ class GameScene extends Phaser.Scene {
   mkPlayer(x, y, texKey){
     const c=this.add.container(x,y);
     const sprite=this.add.image(0,0,texKey).setOrigin(.5,.5);
+    // Sprites PNG reais (Luís e futuros personagens) chegam já recortados em 300×500.
+    // Usamos o mesmo displaySize visual dos personagens gerados por canvas (46×70).
+    // A diferença é que os PNGs têm fundo transparente e proporção já correta,
+    // então o tamanho visual final é idêntico ao personagem vermelho.
     sprite.setDisplaySize(46,70);
     c.add(sprite);
     this.physics.add.existing(c);
@@ -942,6 +946,14 @@ class GameScene extends Phaser.Scene {
     c._texBase=texKey;   // textura padrão (idle)
     c._kickTimer=0;      // timestamp do último chute (para exibir sprite de chute)
     return c;
+  }
+
+  // Aplica o tamanho de display correto num sprite já existente.
+  // Sprites PNG reais do Luís (300×500 px, fundo transparente) → mesma escala visual.
+  // Sprites canvas (72×110 px, gerados internamente) → mesma escala visual.
+  // Ambos resultam em setDisplaySize(46,70) no Phaser.
+  _resizeSprite(sprite){
+    sprite.setDisplaySize(46,70);
   }
 
   setupKeys(){
@@ -1031,6 +1043,10 @@ class GameScene extends Phaser.Scene {
 
     if(p._sprite.texture&&p._sprite.texture.key!==newKey){
       p._sprite.setTexture(newKey);
+      // IMPORTANTE: após trocar a textura o Phaser reseta o displaySize para
+      // as dimensões originais do novo frame. Reaplicamos o tamanho padrão para
+      // que o Luís continue do mesmo tamanho visual dos outros personagens.
+      p._sprite.setDisplaySize(46,70);
     }
   }
 
