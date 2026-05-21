@@ -122,7 +122,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 }
 .team-card:hover{transform:translateX(3px);background:rgba(255,255,255,0.16);border-color:rgba(255,215,0,0.55);}
 .team-card.selected{border-color:#FFD700;background:rgba(255,215,0,0.20);transform:scale(1.06);box-shadow:0 0 16px rgba(255,215,0,0.55);}
-
 .team-logo{width:40px;height:40px;border-radius:8px;flex-shrink:0;object-fit:contain;border:2px solid rgba(255,255,255,0.25);background:rgba(0,0,0,0.2);}
 .team-swatch{width:34px;height:34px;border-radius:7px;flex-shrink:0;border:2px solid rgba(255,255,255,0.25);}
 .team-name-card{font-size:17px;font-weight:bold;}
@@ -1820,7 +1819,6 @@ document.addEventListener('DOMContentLoaded',function(){
   let pending={difficulty:currentGameSettings.difficulty||'medium',challenge:null,multiplayer:false,gameMode:'1v1'};
   let sel1=null, sel2=null;
 
-  // ─── Esconde TODAS as telas e UI de jogo ───────────────────────────────────
   function hideAll(){
     ['main-menu','team-select-screen','player-select-screen','challenges-screen','game-screen'].forEach(id=>{
       const el=document.getElementById(id);
@@ -1830,7 +1828,6 @@ document.addEventListener('DOMContentLoaded',function(){
     if(gui) gui.style.display='none';
   }
 
-  // ─── Volta ao menu principal ───────────────────────────────────────────────
   function showMain(){
     hideAll();
     const mm=document.getElementById('main-menu');
@@ -1844,7 +1841,6 @@ document.addEventListener('DOMContentLoaded',function(){
     if(game){game.destroy(true);game=null;gameScene=null;}
   }
 
-  // ─── Constrói os cards de time ────────────────────────────────────────────
   function buildTeamCards(){
     ['team1-cards','team2-cards'].forEach((cid,si)=>{
       const cont=document.getElementById(cid);
@@ -1854,27 +1850,12 @@ document.addEventListener('DOMContentLoaded',function(){
         card.className='team-card';
         card.setAttribute('data-team-id', t.id);
 
-        const logo=document.createElement('img');
-        logo.className='team-logo';
-        logo.src=`assets/teams/${t.id}.png`;
-        logo.alt=t.name;
-        logo.onerror=function(){ this.style.display='none'; };
-
-        const info=document.createElement('div');
-        info.innerHTML=`<div class="team-name-card">${t.name}</div><div class="team-label-card">${t.label}</div>`;
-
-        card.appendChild(logo);
-        card.appendChild(info);
-
         card.onclick=()=>{
-          // Desmarca todos os cards desta coluna
           cont.querySelectorAll('.team-card').forEach(c=>c.classList.remove('selected'));
           card.classList.add('selected');
 
-          // Atualiza a seleção
           if(si===0) sel1=t.id; else sel2=t.id;
 
-          // Se o mesmo time foi escolhido na outra coluna, limpa a outra
           const otherCid=si===0?'team2-cards':'team1-cards';
           document.querySelectorAll(`#${otherCid} .team-card`).forEach(c=>{
             if(c.getAttribute('data-team-id')===t.id){
@@ -1883,7 +1864,6 @@ document.addEventListener('DOMContentLoaded',function(){
             }
           });
 
-          // Habilita "Próximo" somente quando dois times diferentes estão selecionados
           const canStart=(sel1&&sel2&&sel1!==sel2);
           document.getElementById('ts-start-btn').disabled=!canStart;
         };
@@ -1893,7 +1873,6 @@ document.addEventListener('DOMContentLoaded',function(){
     });
   }
 
-  // ─── Abre a tela de seleção de times ─────────────────────────────────────
   function showTeamSelect(opts){
     pending={...opts};
     sel1=null; sel2=null;
@@ -1910,14 +1889,12 @@ document.addEventListener('DOMContentLoaded',function(){
       if(sub)  sub.textContent='Selecione um time para cada lado';
     }
 
-    // Esconde tudo PRIMEIRO, depois mostra a tela de times com z-index alto
     hideAll();
     const tss=document.getElementById('team-select-screen');
     tss.style.display='flex';
     tss.style.zIndex='100';
   }
 
-  // ─── Cria o visual do card de jogador (imagem ou canvas) ─────────────────
   function createPlayerCardVisual(p){
     const asset=getPlayerImageAsset('ifma',p.id);
     if(asset&&(asset.portrait||asset.sprite)){
@@ -1939,7 +1916,6 @@ document.addEventListener('DOMContentLoaded',function(){
     return cv;
   }
 
-  // ─── Constrói os cards de jogador ────────────────────────────────────────
   function buildPlayerCards(team1Id, is2v2){
     const row=document.getElementById('player-cards-row');
     row.innerHTML='';
@@ -2035,7 +2011,6 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   }
 
-  // ─── Abre a tela de seleção de jogador ───────────────────────────────────
   function showPlayerSelect(){
     const is2v2=pending.gameMode==='2v2';
     buildPlayerCards(sel1||'ifma', is2v2);
@@ -2045,7 +2020,6 @@ document.addEventListener('DOMContentLoaded',function(){
     pss.style.zIndex='100';
   }
 
-  // ─── Inicia a partida ─────────────────────────────────────────────────────
   async function startGame(){
     currentGameSettings={
       ...pending,
@@ -2065,7 +2039,6 @@ document.addEventListener('DOMContentLoaded',function(){
     initGame();
   }
 
-  // ─── Eventos dos botões de navegação ──────────────────────────────────────
   document.getElementById('ts-start-btn').onclick=()=>{ if(sel1&&sel2) showPlayerSelect(); };
 
   document.getElementById('ts-back-btn').onclick=()=>{
