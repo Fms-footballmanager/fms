@@ -963,8 +963,8 @@ class GameScene extends Phaser.Scene {
     }
 
     this.ball=this.physics.add.image(GW/2,GH/2,'soccer_ball').setDepth(10);
-    this.ball.setDisplaySize(28,28);
-    this.ball.body.setBounce(.68,.68).setCollideWorldBounds(false).setDrag(38,38).setMaxVelocity(660,660);
+    this.ball.setDisplaySize(42,42);
+    this.ball.body.setSize(42,42).setBounce(.68,.68).setCollideWorldBounds(false).setDrag(38,38).setMaxVelocity(660,660);
     const gd=GOAL_DEPTH;
     this.goalL=this.add.rectangle(gd/2,GH/2,gd,GOAL_HEIGHT,0xffffff,0);
     this.physics.add.existing(this.goalL,true);
@@ -1896,7 +1896,7 @@ class GameScene extends Phaser.Scene {
     this.replayObjs.p1=this.mkPlayer(gd.p1.x,gd.p1.y,p1TexKey);
     if(this.twoPlayers&&this.p2)this.replayObjs.p2=this.mkPlayer(gd.p2.x,gd.p2.y,'player_j2');
     else this.replayObjs.ai=this.mkPlayer(gd.ai.x,gd.ai.y,`player_${this.T2.id}`);
-    this.replayObjs.ball=this.add.image(gd.ball.x,gd.ball.y,'soccer_ball').setDisplaySize(28,28);
+    this.replayObjs.ball=this.add.image(gd.ball.x,gd.ball.y,'soccer_ball').setDisplaySize(42,42);
     this.p1.setVisible(false);if(this.p2)this.p2.setVisible(false);this.ai.setVisible(false);this.ball.setVisible(false);
     const ri=document.getElementById('replay-info');
     if(ri)ri.textContent=(gd.scorer==='p1'?this.T1.name:(this.twoPlayers&&this.p2?'Jogador 2':this.T2.name))+' marcou!';
