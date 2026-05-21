@@ -14,14 +14,9 @@ body.game-playing{display:block;background:#000;}
 body.game-playing #game-container,#game-container.fullscreen{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;border-radius:0;box-shadow:none;}
 .screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;z-index:1;}
 
-/* ══════════════════════════════════════════════════
-   TELA INICIAL — PNG como visual principal
-   Todos os elementos decorativos foram removidos do HTML.
-   Apenas botões de interação permanecem como hotspots.
-   ══════════════════════════════════════════════════ */
 .main-menu{
   background: url('assets/ui/tela-inicial.png') center/cover no-repeat, #1a2980;
-  justify-content: flex-end;   /* empurra os hotspots para a parte inferior da PNG */
+  justify-content: flex-end;
   align-items: center;
   padding-top: 0;
   padding-bottom: 32px;
@@ -38,7 +33,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   z-index: 10;
 }
 
-/* Botões de modo (1v1 / 2v2) — hotspot semi-transparente */
 .game-mode-buttons{display:flex;gap:10px;margin:4px 0;}
 .mode-btn{
   padding:8px 18px;font-size:13px;font-weight:bold;
@@ -51,7 +45,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .mode-btn:hover{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
 .mode-btn.active{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
 
-/* Botões principais — hotspot */
 .menu-btn{
   padding:10px 28px;font-size:14px;font-weight:bold;
   background:rgba(0,0,0,0.01) !important;
@@ -67,7 +60,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 }
 .menu-btn:hover{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
 
-/* Botões de dificuldade — hotspot */
 .difficulty-menu{display:flex;gap:8px;margin:4px 0;}
 .difficulty-btn{
   padding:7px 16px;font-size:12px;
@@ -79,12 +71,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 }
 .difficulty-btn:hover{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
 
-
-/* ══════════════════════════════════════════════════
-   SELEÇÃO DE TIMES — PNG como visual principal
-   .ts-title e .vs-divider removidos do HTML.
-   Labels das colunas mantidos no DOM (referência JS) mas invisíveis.
-   ══════════════════════════════════════════════════ */
 #team-select-screen{
   display:none;
   background: url('assets/ui/team-select.png') center/cover no-repeat, linear-gradient(135deg,#0d1a3a,#162d5e);
@@ -97,19 +83,17 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   z-index:5;
 }
 
-/* Ocultar texto que já está na PNG */
-.ts-title   { display: none !important; }   /* 'ESCOLHA OS TIMES' — removido do HTML */
-.vs-divider { display: none !important; }   /* 'VS' — removido do HTML */
+.ts-title   { display: none !important; }
+.vs-divider { display: none !important; }
 .team-col-label{
-  /* mantido no DOM porque JS seta o texto, mas invisível */
+
   visibility:hidden;height:0;overflow:hidden;margin:0;padding:0;
 }
 #ts-subtitle{
-  /* mantido no DOM porque JS seta o texto, mas invisível */
+
   visibility:hidden;height:0;overflow:hidden;margin:0;padding:0;
 }
 
-/* Colunas de times — afastadas para alinhar sobre a PNG */
 .team-columns{
   display:flex;
   gap:64px;
@@ -122,7 +106,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .team-column{display:flex;flex-direction:column;align-items:center;gap:8px;}
 .team-cards{display:flex;flex-direction:column;gap:8px;}
 
-/* Cards de time — hotspot minimalista */
 .team-card{
   width:185px;padding:10px 14px;
   border-radius:11px;cursor:pointer;
@@ -137,20 +120,17 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .team-card:hover{transform:translateX(3px);background:rgba(255,255,255,0.16);border-color:rgba(255,215,0,0.55);}
 .team-card.selected{border-color:#FFD700;background:rgba(255,215,0,0.20);transform:scale(1.06);box-shadow:0 0 16px rgba(255,215,0,0.55);}
 
-/* Logo do time no card */
 .team-logo{width:40px;height:40px;border-radius:8px;flex-shrink:0;object-fit:contain;border:2px solid rgba(255,255,255,0.25);background:rgba(0,0,0,0.2);}
 .team-swatch{width:34px;height:34px;border-radius:7px;flex-shrink:0;border:2px solid rgba(255,255,255,0.25);}
 .team-name-card{font-size:17px;font-weight:bold;}
 .team-label-card{font-size:10px;opacity:.65;}
 
-/* Botão Próximo */
 .ts-start-btn{padding:13px 46px;font-size:17px;font-weight:bold;background:linear-gradient(45deg,#FF8C00,#FFD700);color:#1a2980;border:none;border-radius:50px;cursor:pointer;transition:all .3s;box-shadow:0 5px 18px rgba(255,140,0,.5);position:relative;z-index:15;pointer-events:auto;}
 .ts-start-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,140,0,.7);}
 .ts-start-btn:disabled{opacity:.38;cursor:not-allowed;}
 .back-btn-ts{position:absolute;top:14px;left:14px;padding:7px 14px;background:rgba(0,0,0,.5);color:white;border:none;border-radius:7px;cursor:pointer;font-size:12px;z-index:20;pointer-events:auto;}
 .back-btn-ts:hover{background:rgba(0,0,0,.8);}
 
-/* PLAYER SELECT */
 #player-select-screen{display:none;background:linear-gradient(135deg,#061a0c,#0e3018,#1a4a28);flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow-y:auto;padding:16px;}
 .ps-header{text-align:center;}
 .ps-title{font-size:32px;font-weight:bold;background:linear-gradient(45deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;}
@@ -169,7 +149,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .ps-locked{text-align:center;padding:18px 24px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(255,255,255,.1);font-size:13px;opacity:.65;}
 .ps-lock-icon{font-size:32px;margin-bottom:8px;}
 
-/* CHALLENGES */
 .challenges-screen{display:none;background:linear-gradient(135deg,#1a2980,#26d0ce);justify-content:flex-start;padding-top:46px;overflow-y:auto;}
 .challenges-container{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0;max-width:720px;}
 .challenge-card{background:rgba(255,255,255,.1);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .3s;border:2px solid transparent;}
@@ -183,7 +162,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .subtitle{font-size:16px;margin-bottom:18px;text-align:center;opacity:.9;}
 .back-btn{position:absolute;top:14px;left:14px;padding:7px 14px;background:rgba(0,0,0,.6);color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px;}
 
-/* SHOOT BUTTON */
 #shoot-btn{position:absolute;bottom:92px;right:18px;width:72px;height:72px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#ff6600,#cc2200);border:3px solid rgba(255,200,0,.7);box-shadow:0 0 18px rgba(255,100,0,.7),inset 0 0 10px rgba(0,0,0,.3);cursor:pointer;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:50;transition:transform .1s,box-shadow .1s;color:white;font-weight:bold;padding:0;user-select:none;-webkit-user-select:none;}
 #shoot-btn:active{transform:scale(.9);box-shadow:0 0 8px rgba(255,100,0,.5);}
 #shoot-btn.fire-mode{background:radial-gradient(circle at 35% 35%,#ffdd00,#ff4400);border-color:#FFD700;box-shadow:0 0 28px rgba(255,200,0,.9),inset 0 0 10px rgba(0,0,0,.3);animation:shootPulse .4s infinite alternate;}
@@ -191,7 +169,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .shoot-label{font-size:9px;letter-spacing:1px;opacity:.9;}
 @keyframes shootPulse{from{box-shadow:0 0 18px rgba(255,200,0,.7);}to{box-shadow:0 0 32px rgba(255,200,0,1);}}
 
-/* MESSAGE PANEL */
 #msg-panel{position:absolute;top:72px;left:12px;display:none;flex-direction:column;gap:5px;z-index:25;}
 .msg-btn{padding:6px 12px;background:rgba(0,0,0,.75);color:white;border:1px solid rgba(255,255,255,.3);border-radius:7px;cursor:pointer;font-size:11px;font-weight:bold;text-align:left;transition:all .18s;white-space:nowrap;}
 .msg-btn:hover{background:rgba(40,30,70,.9);border-color:rgba(255,215,0,.6);transform:scale(1.05);}
@@ -200,14 +177,12 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .msg-btn:nth-child(2){border-left:3px solid #ff2222;}
 .msg-btn:nth-child(3){border-left:3px solid #FFD700;}
 
-/* GAME */
 .game-screen{display:none;padding:0!important;overflow:hidden;}
 #phaser-game{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;background:#000;}
 #phaser-game canvas{display:block!important;width:100%!important;height:100%!important;touch-action:none;}
 body.game-playing .game-ui{position:fixed;}
 .fullscreen-btn{position:absolute;bottom:50px;right:12px;padding:5px 9px;background:rgba(0,0,0,.65);color:white;border:1px solid rgba(255,255,255,.45);border-radius:5px;cursor:pointer;font-size:10px;z-index:80;}
 
-/* GAME UI */
 .game-ui{display:none;position:absolute;bottom:6px;left:0;width:100%;z-index:10;padding:0 14px;}
 .abilities{display:flex;justify-content:space-between;width:100%;margin:2px 0;}
 .ability{background:linear-gradient(45deg,#c0392b,#e67e22);color:white;padding:4px 9px;border-radius:5px;font-size:10px;text-align:center;min-width:180px;border:1px solid rgba(255,255,255,.35);}
@@ -219,12 +194,10 @@ body.game-playing .game-ui{position:fixed;}
 #goalie-abilities{display:flex;}
 #dribble-info{position:absolute;top:72px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);border:1px solid rgba(255,215,0,.4);border-radius:8px;padding:4px 14px;font-size:10px;color:#FFD700;letter-spacing:1px;display:none;z-index:20;white-space:nowrap;}
 
-/* REPLAY */
 .replay-screen{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.9);color:white;padding:18px;border-radius:10px;text-align:center;z-index:1000;display:none;width:340px;}
 .replay-controls{display:flex;justify-content:center;gap:8px;margin-top:10px;}
 .replay-controls button{padding:6px 12px;background:#2196F3;color:white;border:none;border-radius:4px;cursor:pointer;font-size:12px;}
 
-/* FINAL */
 .final-screen{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a2980,#26d0ce);z-index:1000;display:none;flex-direction:column;justify-content:center;align-items:center;text-align:center;}
 .winner-trophy{font-size:88px;margin-bottom:14px;animation:bounce 1s infinite alternate;}
 .winner-title{font-size:42px;font-weight:bold;margin-bottom:14px;background:linear-gradient(45deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
@@ -240,17 +213,9 @@ body.game-playing .game-ui{position:fixed;}
 <body>
 <div id="game-container">
 
-<!-- ═══════════════════════════════════════════════════════
-     MENU PRINCIPAL
-     Visual: assets/ui/tela-inicial.png (fundo cobre 100% da tela)
-     Removidos: .logo, h1.title, .features, .footer
-     Mantidos: somente botões interativos como hotspots
-     ═══════════════════════════════════════════════════════ -->
 <div class="screen main-menu" id="main-menu">
   <div class="main-menu-content">
-    <!-- .logo removido — já está na PNG -->
-    <!-- h1.title removido — já está na PNG -->
-    <!-- .features removido — já está na PNG -->
+
     <div class="game-mode-buttons">
       <button class="mode-btn active" data-mode="1v1">1 vs 1</button>
       <button class="mode-btn" data-mode="2v2">2 vs 2</button>
@@ -263,37 +228,24 @@ body.game-playing .game-ui{position:fixed;}
       <button class="difficulty-btn medium" data-difficulty="medium">Médio</button>
       <button class="difficulty-btn hard" data-difficulty="hard">Difícil</button>
     </div>
-    <!-- .footer removido — já está na PNG -->
+
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     SELEÇÃO DE TIMES
-     Visual: assets/ui/team-select.png (fundo cobre 100% da tela)
-     Removidos: .ts-title, .vs-divider (do HTML)
-     Mantidos no DOM mas invisíveis: #ts-subtitle, #team1-col-label, #team2-col-label
-       (o JS precisa deles para setar texto; não aparecem visualmente)
-     Mantidos visíveis: #ts-back-btn, .team-cards (interação), #ts-start-btn
-     ═══════════════════════════════════════════════════════ -->
 <div class="screen" id="team-select-screen">
   <button class="back-btn-ts" id="ts-back-btn">← Voltar</button>
 
-  <!-- .ts-title removido do HTML — 'ESCOLHA OS TIMES' já está na PNG -->
-
-  <!-- #ts-subtitle: mantido no DOM (JS seta texto), invisível via CSS -->
   <div id="ts-subtitle"></div>
 
   <div class="team-columns">
     <div class="team-column">
-      <!-- #team1-col-label: mantido no DOM (JS seta texto), invisível via CSS -->
+
       <div class="team-col-label" id="team1-col-label"></div>
       <div class="team-cards" id="team1-cards"></div>
     </div>
 
-    <!-- .vs-divider removido do HTML — 'VS' já está na PNG -->
-
     <div class="team-column">
-      <!-- #team2-col-label: mantido no DOM (JS seta texto), invisível via CSS -->
+
       <div class="team-col-label" id="team2-col-label"></div>
       <div class="team-cards" id="team2-cards"></div>
     </div>
@@ -302,7 +254,6 @@ body.game-playing .game-ui{position:fixed;}
   <button class="ts-start-btn" id="ts-start-btn" disabled>Próximo ▶</button>
 </div>
 
-<!-- SELEÇÃO DE JOGADOR -->
 <div class="screen" id="player-select-screen">
   <button class="back-btn-ts" id="ps-back-btn">← Voltar</button>
   <div class="ps-header">
@@ -318,7 +269,6 @@ body.game-playing .game-ui{position:fixed;}
   <button class="ts-start-btn" id="ps-start-btn">Iniciar Partida ▶</button>
 </div>
 
-<!-- DESAFIOS -->
 <div class="screen challenges-screen" id="challenges-screen">
   <button class="back-btn" id="back-btn">← Voltar</button>
   <h1 class="title">DESAFIOS</h1>
@@ -333,7 +283,6 @@ body.game-playing .game-ui{position:fixed;}
   </div>
 </div>
 
-<!-- JOGO -->
 <div class="screen game-screen" id="game-screen">
   <div id="phaser-game"></div>
   <button class="fullscreen-btn" id="fullscreen-btn">⛶ Tela Cheia</button>
@@ -349,9 +298,8 @@ body.game-playing .game-ui{position:fixed;}
   <div id="dribble-info">🎮 DRIBLE [E/O] — 7 tipos • CARRINHO [Q/Z] — Bote no adversário!</div>
 </div>
 
-</div><!-- #game-container -->
+</div>
 
-<!-- GAME UI -->
 <div class="game-ui" id="game-ui">
   <div class="abilities">
     <div class="ability" id="player1-ability">J1: CONGELAR (Espaço) — Pronto!</div>
@@ -382,7 +330,6 @@ body.game-playing .game-ui{position:fixed;}
   </div>
 </div>
 
-<!-- REPLAY -->
 <div class="replay-screen" id="replay-screen">
   <h2>Replay do Gol</h2>
   <p id="replay-info">Gol marcado!</p>
@@ -393,7 +340,6 @@ body.game-playing .game-ui{position:fixed;}
   </div>
 </div>
 
-<!-- TELA FINAL -->
 <div class="final-screen" id="final-screen">
   <div class="winner-trophy" id="winner-trophy">🏆</div>
   <h1 class="winner-title" id="winner-title">VITÓRIA!</h1>
@@ -406,22 +352,7 @@ body.game-playing .game-ui{position:fixed;}
 </div>
 
 <script>
-// ╔═══════════════════════════════════════════════════════╗
-//  MAPA DE ASSETS — coloque seus PNGs nessas pastas
-//  ──────────────────────────────────────────────────────
-//  assets/ui/tela-inicial.png   → tela principal completa
-//  assets/ui/team-select.png    → tela de seleção de times
-//  assets/teams/ifma.png        → logo IFMA
-//  assets/teams/iema.png        → logo IEMA
-//  assets/teams/cmcb.png        → logo CMCB
-//  assets/teams/cmt.png         → logo CMT
-//  assets/ball/ball.png         → bola (opcional)
-//  assets/characters/{nome}/principal.png  → retratos dos jogadores
-// ╚═══════════════════════════════════════════════════════╝
 
-// ═══════════════════════════════════════════════════════
-//  TIMES
-// ═══════════════════════════════════════════════════════
 const TEAMS = {
   ifma:{ id:'ifma', name:'IFMA',  color:0x006B35, hex:'#006B35', accent:'#FFD700', label:'Instituto Federal do Maranhão' },
   iema:{ id:'iema', name:'IEMA',  color:0x003F8F, hex:'#003F8F', accent:'#00E676', label:'Instituto Estadual do Maranhão' },
@@ -429,9 +360,6 @@ const TEAMS = {
   cmt :{ id:'cmt',  name:'CMT',   color:0xD4500A, hex:'#D4500A', accent:'#FFD700', label:'Colégio Militar de Timon' },
 };
 
-// ═══════════════════════════════════════════════════════
-//  JOGADORES DO IFMA
-// ═══════════════════════════════════════════════════════
 const IFMA_PLAYERS = {
   luis:  { id:'luis',  name:'Luís',  number:'10', skin:'#f0c8a0', hair:'#3a2200', hairStyle:'streak_spiky', shoe:'#111',    shirtAccent:'#FFD700', beard:false, traitIcon:'⭐', trait:'Técnico',   posicao:'Meia',       pe:'Direito',   estilo:'Técnico / Criativo', celebrate:'arms_up' },
   pedro: { id:'pedro', name:'Pedro', number:'9',  skin:'#b87a3a', hair:'#2a1200', hairStyle:'curly_short',  shoe:'#4a2200', shirtAccent:'#ffffff', beard:true,  traitIcon:'🔥', trait:'Artilheiro', posicao:'Atacante',   pe:'Direito',   estilo:'Raça / Gol',         celebrate:'run'     },
@@ -440,9 +368,6 @@ const IFMA_PLAYERS = {
   paulo: { id:'paulo', name:'Paulo', number:'5',  skin:'#8b5a2b', hair:'#1a0800', hairStyle:'lowfade',      shoe:'#333',    shirtAccent:'#ffffff', beard:true,  traitIcon:'💪', trait:'Defensor',   posicao:'Zagueiro',   pe:'Direito',   estilo:'Força / Marcação',    celebrate:'flex'    },
 };
 
-// ═══════════════════════════════════════════════════════
-//  PERSONAGENS POR IMAGEM
-// ═══════════════════════════════════════════════════════
 const PLAYER_IMAGE_ASSETS = {
   ifma: {
     luis: {
@@ -499,9 +424,6 @@ function getPlayerImageAsset(teamId, playerId){
   return PLAYER_IMAGE_ASSETS?.[teamId]?.[playerId] || null;
 }
 
-// ═══════════════════════════════════════════════════════
-//  GLOBALS
-// ═══════════════════════════════════════════════════════
 let game=null, gameScene=null, isFullscreen=false;
 let currentGameSettings={difficulty:'medium',challenge:null,multiplayer:false,gameMode:'1v1',team1:'ifma',team2:'cmcb',selectedPlayer:'luis',selectedPlayer2:'pedro'};
 let _selPlayer='luis', _selPlayer2='pedro';
@@ -539,9 +461,6 @@ function resizeGameToViewport(){
   }
 }
 
-// ═══════════════════════════════════════════════════════
-//  FUNÇÕES DE DESENHO STANDALONE
-// ═══════════════════════════════════════════════════════
 function _clHex(hex,amt){
   if(!hex||hex[0]!=='#') return hex||'#888';
   const r=parseInt(hex.slice(1,3),16)||0;
@@ -760,9 +679,6 @@ function drawCharToCanvas(canvas, o){
   _drawHairOnCtx(ctx, hX, hY, hR, o.hair, o.hairStyle||'short');
 }
 
-// ═══════════════════════════════════════════════════════
-//  CENA PHASER
-// ═══════════════════════════════════════════════════════
 class GameScene extends Phaser.Scene {
   constructor(){ super({key:'GameScene'}); }
 
@@ -1888,9 +1804,6 @@ class GameScene extends Phaser.Scene {
   }
 }
 
-// ═══════════════════════════════════════════════════════
-//  INIT PHASER
-// ═══════════════════════════════════════════════════════
 function initGame(){
   resizeGameToViewport();
   const phaserBox=document.getElementById('phaser-game');
@@ -1912,9 +1825,6 @@ function initGame(){
   });
 }
 
-// ═══════════════════════════════════════════════════════
-//  DOM / NAVEGAÇÃO
-// ═══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded',function(){
   let pending={difficulty:currentGameSettings.difficulty||'medium',challenge:null,multiplayer:false,gameMode:'1v1'};
   let sel1=null, sel2=null;
@@ -1983,7 +1893,6 @@ document.addEventListener('DOMContentLoaded',function(){
     pending={...opts};sel1=null;sel2=null;
     buildTeamCards();
     document.getElementById('ts-start-btn').disabled=true;
-    // Labels mantidos no DOM mas invisíveis — JS os seta, mas não aparecem visualmente
     const lbl2=document.getElementById('team2-col-label'),sub=document.getElementById('ts-subtitle');
     if(opts.multiplayer){if(lbl2)lbl2.textContent='🔵 Jogador 2';if(sub)sub.textContent='Selecione um time para cada jogador';}
     else{if(lbl2)lbl2.textContent='🔴 Adversário (IA)';if(sub)sub.textContent='Selecione um time para cada lado';}
@@ -1993,7 +1902,6 @@ document.addEventListener('DOMContentLoaded',function(){
     tss.style.zIndex='50';
   }
 
-  // ── TELA DE SELEÇÃO DE JOGADOR ─────────────────────
   function createPlayerCardVisual(p){
     const asset=getPlayerImageAsset('ifma',p.id);
     if(asset&&(asset.portrait||asset.sprite)){
@@ -2124,7 +2032,6 @@ document.addEventListener('DOMContentLoaded',function(){
     initGame();
   }
 
-  // ── EVENTOS ────────────────────────────────────────
   document.getElementById('ts-start-btn').onclick=()=>{ if(sel1&&sel2) showPlayerSelect(); };
   document.getElementById('ts-back-btn').onclick=()=>{hideAll();document.getElementById('main-menu').style.display='flex';};
   document.getElementById('ps-back-btn').onclick=()=>{
