@@ -24,75 +24,58 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   z-index: 2;
 }
 .main-menu-content{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  z-index:10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+  position: relative;
+  z-index: 10;
 }
 
-.game-mode-buttons{
-  position:absolute;
-  left:50%;
-  bottom:276px;
-  transform:translateX(-50%);
-  display:flex;
-  gap:10px;
-  margin:0;
-  z-index:22;
-}
+.game-mode-buttons{display:flex;gap:10px;margin:4px 0;}
 .mode-btn{
   padding:8px 18px;font-size:13px;font-weight:bold;
-  background:rgba(0,0,0,0.01) !important;
+  background:transparent !important;
   color:transparent !important;
   border:none !important;
   border-radius:20px;cursor:pointer;transition:none;
   pointer-events:auto;
+  position:relative;
+  z-index:20;
 }
-.mode-btn:hover{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
-.mode-btn.active{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
+.mode-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
+.mode-btn.active{background:transparent !important;border:none !important;color:transparent !important;}
 
 .menu-btn{
-  padding:0;font-size:14px;font-weight:bold;
+  padding:10px 28px;font-size:14px;font-weight:bold;
   background:transparent !important;
   color:transparent !important;
   border:none !important;
   border-radius:50px;cursor:pointer;transition:none;
-  box-shadow:none;margin:0;width:250px;height:46px;
+  box-shadow:none;margin:3px;width:210px;
   text-align:center;
   pointer-events:auto;
   -webkit-tap-highlight-color: transparent;
   outline: none;
-  min-height:46px;
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:24;
+  min-height: 40px;
+  position: relative;
+  z-index: 20;
 }
-#start-btn{bottom:222px;}
-#challenges-btn{bottom:174px;}
-#multiplayer-btn{bottom:126px;}
 .menu-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
 
-.difficulty-menu{
-  position:absolute;
-  left:50%;
-  bottom:72px;
-  transform:translateX(-50%);
-  display:flex;
-  gap:8px;
-  margin:0;
-  z-index:22;
-}
+.difficulty-menu{display:flex;gap:8px;margin:4px 0;}
 .difficulty-btn{
   padding:7px 16px;font-size:12px;
-  background:rgba(0,0,0,0.01) !important;
+  background:transparent !important;
   color:transparent !important;
   border:none !important;
   border-radius:20px;cursor:pointer;transition:none;
   pointer-events:auto;
+  position:relative;
+  z-index:20;
 }
-.difficulty-btn:hover{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
+.difficulty-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
 
 #team-select-screen{
   display:none;
@@ -102,18 +85,17 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   justify-content:space-between;
   padding:14px 20px 26px;
   gap:0;
-  position:relative;
+  position:absolute;
+  top:0;left:0;width:100%;height:100%;
   z-index:5;
 }
 
 .ts-title   { display: none !important; }
 .vs-divider { display: none !important; }
 .team-col-label{
-
   visibility:hidden;height:0;overflow:hidden;margin:0;padding:0;
 }
 #ts-subtitle{
-
   visibility:hidden;height:0;overflow:hidden;margin:0;padding:0;
 }
 
@@ -154,7 +136,7 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .back-btn-ts{position:absolute;top:14px;left:14px;padding:7px 14px;background:rgba(0,0,0,.5);color:white;border:none;border-radius:7px;cursor:pointer;font-size:12px;z-index:20;pointer-events:auto;}
 .back-btn-ts:hover{background:rgba(0,0,0,.8);}
 
-#player-select-screen{display:none;background:linear-gradient(135deg,#061a0c,#0e3018,#1a4a28);flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow-y:auto;padding:16px;}
+#player-select-screen{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#061a0c,#0e3018,#1a4a28);flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow-y:auto;padding:16px;z-index:5;}
 .ps-header{text-align:center;}
 .ps-title{font-size:32px;font-weight:bold;background:linear-gradient(45deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;}
 .ps-subtitle{font-size:13px;opacity:.6;margin-top:5px;}
@@ -172,7 +154,7 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .ps-locked{text-align:center;padding:18px 24px;background:rgba(255,255,255,.05);border-radius:12px;border:1px solid rgba(255,255,255,.1);font-size:13px;opacity:.65;}
 .ps-lock-icon{font-size:32px;margin-bottom:8px;}
 
-.challenges-screen{display:none;background:linear-gradient(135deg,#1a2980,#26d0ce);justify-content:flex-start;padding-top:46px;overflow-y:auto;}
+.challenges-screen{display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#1a2980,#26d0ce);justify-content:flex-start;padding-top:46px;overflow-y:auto;z-index:5;}
 .challenges-container{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0;max-width:720px;}
 .challenge-card{background:rgba(255,255,255,.1);border-radius:14px;padding:16px;text-align:center;cursor:pointer;transition:all .3s;border:2px solid transparent;}
 .challenge-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.2);border-color:#FFD700;}
@@ -238,7 +220,6 @@ body.game-playing .game-ui{position:fixed;}
 
 <div class="screen main-menu" id="main-menu">
   <div class="main-menu-content">
-
     <div class="game-mode-buttons">
       <button class="mode-btn active" data-mode="1v1">1 vs 1</button>
       <button class="mode-btn" data-mode="2v2">2 vs 2</button>
@@ -251,33 +232,26 @@ body.game-playing .game-ui{position:fixed;}
       <button class="difficulty-btn medium" data-difficulty="medium">Médio</button>
       <button class="difficulty-btn hard" data-difficulty="hard">Difícil</button>
     </div>
-
   </div>
 </div>
 
-<div class="screen" id="team-select-screen">
+<div id="team-select-screen">
   <button class="back-btn-ts" id="ts-back-btn">← Voltar</button>
-
   <div id="ts-subtitle"></div>
-
   <div class="team-columns">
     <div class="team-column">
-
       <div class="team-col-label" id="team1-col-label"></div>
       <div class="team-cards" id="team1-cards"></div>
     </div>
-
     <div class="team-column">
-
       <div class="team-col-label" id="team2-col-label"></div>
       <div class="team-cards" id="team2-cards"></div>
     </div>
   </div>
-
   <button class="ts-start-btn" id="ts-start-btn" disabled>Próximo ▶</button>
 </div>
 
-<div class="screen" id="player-select-screen">
+<div id="player-select-screen">
   <button class="back-btn-ts" id="ps-back-btn">← Voltar</button>
   <div class="ps-header">
     <div class="ps-title">ESCOLHA SEU JOGADOR</div>
@@ -1043,7 +1017,6 @@ class GameScene extends Phaser.Scene {
   _applySprite(p, playerId){
     const assets=PLAYER_IMAGE_ASSETS?.ifma?.[playerId];
     if(!assets) return;
-
     const vx=p.body?p.body.velocity.x:0;
     const vy=p.body?p.body.velocity.y:0;
     const spd=Math.sqrt(vx*vx+vy*vy);
@@ -1052,9 +1025,7 @@ class GameScene extends Phaser.Scene {
     const isKicking=p._kickTimer&&now<p._kickTimer;
     const ballDist=this.ball?Phaser.Math.Distance.Between(p.x,p.y,this.ball.x,this.ball.y):999;
     const nearBall=ballDist<68;
-
     let newKey=p._texBase;
-
     if(isKicking){
       const k=`player_ifma_${playerId}_kicking`;
       if(this.textures.exists(k)) newKey=k;
@@ -1080,7 +1051,6 @@ class GameScene extends Phaser.Scene {
     } else {
       p._sprite.setFlipX(false);
     }
-
     if(p._sprite.texture&&p._sprite.texture.key!==newKey){
       p._sprite.setTexture(newKey);
     }
@@ -1849,159 +1819,107 @@ function initGame(){
 }
 
 document.addEventListener('DOMContentLoaded',function(){
-  let pending={
-    difficulty:currentGameSettings.difficulty||'medium',
-    challenge:null,
-    multiplayer:false,
-    gameMode:currentGameSettings.gameMode||'1v1',
-    quick:false
-  };
+  let pending={difficulty:currentGameSettings.difficulty||'medium',challenge:null,multiplayer:false,gameMode:'1v1'};
   let sel1=null, sel2=null;
 
+  // ─── Esconde TODAS as telas e UI de jogo ───────────────────────────────────
   function hideAll(){
     ['main-menu','team-select-screen','player-select-screen','challenges-screen','game-screen'].forEach(id=>{
       const el=document.getElementById(id);
-      if(el){
-        el.style.display='none';
-        el.style.zIndex='';
-        el.style.pointerEvents='none';
-      }
+      if(el){ el.style.display='none'; el.style.zIndex=''; }
     });
     const gui=document.getElementById('game-ui');
-    if(gui){
-      gui.style.display='none';
-      gui.style.pointerEvents='none';
-    }
+    if(gui) gui.style.display='none';
   }
 
-  function showScreen(id, display='flex', zIndex='100'){
-    const el=document.getElementById(id);
-    if(!el) return null;
-    el.style.display=display;
-    el.style.zIndex=zIndex;
-    el.style.pointerEvents='auto';
-    return el;
-  }
-
+  // ─── Volta ao menu principal ───────────────────────────────────────────────
   function showMain(){
     hideAll();
-    document.body.classList.remove('game-playing');
-    const container=document.getElementById('game-container');
-    if(container) container.classList.remove('fullscreen');
-    showScreen('main-menu','flex','2');
-    const gui=document.getElementById('game-ui');
-    if(gui) gui.style.display='none';
-    const fs=document.getElementById('final-screen');if(fs)fs.style.display='none';
-    const rs=document.getElementById('replay-screen');if(rs)rs.style.display='none';
+    const mm=document.getElementById('main-menu');
+    mm.style.display='flex';
+    mm.style.zIndex='2';
+    document.getElementById('final-screen').style.display='none';
+    document.getElementById('replay-screen').style.display='none';
     const sb=document.getElementById('shoot-btn');if(sb)sb.style.display='none';
     const mp=document.getElementById('msg-panel');if(mp)mp.style.display='none';
     const di=document.getElementById('dribble-info');if(di)di.style.display='none';
     if(game){game.destroy(true);game=null;gameScene=null;}
   }
 
-  function getAutoOpponent(teamId){
-    const ids=Object.keys(TEAMS);
-    return ids.find(id=>id!==teamId&&id==='cmcb') || ids.find(id=>id!==teamId) || 'cmcb';
-  }
-
-  function canStartTeamSelect(){
-    if(pending.multiplayer) return !!(sel1&&sel2&&sel1!==sel2);
-    return !!(sel1&&(!sel2||sel1!==sel2));
-  }
-
-  function normalizeTeamSelection(){
-    if(!sel1||!TEAMS[sel1]) sel1=currentGameSettings.team1||'ifma';
-    if(!TEAMS[sel1]) sel1='ifma';
-    if(!sel2||!TEAMS[sel2]||sel2===sel1) sel2=getAutoOpponent(sel1);
-  }
-
-  function updateTeamStartButton(){
-    const btn=document.getElementById('ts-start-btn');
-    if(!btn) return;
-    btn.disabled=!canStartTeamSelect();
-    btn.title=pending.multiplayer?'Escolha dois times diferentes':'Escolha seu time. O adversário pode ser automático.';
-  }
-
+  // ─── Constrói os cards de time ────────────────────────────────────────────
   function buildTeamCards(){
     ['team1-cards','team2-cards'].forEach((cid,si)=>{
       const cont=document.getElementById(cid);
-      if(!cont) return;
       cont.innerHTML='';
       Object.values(TEAMS).forEach(t=>{
         const card=document.createElement('div');
         card.className='team-card';
         card.setAttribute('data-team-id', t.id);
-        card.style.pointerEvents='auto';
-        card.style.cursor='pointer';
 
-        const logo = document.createElement('img');
-        logo.className = 'team-logo';
-        logo.src = `assets/teams/${t.id}.png`;
-        logo.alt = t.name;
-        logo.onerror = function(){
-          this.style.display = 'none';
-        };
+        const logo=document.createElement('img');
+        logo.className='team-logo';
+        logo.src=`assets/teams/${t.id}.png`;
+        logo.alt=t.name;
+        logo.onerror=function(){ this.style.display='none'; };
 
-        const info = document.createElement('div');
-        info.innerHTML = `<div class="team-name-card">${t.name}</div><div class="team-label-card">${t.label}</div>`;
+        const info=document.createElement('div');
+        info.innerHTML=`<div class="team-name-card">${t.name}</div><div class="team-label-card">${t.label}</div>`;
 
         card.appendChild(logo);
         card.appendChild(info);
 
-        card.onclick = () => {
-          if(si===1&&sel1===t.id){
-            sel2=null;
-            cont.querySelectorAll('.team-card').forEach(c=>c.classList.remove('selected'));
-            updateTeamStartButton();
-            return;
-          }
-
-          cont.querySelectorAll('.team-card').forEach(c => c.classList.remove('selected'));
+        card.onclick=()=>{
+          // Desmarca todos os cards desta coluna
+          cont.querySelectorAll('.team-card').forEach(c=>c.classList.remove('selected'));
           card.classList.add('selected');
 
-          if(si === 0){
-            sel1 = t.id;
-            if(sel2===t.id){
-              sel2=null;
-              document.querySelectorAll('#team2-cards .team-card').forEach(c=>c.classList.remove('selected'));
-            }
-          } else {
-            sel2 = t.id;
-          }
+          // Atualiza a seleção
+          if(si===0) sel1=t.id; else sel2=t.id;
 
-          updateTeamStartButton();
+          // Se o mesmo time foi escolhido na outra coluna, limpa a outra
+          const otherCid=si===0?'team2-cards':'team1-cards';
+          document.querySelectorAll(`#${otherCid} .team-card`).forEach(c=>{
+            if(c.getAttribute('data-team-id')===t.id){
+              c.classList.remove('selected');
+              if(si===0){ sel2=null; } else { sel1=null; }
+            }
+          });
+
+          // Habilita "Próximo" somente quando dois times diferentes estão selecionados
+          const canStart=(sel1&&sel2&&sel1!==sel2);
+          document.getElementById('ts-start-btn').disabled=!canStart;
         };
 
         cont.appendChild(card);
       });
     });
-    updateTeamStartButton();
   }
 
-  function showTeamSelect(opts={}){
-    pending={
-      difficulty:opts.difficulty||currentGameSettings.difficulty||'medium',
-      challenge:opts.challenge??null,
-      multiplayer:!!opts.multiplayer,
-      gameMode:opts.gameMode||currentGameSettings.gameMode||'1v1',
-      quick:!!opts.quick
-    };
-    sel1=null;
-    sel2=null;
-    hideAll();
+  // ─── Abre a tela de seleção de times ─────────────────────────────────────
+  function showTeamSelect(opts){
+    pending={...opts};
+    sel1=null; sel2=null;
     buildTeamCards();
-    const lbl2=document.getElementById('team2-col-label'),sub=document.getElementById('ts-subtitle');
-    if(pending.multiplayer){
-      if(lbl2)lbl2.textContent='🔵 Jogador 2';
-      if(sub)sub.textContent='Selecione um time para cada jogador';
+    document.getElementById('ts-start-btn').disabled=true;
+
+    const lbl2=document.getElementById('team2-col-label');
+    const sub=document.getElementById('ts-subtitle');
+    if(opts.multiplayer){
+      if(lbl2) lbl2.textContent='🔵 Jogador 2';
+      if(sub)  sub.textContent='Selecione um time para cada jogador';
     } else {
-      if(lbl2)lbl2.textContent='🔴 Adversário (IA)';
-      if(sub)sub.textContent='Escolha seu time. O adversário pode ser automático.';
+      if(lbl2) lbl2.textContent='🔴 Adversário (IA)';
+      if(sub)  sub.textContent='Selecione um time para cada lado';
     }
-    showScreen('team-select-screen','flex','100');
-    updateTeamStartButton();
+
+    // Esconde tudo PRIMEIRO, depois mostra a tela de times com z-index alto
+    hideAll();
+    const tss=document.getElementById('team-select-screen');
+    tss.style.display='flex';
+    tss.style.zIndex='100';
   }
 
+  // ─── Cria o visual do card de jogador (imagem ou canvas) ─────────────────
   function createPlayerCardVisual(p){
     const asset=getPlayerImageAsset('ifma',p.id);
     if(asset&&(asset.portrait||asset.sprite)){
@@ -2023,6 +1941,7 @@ document.addEventListener('DOMContentLoaded',function(){
     return cv;
   }
 
+  // ─── Constrói os cards de jogador ────────────────────────────────────────
   function buildPlayerCards(team1Id, is2v2){
     const row=document.getElementById('player-cards-row');
     row.innerHTML='';
@@ -2032,13 +1951,13 @@ document.addEventListener('DOMContentLoaded',function(){
     const subEl=document.querySelector('.ps-subtitle');
 
     if(is2v2&&titleEl) titleEl.textContent='ESCOLHA SEUS 2 JOGADORES';
-    else if(titleEl) titleEl.textContent='ESCOLHA SEU JOGADOR';
-    if(is2v2&&subEl) subEl.textContent='P1: WASD — P2: Aliado (IA ou 2º jogador)';
-    else if(subEl) subEl.textContent='Selecione quem você vai controlar em campo';
+    else if(titleEl)   titleEl.textContent='ESCOLHA SEU JOGADOR';
+    if(is2v2&&subEl)   subEl.textContent='P1: WASD — P2: Aliado (IA ou 2º jogador)';
+    else if(subEl)     subEl.textContent='Selecione quem você vai controlar em campo';
 
     if(team1Id==='ifma'){
       if(locked) locked.style.display='none';
-      if(badge){ badge.style.display='inline-flex'; badge.textContent='🟢 IFMA — Escola de Campeões'; }
+      if(badge){ badge.style.display='inline-flex'; badge.textContent='🟢 IFMA — Escola de Campeões'; badge.style.background=''; badge.style.color=''; }
       _selPlayer='luis'; _selPlayer2='pedro';
 
       if(is2v2){
@@ -2068,8 +1987,7 @@ document.addEventListener('DOMContentLoaded',function(){
             card.onclick=()=>{
               miniRow.querySelectorAll('.player-card-sel').forEach(c=>c.classList.remove('selected'));
               card.classList.add('selected');
-              if(slotNum===1){ _selPlayer=p.id; }
-              else { _selPlayer2=p.id; }
+              if(slotNum===1){ _selPlayer=p.id; } else { _selPlayer2=p.id; }
             };
             miniRow.appendChild(card);
           });
@@ -2085,6 +2003,7 @@ document.addEventListener('DOMContentLoaded',function(){
         container.appendChild(vs);
         container.appendChild(makePlayerColumn('🤝 Aliado (IA/Setas)','pedro',2));
         row.appendChild(container);
+
       } else {
         Object.values(IFMA_PLAYERS).forEach(p=>{
           const card=document.createElement('div');
@@ -2104,87 +2023,131 @@ document.addEventListener('DOMContentLoaded',function(){
           row.appendChild(card);
         });
       }
+
     } else {
       if(locked) locked.style.display='block';
       row.innerHTML='';
       const tData=TEAMS[team1Id];
-      if(badge&&tData){ badge.style.display='inline-flex'; badge.textContent=`${tData.name} — Em breve!`; badge.style.background='rgba(100,100,100,.35)'; badge.style.color='#ccc'; }
+      if(badge&&tData){
+        badge.style.display='inline-flex';
+        badge.textContent=`${tData.name} — Em breve!`;
+        badge.style.background='rgba(100,100,100,.35)';
+        badge.style.color='#ccc';
+      }
     }
   }
 
-
+  // ─── Abre a tela de seleção de jogador ───────────────────────────────────
   function showPlayerSelect(){
-    if(!canStartTeamSelect()) return;
-    normalizeTeamSelection();
     const is2v2=pending.gameMode==='2v2';
     buildPlayerCards(sel1||'ifma', is2v2);
     hideAll();
-    showScreen('player-select-screen','flex','100');
+    const pss=document.getElementById('player-select-screen');
+    pss.style.display='flex';
+    pss.style.zIndex='100';
   }
 
+  // ─── Inicia a partida ─────────────────────────────────────────────────────
   async function startGame(){
-    normalizeTeamSelection();
     currentGameSettings={
       ...pending,
       team1:sel1||'ifma',
-      team2:sel2||getAutoOpponent(sel1||'ifma'),
+      team2:sel2||'cmcb',
       selectedPlayer:_selPlayer||'luis',
       selectedPlayer2:_selPlayer2||'pedro'
     };
     hideAll();
     document.body.classList.add('game-playing');
-    const container=document.getElementById('game-container');
-    if(container) container.classList.add('fullscreen');
-    showScreen('game-screen','block','50');
-    const gui=document.getElementById('game-ui');
-    if(gui){
-      gui.style.display='block';
-      gui.style.pointerEvents='auto';
-    }
-    const fs=document.getElementById('final-screen');if(fs)fs.style.display='none';
+    document.getElementById('game-container').classList.add('fullscreen');
+    document.getElementById('game-screen').style.display='block';
+    document.getElementById('game-ui').style.display='block';
+    document.getElementById('final-screen').style.display='none';
     await enterPageFullscreen();
     resizeGameToViewport();
     initGame();
   }
 
-  document.getElementById('ts-start-btn').onclick=()=>{ if(canStartTeamSelect()) showPlayerSelect(); };
-  document.getElementById('ts-back-btn').onclick=()=>showMain();
+  // ─── Eventos dos botões de navegação ──────────────────────────────────────
+  document.getElementById('ts-start-btn').onclick=()=>{ if(sel1&&sel2) showPlayerSelect(); };
+
+  document.getElementById('ts-back-btn').onclick=()=>{
+    hideAll();
+    const mm=document.getElementById('main-menu');
+    mm.style.display='flex';
+    mm.style.zIndex='2';
+  };
+
   document.getElementById('ps-back-btn').onclick=()=>{
     hideAll();
-    showScreen('team-select-screen','flex','100');
-    updateTeamStartButton();
+    const tss=document.getElementById('team-select-screen');
+    tss.style.display='flex';
+    tss.style.zIndex='100';
   };
+
   document.getElementById('ps-start-btn').onclick=()=>startGame();
 
   document.querySelectorAll('.mode-btn').forEach(btn=>{
-    btn.classList.toggle('active',btn.getAttribute('data-mode')===(currentGameSettings.gameMode||'1v1'));
     btn.onclick=function(){
       document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
       this.classList.add('active');
-      currentGameSettings.gameMode=this.getAttribute('data-mode')||'1v1';
-      pending.gameMode=currentGameSettings.gameMode;
+      currentGameSettings.gameMode=this.getAttribute('data-mode');
+      pending.gameMode=this.getAttribute('data-mode');
     };
   });
 
-  document.getElementById('start-btn').onclick=()=>showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:false,gameMode:currentGameSettings.gameMode,quick:true});
-  document.getElementById('multiplayer-btn').onclick=()=>showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:true,gameMode:currentGameSettings.gameMode,quick:false});
-  document.getElementById('challenges-btn').onclick=()=>{hideAll();showScreen('challenges-screen','flex','100');};
-  document.getElementById('back-btn').onclick=()=>showMain();
+  document.getElementById('start-btn').onclick=()=>
+    showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:false,gameMode:currentGameSettings.gameMode});
+
+  document.getElementById('multiplayer-btn').onclick=()=>
+    showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:true,gameMode:currentGameSettings.gameMode});
+
+  document.getElementById('challenges-btn').onclick=()=>{
+    hideAll();
+    const cs=document.getElementById('challenges-screen');
+    cs.style.display='flex';
+    cs.style.zIndex='100';
+  };
+
+  document.getElementById('back-btn').onclick=()=>{
+    hideAll();
+    const mm=document.getElementById('main-menu');
+    mm.style.display='flex';
+    mm.style.zIndex='2';
+  };
+
   document.querySelectorAll('.difficulty-btn').forEach(btn=>{
     btn.onclick=function(){
-      currentGameSettings.difficulty=this.getAttribute('data-difficulty')||'medium';
-      showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:false,gameMode:currentGameSettings.gameMode,quick:false});
+      currentGameSettings.difficulty=this.getAttribute('data-difficulty');
+      showTeamSelect({difficulty:this.getAttribute('data-difficulty'),challenge:null,multiplayer:false,gameMode:currentGameSettings.gameMode});
     };
   });
+
   document.querySelectorAll('.challenge-card').forEach(card=>{
-    card.onclick=function(){showTeamSelect({difficulty:'medium',challenge:this.getAttribute('data-challenge'),multiplayer:false,gameMode:currentGameSettings.gameMode,quick:false});};
+    card.onclick=function(){
+      showTeamSelect({difficulty:'medium',challenge:this.getAttribute('data-challenge'),multiplayer:false,gameMode:currentGameSettings.gameMode});
+    };
   });
+
   document.getElementById('fullscreen-btn').onclick=toggleFS;
   document.getElementById('menu-btn').onclick=showMain;
-  document.getElementById('final-main-menu').onclick=()=>{document.getElementById('final-screen').style.display='none';showMain();};
-  document.getElementById('final-play-again').onclick=()=>{document.getElementById('final-screen').style.display='none';if(gameScene)gameScene.safeRestart();};
-  document.getElementById('replay-btn').onclick=()=>{if(gameScene?.lastGoalData)gameScene.showReplay();};
-  document.getElementById('replay-close').onclick=()=>{if(gameScene)gameScene.stopReplay();};
+
+  document.getElementById('final-main-menu').onclick=()=>{
+    document.getElementById('final-screen').style.display='none';
+    showMain();
+  };
+
+  document.getElementById('final-play-again').onclick=()=>{
+    document.getElementById('final-screen').style.display='none';
+    if(gameScene) gameScene.safeRestart();
+  };
+
+  document.getElementById('replay-btn').onclick=()=>{
+    if(gameScene?.lastGoalData) gameScene.showReplay();
+  };
+
+  document.getElementById('replay-close').onclick=()=>{
+    if(gameScene) gameScene.stopReplay();
+  };
 
   document.addEventListener('fullscreenchange',onFSChange);
   document.addEventListener('webkitfullscreenchange',onFSChange);
@@ -2204,7 +2167,7 @@ function onFSChange(){
 async function enterPageFullscreen(){
   document.body.classList.add('game-playing');
   const c=document.getElementById('game-container');
-  if(c)c.classList.add('fullscreen');
+  if(c) c.classList.add('fullscreen');
   const el=document.documentElement;
   if(!document.fullscreenElement&&!document.webkitFullscreenElement&&!document.mozFullScreenElement){
     try{
