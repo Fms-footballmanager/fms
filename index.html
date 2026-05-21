@@ -24,16 +24,23 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   z-index: 2;
 }
 .main-menu-content{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  gap: 5px;
-  position: relative;
-  z-index: 10;
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:10;
 }
 
-.game-mode-buttons{display:flex;gap:10px;margin:4px 0;}
+.game-mode-buttons{
+  position:absolute;
+  left:50%;
+  bottom:276px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:10px;
+  margin:0;
+  z-index:22;
+}
 .mode-btn{
   padding:8px 18px;font-size:13px;font-weight:bold;
   background:rgba(0,0,0,0.01) !important;
@@ -46,23 +53,37 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .mode-btn.active{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
 
 .menu-btn{
-  padding:10px 28px;font-size:14px;font-weight:bold;
+  padding:0;font-size:14px;font-weight:bold;
   background:transparent !important;
   color:transparent !important;
   border:none !important;
   border-radius:50px;cursor:pointer;transition:none;
-  box-shadow:none;margin:3px;width:210px;
+  box-shadow:none;margin:0;width:250px;height:46px;
   text-align:center;
   pointer-events:auto;
   -webkit-tap-highlight-color: transparent;
   outline: none;
-  min-height: 40px;
-  position: relative;
-  z-index: 20;
+  min-height:46px;
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:24;
 }
+#start-btn{bottom:222px;}
+#challenges-btn{bottom:174px;}
+#multiplayer-btn{bottom:126px;}
 .menu-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
 
-.difficulty-menu{display:flex;gap:8px;margin:4px 0;}
+.difficulty-menu{
+  position:absolute;
+  left:50%;
+  bottom:72px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  margin:0;
+  z-index:22;
+}
 .difficulty-btn{
   padding:7px 16px;font-size:12px;
   background:rgba(0,0,0,0.01) !important;
