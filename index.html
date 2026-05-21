@@ -66,9 +66,9 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .team-column{display:flex;flex-direction:column;align-items:center;gap:8px;}
 .team-col-label{font-size:12px;font-weight:bold;opacity:.65;text-transform:uppercase;letter-spacing:1px;}
 .team-cards{display:flex;flex-direction:column;gap:8px;}
-.team-card{width:195px;padding:12px 15px;border-radius:11px;cursor:pointer;border:3px solid transparent;transition:all .22s;display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.07);}
-.team-card:hover{transform:translateX(3px);background:rgba(255,255,255,.14);}
-.team-card.selected{border-color:#FFD700;background:rgba(255,215,0,.13);transform:scale(1.04);}
+.team-card{width:195px;padding:12px 15px;border-radius:11px;cursor:pointer;border:3px solid transparent;transition:all .22s;display:flex;align-items:center;gap:11px;background:rgba(0,0,0,.45);}
+.team-card:hover{transform:translateX(3px);background:rgba(255,255,255,.18);border-color:rgba(255,215,0,.55);}
+.team-card.selected{border-color:#FFD700;background:rgba(255,215,0,.22);transform:scale(1.06);box-shadow:0 0 18px rgba(255,215,0,.55);}
 /* ══════════════════════════════════════════════════
    LOGOS DOS TIMES — PNG
    Coloque os arquivos em:
@@ -2095,34 +2095,44 @@ document.addEventListener('DOMContentLoaded',function(){
       Object.values(TEAMS).forEach(t=>{
         const card=document.createElement('div');
         card.className='team-card';
+        card.setAttribute('data-team-id', t.id);
 
-        // ── LOGO DO TIME ────────────────────────────────────────
-        // Tenta carregar assets/teams/{id}.png
-        // Se não encontrar, usa o swatch colorido como fallback
-        const logo=document.createElement('img');
-        logo.className='team-logo';
-        logo.src=`assets/teams/${t.id}.png`;
-        logo.alt=t.name;
-        logo.onerror=function(){
-          const sw=document.createElement('div');
-          sw.className='team-swatch';
-          sw.style.background=t.hex;
-          this.replaceWith(sw);
+        // ── LOGO DO TIME ─────────────────────────────────────────────────
+        // Se assets/teams/{id}.png NÃO existir → o card SOME completamente
+        // Só aparecem os times que tiverem logo PNG na pasta assets/teams/
+        // ─────────────────────────────────────────────────────────────────
+        const logo = document.createElement('img');
+        logo.className = 'team-logo';
+        logo.src = `assets/teams/${t.id}.png`;
+        logo.alt = t.name;
+        logo.onerror = function(){
+          // Sem PNG → esconde o card inteiro
+          card.style.display = 'none';
         };
 
-        const info=document.createElement('div');
-        info.innerHTML=`<div class="team-name-card">${t.name}</div><div class="team-label-card">${t.label}</div>`;
+        const info = document.createElement('div');
+        info.innerHTML = `<div class="team-name-card">${t.name}</div><div class="team-label-card">${t.label}</div>`;
 
         card.appendChild(logo);
         card.appendChild(info);
-        // ────────────────────────────────────────────────────────
 
-        card.onclick=()=>{
-          document.querySelectorAll(`#${cid} .team-card`).forEach(c=>c.classList.remove('selected'));
+        // ── SELEÇÃO ───────────────────────────────────────────────────────
+        card.onclick = () => {
+          // Remove seleção anterior nesta coluna
+          cont.querySelectorAll('.team-card').forEach(c => c.classList.remove('selected'));
           card.classList.add('selected');
-          if(si===0) sel1=t.id; else sel2=t.id;
-          document.getElementById('ts-start-btn').disabled=!(sel1&&sel2);
+          if(si === 0) sel1 = t.id; else sel2 = t.id;
+          // Impede selecionar o mesmo time nos dois lados
+          const otherCid = si === 0 ? 'team2-cards' : 'team1-cards';
+          document.querySelectorAll(`#${otherCid} .team-card`).forEach(c => {
+            if(c.getAttribute('data-team-id') === t.id){
+              c.classList.remove('selected');
+              if(si === 0) sel2 = null; else sel1 = null;
+            }
+          });
+          document.getElementById('ts-start-btn').disabled = !(sel1 && sel2 && sel1 !== sel2);
         };
+
         cont.appendChild(card);
       });
     });
