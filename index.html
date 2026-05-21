@@ -53,17 +53,16 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   color:transparent !important;
   border:none !important;
   border-radius:50px;cursor:pointer;transition:none;
-  box-shadow:none;margin:3px;width:210px;
+  box-shadow:none;margin:3px;width:240px;
   text-align:center;
   pointer-events:auto;
   -webkit-tap-highlight-color: transparent;
   outline: none;
-  min-height: 40px;
+  min-height: 52px;
   position: relative;
   z-index: 20;
+  display: block;
 }
-.menu-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
-
 .difficulty-menu{display:flex;gap:8px;margin:4px 0;}
 .difficulty-btn{
   padding:7px 16px;font-size:12px;
@@ -76,7 +75,6 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   z-index:20;
 }
 .difficulty-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
-
 #team-select-screen{
   display:none;
   background: url('assets/ui/team-select.png') center/cover no-repeat, linear-gradient(135deg,#0d1a3a,#162d5e);
@@ -224,9 +222,9 @@ body.game-playing .game-ui{position:fixed;}
       <button class="mode-btn active" data-mode="1v1">1 vs 1</button>
       <button class="mode-btn" data-mode="2v2">2 vs 2</button>
     </div>
-   <button class="menu-btn" id="challenges-btn">🏅 DESAFIOS</button>
+  <button class="menu-btn" id="start-btn">⚽ JOGAR RÁPIDO</button>
+<button class="menu-btn" id="challenges-btn">🏅 DESAFIOS</button>
 <button class="menu-btn" id="multiplayer-btn">👥 MULTIPLAYER</button>
-<button class="menu-btn" id="start-btn">⚽ JOGAR RÁPIDO</button>
     <div class="difficulty-menu">
       <button class="difficulty-btn" data-difficulty="easy">Fácil</button>
       <button class="difficulty-btn medium" data-difficulty="medium">Médio</button>
