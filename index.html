@@ -47,7 +47,7 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 
 .menu-btn{
   padding:10px 28px;font-size:14px;font-weight:bold;
-  background:rgba(0,0,0,0.01) !important;
+  background:transparent !important;
   color:transparent !important;
   border:none !important;
   border-radius:50px;cursor:pointer;transition:none;
@@ -57,8 +57,10 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   -webkit-tap-highlight-color: transparent;
   outline: none;
   min-height: 40px;
+  position: relative;
+  z-index: 20;
 }
-.menu-btn:hover{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
+.menu-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
 
 .difficulty-menu{display:flex;gap:8px;margin:4px 0;}
 .difficulty-btn{
@@ -1826,35 +1828,90 @@ function initGame(){
 }
 
 document.addEventListener('DOMContentLoaded',function(){
-  let pending={difficulty:currentGameSettings.difficulty||'medium',challenge:null,multiplayer:false,gameMode:'1v1'};
+  let pending={
+    difficulty:currentGameSettings.difficulty||'medium',
+    challenge:null,
+    multiplayer:false,
+    gameMode:currentGameSettings.gameMode||'1v1',
+    quick:false
+  };
   let sel1=null, sel2=null;
 
   function hideAll(){
     ['main-menu','team-select-screen','player-select-screen','challenges-screen','game-screen'].forEach(id=>{
       const el=document.getElementById(id);
-      if(el){ el.style.display='none'; el.style.zIndex=''; }
+      if(el){
+        el.style.display='none';
+        el.style.zIndex='';
+        el.style.pointerEvents='none';
+      }
     });
+    const gui=document.getElementById('game-ui');
+    if(gui){
+      gui.style.display='none';
+      gui.style.pointerEvents='none';
+    }
+  }
+
+  function showScreen(id, display='flex', zIndex='100'){
+    const el=document.getElementById(id);
+    if(!el) return null;
+    el.style.display=display;
+    el.style.zIndex=zIndex;
+    el.style.pointerEvents='auto';
+    return el;
   }
 
   function showMain(){
     hideAll();
-    document.getElementById('main-menu').style.display='flex';
-    document.getElementById('game-ui').style.display='none';
-    document.getElementById('final-screen').style.display='none';
-    document.getElementById('replay-screen').style.display='none';
+    document.body.classList.remove('game-playing');
+    const container=document.getElementById('game-container');
+    if(container) container.classList.remove('fullscreen');
+    showScreen('main-menu','flex','2');
+    const gui=document.getElementById('game-ui');
+    if(gui) gui.style.display='none';
+    const fs=document.getElementById('final-screen');if(fs)fs.style.display='none';
+    const rs=document.getElementById('replay-screen');if(rs)rs.style.display='none';
     const sb=document.getElementById('shoot-btn');if(sb)sb.style.display='none';
     const mp=document.getElementById('msg-panel');if(mp)mp.style.display='none';
     const di=document.getElementById('dribble-info');if(di)di.style.display='none';
     if(game){game.destroy(true);game=null;gameScene=null;}
   }
 
+  function getAutoOpponent(teamId){
+    const ids=Object.keys(TEAMS);
+    return ids.find(id=>id!==teamId&&id==='cmcb') || ids.find(id=>id!==teamId) || 'cmcb';
+  }
+
+  function canStartTeamSelect(){
+    if(pending.multiplayer) return !!(sel1&&sel2&&sel1!==sel2);
+    return !!(sel1&&(!sel2||sel1!==sel2));
+  }
+
+  function normalizeTeamSelection(){
+    if(!sel1||!TEAMS[sel1]) sel1=currentGameSettings.team1||'ifma';
+    if(!TEAMS[sel1]) sel1='ifma';
+    if(!sel2||!TEAMS[sel2]||sel2===sel1) sel2=getAutoOpponent(sel1);
+  }
+
+  function updateTeamStartButton(){
+    const btn=document.getElementById('ts-start-btn');
+    if(!btn) return;
+    btn.disabled=!canStartTeamSelect();
+    btn.title=pending.multiplayer?'Escolha dois times diferentes':'Escolha seu time. O adversário pode ser automático.';
+  }
+
   function buildTeamCards(){
     ['team1-cards','team2-cards'].forEach((cid,si)=>{
-      const cont=document.getElementById(cid);cont.innerHTML='';
+      const cont=document.getElementById(cid);
+      if(!cont) return;
+      cont.innerHTML='';
       Object.values(TEAMS).forEach(t=>{
         const card=document.createElement('div');
         card.className='team-card';
         card.setAttribute('data-team-id', t.id);
+        card.style.pointerEvents='auto';
+        card.style.cursor='pointer';
 
         const logo = document.createElement('img');
         logo.className = 'team-logo';
@@ -1871,35 +1928,57 @@ document.addEventListener('DOMContentLoaded',function(){
         card.appendChild(info);
 
         card.onclick = () => {
+          if(si===1&&sel1===t.id){
+            sel2=null;
+            cont.querySelectorAll('.team-card').forEach(c=>c.classList.remove('selected'));
+            updateTeamStartButton();
+            return;
+          }
+
           cont.querySelectorAll('.team-card').forEach(c => c.classList.remove('selected'));
           card.classList.add('selected');
-          if(si === 0) sel1 = t.id; else sel2 = t.id;
-          const otherCid = si === 0 ? 'team2-cards' : 'team1-cards';
-          document.querySelectorAll(`#${otherCid} .team-card`).forEach(c => {
-            if(c.getAttribute('data-team-id') === t.id){
-              c.classList.remove('selected');
-              if(si === 0) sel2 = null; else sel1 = null;
+
+          if(si === 0){
+            sel1 = t.id;
+            if(sel2===t.id){
+              sel2=null;
+              document.querySelectorAll('#team2-cards .team-card').forEach(c=>c.classList.remove('selected'));
             }
-          });
-          document.getElementById('ts-start-btn').disabled = !(sel1 && sel2 && sel1 !== sel2);
+          } else {
+            sel2 = t.id;
+          }
+
+          updateTeamStartButton();
         };
 
         cont.appendChild(card);
       });
     });
+    updateTeamStartButton();
   }
 
-  function showTeamSelect(opts){
-    pending={...opts};sel1=null;sel2=null;
-    buildTeamCards();
-    document.getElementById('ts-start-btn').disabled=true;
-    const lbl2=document.getElementById('team2-col-label'),sub=document.getElementById('ts-subtitle');
-    if(opts.multiplayer){if(lbl2)lbl2.textContent='🔵 Jogador 2';if(sub)sub.textContent='Selecione um time para cada jogador';}
-    else{if(lbl2)lbl2.textContent='🔴 Adversário (IA)';if(sub)sub.textContent='Selecione um time para cada lado';}
+  function showTeamSelect(opts={}){
+    pending={
+      difficulty:opts.difficulty||currentGameSettings.difficulty||'medium',
+      challenge:opts.challenge??null,
+      multiplayer:!!opts.multiplayer,
+      gameMode:opts.gameMode||currentGameSettings.gameMode||'1v1',
+      quick:!!opts.quick
+    };
+    sel1=null;
+    sel2=null;
     hideAll();
-    const tss=document.getElementById('team-select-screen');
-    tss.style.display='flex';
-    tss.style.zIndex='50';
+    buildTeamCards();
+    const lbl2=document.getElementById('team2-col-label'),sub=document.getElementById('ts-subtitle');
+    if(pending.multiplayer){
+      if(lbl2)lbl2.textContent='🔵 Jogador 2';
+      if(sub)sub.textContent='Selecione um time para cada jogador';
+    } else {
+      if(lbl2)lbl2.textContent='🔴 Adversário (IA)';
+      if(sub)sub.textContent='Escolha seu time. O adversário pode ser automático.';
+    }
+    showScreen('team-select-screen','flex','100');
+    updateTeamStartButton();
   }
 
   function createPlayerCardVisual(p){
@@ -2012,54 +2091,72 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   }
 
+
   function showPlayerSelect(){
+    if(!canStartTeamSelect()) return;
+    normalizeTeamSelection();
     const is2v2=pending.gameMode==='2v2';
     buildPlayerCards(sel1||'ifma', is2v2);
     hideAll();
-    document.getElementById('player-select-screen').style.display='flex';
+    showScreen('player-select-screen','flex','100');
   }
 
   async function startGame(){
-    currentGameSettings={...pending,team1:sel1||'ifma',team2:sel2||'cmcb',selectedPlayer:_selPlayer||'luis',selectedPlayer2:_selPlayer2||'pedro'};
+    normalizeTeamSelection();
+    currentGameSettings={
+      ...pending,
+      team1:sel1||'ifma',
+      team2:sel2||getAutoOpponent(sel1||'ifma'),
+      selectedPlayer:_selPlayer||'luis',
+      selectedPlayer2:_selPlayer2||'pedro'
+    };
     hideAll();
     document.body.classList.add('game-playing');
-    document.getElementById('game-container').classList.add('fullscreen');
-    document.getElementById('game-screen').style.display='block';
-    document.getElementById('game-ui').style.display='block';
-    document.getElementById('final-screen').style.display='none';
+    const container=document.getElementById('game-container');
+    if(container) container.classList.add('fullscreen');
+    showScreen('game-screen','block','50');
+    const gui=document.getElementById('game-ui');
+    if(gui){
+      gui.style.display='block';
+      gui.style.pointerEvents='auto';
+    }
+    const fs=document.getElementById('final-screen');if(fs)fs.style.display='none';
     await enterPageFullscreen();
     resizeGameToViewport();
     initGame();
   }
 
-  document.getElementById('ts-start-btn').onclick=()=>{ if(sel1&&sel2) showPlayerSelect(); };
-  document.getElementById('ts-back-btn').onclick=()=>{hideAll();document.getElementById('main-menu').style.display='flex';};
+  document.getElementById('ts-start-btn').onclick=()=>{ if(canStartTeamSelect()) showPlayerSelect(); };
+  document.getElementById('ts-back-btn').onclick=()=>showMain();
   document.getElementById('ps-back-btn').onclick=()=>{
-    hideAll(); document.getElementById('team-select-screen').style.display='flex';
+    hideAll();
+    showScreen('team-select-screen','flex','100');
+    updateTeamStartButton();
   };
   document.getElementById('ps-start-btn').onclick=()=>startGame();
 
   document.querySelectorAll('.mode-btn').forEach(btn=>{
+    btn.classList.toggle('active',btn.getAttribute('data-mode')===(currentGameSettings.gameMode||'1v1'));
     btn.onclick=function(){
       document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
       this.classList.add('active');
-      currentGameSettings.gameMode=this.getAttribute('data-mode');
-      pending.gameMode=this.getAttribute('data-mode');
+      currentGameSettings.gameMode=this.getAttribute('data-mode')||'1v1';
+      pending.gameMode=currentGameSettings.gameMode;
     };
   });
 
-  document.getElementById('start-btn').onclick=()=>showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:false,gameMode:currentGameSettings.gameMode});
-  document.getElementById('multiplayer-btn').onclick=()=>showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:true,gameMode:currentGameSettings.gameMode});
-  document.getElementById('challenges-btn').onclick=()=>{hideAll();document.getElementById('challenges-screen').style.display='flex';};
-  document.getElementById('back-btn').onclick=()=>{hideAll();document.getElementById('main-menu').style.display='flex';};
+  document.getElementById('start-btn').onclick=()=>showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:false,gameMode:currentGameSettings.gameMode,quick:true});
+  document.getElementById('multiplayer-btn').onclick=()=>showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:true,gameMode:currentGameSettings.gameMode,quick:false});
+  document.getElementById('challenges-btn').onclick=()=>{hideAll();showScreen('challenges-screen','flex','100');};
+  document.getElementById('back-btn').onclick=()=>showMain();
   document.querySelectorAll('.difficulty-btn').forEach(btn=>{
     btn.onclick=function(){
-      currentGameSettings.difficulty=this.getAttribute('data-difficulty');
-      showTeamSelect({difficulty:this.getAttribute('data-difficulty'),challenge:null,multiplayer:false,gameMode:currentGameSettings.gameMode});
+      currentGameSettings.difficulty=this.getAttribute('data-difficulty')||'medium';
+      showTeamSelect({difficulty:currentGameSettings.difficulty,challenge:null,multiplayer:false,gameMode:currentGameSettings.gameMode,quick:false});
     };
   });
   document.querySelectorAll('.challenge-card').forEach(card=>{
-    card.onclick=function(){showTeamSelect({difficulty:'medium',challenge:this.getAttribute('data-challenge'),multiplayer:false,gameMode:currentGameSettings.gameMode});};
+    card.onclick=function(){showTeamSelect({difficulty:'medium',challenge:this.getAttribute('data-challenge'),multiplayer:false,gameMode:currentGameSettings.gameMode,quick:false});};
   });
   document.getElementById('fullscreen-btn').onclick=toggleFS;
   document.getElementById('menu-btn').onclick=showMain;
