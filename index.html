@@ -15,73 +15,119 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;}
 
 /* ══════════════════════════════════════════════════
-   TELA INICIAL — PNG
-   Coloque o arquivo em: assets/ui/tela-inicial.png
-   (substitui o fundo gerado por código)
+   TELA INICIAL — PNG como visual principal
+   Todos os elementos decorativos foram removidos do HTML.
+   Apenas botões de interação permanecem como hotspots.
    ══════════════════════════════════════════════════ */
 .main-menu{
   background: url('assets/ui/tela-inicial.png') center/cover no-repeat, #1a2980;
-  justify-content:flex-start;
-  padding-top:36px;
-  overflow-y:auto;
+  justify-content: flex-end;   /* empurra os hotspots para a parte inferior da PNG */
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 32px;
+  overflow: hidden;
 }
-.main-menu-content{display:flex;flex-direction:column;align-items:center;width:100%;}
-.title{font-size:44px;font-weight:bold;margin-bottom:16px;text-align:center;background:linear-gradient(45deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
-.logo{width:120px;height:120px;background:linear-gradient(45deg,#FFD700,#FFA500);border-radius:50%;display:flex;justify-content:center;align-items:center;margin-bottom:16px;box-shadow:0 0 28px rgba(255,215,0,.7);animation:pulse 2s infinite;}
-.logo-inner{width:96px;height:96px;background:#1a2980;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:38px;color:#FFD700;font-weight:bold;}
-.features{display:flex;justify-content:space-around;width:88%;margin:12px 0;}
-.feature{text-align:center;max-width:160px;}
-.feature-icon{font-size:26px;margin-bottom:4px;}
-.feature-title{font-weight:bold;font-size:13px;margin-bottom:2px;}
-.feature-desc{font-size:11px;opacity:.8;}
-.game-mode-buttons{display:flex;gap:10px;margin:10px 0;}
-.mode-btn{padding:9px 20px;font-size:14px;font-weight:bold;background:linear-gradient(45deg,#2196F3,#21CBF3);color:white;border:none;border-radius:20px;cursor:pointer;transition:all .3s;}
-.mode-btn:hover{transform:translateY(-2px);}
-.mode-btn.active{background:linear-gradient(45deg,#FF9800,#FFD700);}
-.menu-btn{padding:11px 32px;font-size:16px;font-weight:bold;background:linear-gradient(45deg,#FF8C00,#FFD700);color:#1a2980;border:none;border-radius:50px;cursor:pointer;transition:all .3s;box-shadow:0 4px 12px rgba(255,140,0,.4);margin:6px;width:220px;}
-.menu-btn:hover{transform:translateY(-3px);box-shadow:0 7px 18px rgba(255,140,0,.6);}
-.difficulty-menu{display:flex;gap:10px;margin:8px 0;}
-.difficulty-btn{padding:9px 20px;font-size:14px;background:linear-gradient(45deg,#4CAF50,#8BC34A);color:white;border:none;border-radius:20px;cursor:pointer;transition:all .3s;}
-.difficulty-btn.medium{background:linear-gradient(45deg,#FF9800,#FFC107);}
-.difficulty-btn.hard{background:linear-gradient(45deg,#F44336,#E91E63);}
-.difficulty-btn:hover{transform:translateY(-2px);}
-.footer{margin-top:8px;font-size:11px;opacity:.55;}
+.main-menu-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+}
+
+/* Botões de modo (1v1 / 2v2) — hotspot semi-transparente */
+.game-mode-buttons{display:flex;gap:10px;margin:4px 0;}
+.mode-btn{
+  padding:8px 18px;font-size:13px;font-weight:bold;
+  background:rgba(0,0,0,0.42);
+  color:rgba(255,255,255,0.92);
+  border:1px solid rgba(255,255,255,0.28);
+  border-radius:20px;cursor:pointer;transition:all .2s;
+}
+.mode-btn:hover{background:rgba(0,0,0,0.65);border-color:rgba(255,215,0,0.6);color:#FFD700;}
+.mode-btn.active{background:rgba(255,152,0,0.42);border-color:#FFD700;color:#FFD700;}
+
+/* Botões principais — hotspot */
+.menu-btn{
+  padding:10px 28px;font-size:14px;font-weight:bold;
+  background:rgba(0,0,0,0.42);
+  color:rgba(255,255,255,0.95);
+  border:1px solid rgba(255,255,255,0.28);
+  border-radius:50px;cursor:pointer;transition:all .2s;
+  box-shadow:none;margin:3px;width:210px;
+  text-align:center;
+}
+.menu-btn:hover{background:rgba(0,0,0,0.68);border-color:rgba(255,215,0,0.65);color:#FFD700;}
+
+/* Botões de dificuldade — hotspot */
+.difficulty-menu{display:flex;gap:8px;margin:4px 0;}
+.difficulty-btn{
+  padding:7px 16px;font-size:12px;
+  background:rgba(0,0,0,0.42);
+  color:rgba(255,255,255,0.88);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:20px;cursor:pointer;transition:all .2s;
+}
+.difficulty-btn:hover{background:rgba(0,0,0,0.65);border-color:rgba(255,215,0,0.55);color:#FFD700;}
+
 
 /* ══════════════════════════════════════════════════
-   SELEÇÃO DE TIMES — PNG
-   Coloque o arquivo em: assets/ui/team-select.png
-   (substitui o fundo gerado por código)
+   SELEÇÃO DE TIMES — PNG como visual principal
+   .ts-title e .vs-divider removidos do HTML.
+   Labels das colunas mantidos no DOM (referência JS) mas invisíveis.
    ══════════════════════════════════════════════════ */
 #team-select-screen{
   display:none;
   background: url('assets/ui/team-select.png') center/cover no-repeat, linear-gradient(135deg,#0d1a3a,#162d5e);
   flex-direction:column;
   align-items:center;
-  justify-content:center;
-  gap:18px;
+  justify-content:space-between;
+  padding:14px 20px 26px;
+  gap:0;
 }
-.ts-title{font-size:34px;font-weight:bold;background:linear-gradient(45deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.ts-sub{font-size:13px;opacity:.65;margin-top:-10px;}
-.team-columns{display:flex;gap:36px;align-items:flex-start;}
+
+/* Ocultar texto que já está na PNG */
+.ts-title   { display: none !important; }   /* 'ESCOLHA OS TIMES' — removido do HTML */
+.vs-divider { display: none !important; }   /* 'VS' — removido do HTML */
+.team-col-label{
+  /* mantido no DOM porque JS seta o texto, mas invisível */
+  visibility:hidden;height:0;overflow:hidden;margin:0;padding:0;
+}
+#ts-subtitle{
+  /* mantido no DOM porque JS seta o texto, mas invisível */
+  visibility:hidden;height:0;overflow:hidden;margin:0;padding:0;
+}
+
+/* Colunas de times — afastadas para alinhar sobre a PNG */
+.team-columns{
+  display:flex;
+  gap:64px;           /* espaço onde o VS da PNG fica */
+  align-items:flex-start;
+  flex:1;
+  padding-top:72px;   /* desce abaixo do título que está na PNG */
+}
 .team-column{display:flex;flex-direction:column;align-items:center;gap:8px;}
-.team-col-label{font-size:12px;font-weight:bold;opacity:.65;text-transform:uppercase;letter-spacing:1px;}
 .team-cards{display:flex;flex-direction:column;gap:8px;}
-.team-card{width:195px;padding:12px 15px;border-radius:11px;cursor:pointer;border:3px solid transparent;transition:all .22s;display:flex;align-items:center;gap:11px;background:rgba(0,0,0,.45);}
-.team-card:hover{transform:translateX(3px);background:rgba(255,255,255,.18);border-color:rgba(255,215,0,.55);}
-.team-card.selected{border-color:#FFD700;background:rgba(255,215,0,.22);transform:scale(1.06);box-shadow:0 0 18px rgba(255,215,0,.55);}
-/* ══════════════════════════════════════════════════
-   LOGOS DOS TIMES — PNG
-   Coloque os arquivos em:
-     assets/teams/ifma.png
-     assets/teams/iema.png
-     assets/teams/cmcb.png
-     assets/teams/cmt.png
-   ══════════════════════════════════════════════════ */
-.team-swatch{width:34px;height:34px;border-radius:7px;flex-shrink:0;border:2px solid rgba(255,255,255,.25);}
-.team-logo{width:40px;height:40px;border-radius:8px;flex-shrink:0;object-fit:contain;border:2px solid rgba(255,255,255,.25);background:rgba(0,0,0,.2);}
+
+/* Cards de time — hotspot minimalista */
+.team-card{
+  width:185px;padding:10px 14px;
+  border-radius:11px;cursor:pointer;
+  border:2px solid rgba(255,255,255,0.16);
+  transition:all .22s;
+  display:flex;align-items:center;gap:11px;
+  background:rgba(0,0,0,0.46);
+}
+.team-card:hover{transform:translateX(3px);background:rgba(255,255,255,0.16);border-color:rgba(255,215,0,0.55);}
+.team-card.selected{border-color:#FFD700;background:rgba(255,215,0,0.20);transform:scale(1.06);box-shadow:0 0 16px rgba(255,215,0,0.55);}
+
+/* Logo do time no card */
+.team-logo{width:40px;height:40px;border-radius:8px;flex-shrink:0;object-fit:contain;border:2px solid rgba(255,255,255,0.25);background:rgba(0,0,0,0.2);}
+.team-swatch{width:34px;height:34px;border-radius:7px;flex-shrink:0;border:2px solid rgba(255,255,255,0.25);}
 .team-name-card{font-size:17px;font-weight:bold;}
 .team-label-card{font-size:10px;opacity:.65;}
-.vs-divider{font-size:38px;font-weight:bold;color:#FFD700;opacity:.75;padding-top:38px;}
+
+/* Botão Próximo */
 .ts-start-btn{padding:13px 46px;font-size:17px;font-weight:bold;background:linear-gradient(45deg,#FF8C00,#FFD700);color:#1a2980;border:none;border-radius:50px;cursor:pointer;transition:all .3s;box-shadow:0 5px 18px rgba(255,140,0,.5);}
 .ts-start-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 8px 24px rgba(255,140,0,.7);}
 .ts-start-btn:disabled{opacity:.38;cursor:not-allowed;}
@@ -117,6 +163,7 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .challenge-desc{font-size:11px;opacity:.8;margin-bottom:11px;}
 .challenge-difficulty{font-size:10px;padding:3px 9px;border-radius:12px;display:inline-block;}
 .difficulty-easy{background:#4CAF50;}.difficulty-medium{background:#FF9800;}.difficulty-hard{background:#F44336;}
+.title{font-size:44px;font-weight:bold;margin-bottom:16px;text-align:center;background:linear-gradient(45deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;}
 .subtitle{font-size:16px;margin-bottom:18px;text-align:center;opacity:.9;}
 .back-btn{position:absolute;top:14px;left:14px;padding:7px 14px;background:rgba(0,0,0,.6);color:white;border:none;border-radius:6px;cursor:pointer;font-size:12px;}
 
@@ -177,16 +224,17 @@ body.game-playing .game-ui{position:fixed;}
 <body>
 <div id="game-container">
 
-<!-- MENU -->
+<!-- ═══════════════════════════════════════════════════════
+     MENU PRINCIPAL
+     Visual: assets/ui/tela-inicial.png (fundo cobre 100% da tela)
+     Removidos: .logo, h1.title, .features, .footer
+     Mantidos: somente botões interativos como hotspots
+     ═══════════════════════════════════════════════════════ -->
 <div class="screen main-menu" id="main-menu">
   <div class="main-menu-content">
-    <div class="logo"><div class="logo-inner">FMS</div></div>
-    <h1 class="title">FOOTBALL MANAGER SCHOOL</h1>
-    <div class="features">
-      <div class="feature"><div class="feature-icon">⚽</div><div class="feature-title">Jogabilidade Real</div><div class="feature-desc">Física e controles precisos</div></div>
-      <div class="feature"><div class="feature-icon">🎮</div><div class="feature-title">Multiplayer</div><div class="feature-desc">1 ou 2 jogadores</div></div>
-      <div class="feature"><div class="feature-icon">🏆</div><div class="feature-title">Competitivo</div><div class="feature-desc">Placar em tempo real</div></div>
-    </div>
+    <!-- .logo removido — já está na PNG -->
+    <!-- h1.title removido — já está na PNG -->
+    <!-- .features removido — já está na PNG -->
     <div class="game-mode-buttons">
       <button class="mode-btn active" data-mode="1v1">1 vs 1</button>
       <button class="mode-btn" data-mode="2v2">2 vs 2</button>
@@ -199,26 +247,42 @@ body.game-playing .game-ui{position:fixed;}
       <button class="difficulty-btn medium" data-difficulty="medium">Médio</button>
       <button class="difficulty-btn hard" data-difficulty="hard">Difícil</button>
     </div>
-    <div class="footer">Football Manager School © 2025 — XXT STUDIO</div>
+    <!-- .footer removido — já está na PNG -->
   </div>
 </div>
 
-<!-- SELEÇÃO DE TIMES -->
+<!-- ═══════════════════════════════════════════════════════
+     SELEÇÃO DE TIMES
+     Visual: assets/ui/team-select.png (fundo cobre 100% da tela)
+     Removidos: .ts-title, .vs-divider (do HTML)
+     Mantidos no DOM mas invisíveis: #ts-subtitle, #team1-col-label, #team2-col-label
+       (o JS precisa deles para setar texto; não aparecem visualmente)
+     Mantidos visíveis: #ts-back-btn, .team-cards (interação), #ts-start-btn
+     ═══════════════════════════════════════════════════════ -->
 <div class="screen" id="team-select-screen">
   <button class="back-btn-ts" id="ts-back-btn">← Voltar</button>
-  <div class="ts-title">ESCOLHA OS TIMES</div>
-  <div class="ts-sub" id="ts-subtitle">Selecione um time para cada lado</div>
+
+  <!-- .ts-title removido do HTML — 'ESCOLHA OS TIMES' já está na PNG -->
+
+  <!-- #ts-subtitle: mantido no DOM (JS seta texto), invisível via CSS -->
+  <div id="ts-subtitle"></div>
+
   <div class="team-columns">
     <div class="team-column">
-      <div class="team-col-label" id="team1-col-label">🟢 Seu Time</div>
+      <!-- #team1-col-label: mantido no DOM (JS seta texto), invisível via CSS -->
+      <div class="team-col-label" id="team1-col-label"></div>
       <div class="team-cards" id="team1-cards"></div>
     </div>
-    <div class="vs-divider">VS</div>
+
+    <!-- .vs-divider removido do HTML — 'VS' já está na PNG -->
+
     <div class="team-column">
-      <div class="team-col-label" id="team2-col-label">🔴 Adversário</div>
+      <!-- #team2-col-label: mantido no DOM (JS seta texto), invisível via CSS -->
+      <div class="team-col-label" id="team2-col-label"></div>
       <div class="team-cards" id="team2-cards"></div>
     </div>
   </div>
+
   <button class="ts-start-btn" id="ts-start-btn" disabled>Próximo ▶</button>
 </div>
 
@@ -261,7 +325,6 @@ body.game-playing .game-ui{position:fixed;}
     <span class="shoot-icon">👟</span>
     <span class="shoot-label">CHUTE</span>
   </button>
-  <!-- Painel de mensagens rápidas -->
   <div id="msg-panel">
     <button class="msg-btn" data-msg="bizarro">😵 BIZARRO!</button>
     <button class="msg-btn" data-msg="horrivel">😱 HORRÍVEL!</button>
@@ -330,8 +393,8 @@ body.game-playing .game-ui{position:fixed;}
 // ╔═══════════════════════════════════════════════════════╗
 //  MAPA DE ASSETS — coloque seus PNGs nessas pastas
 //  ──────────────────────────────────────────────────────
-//  assets/ui/tela-inicial.png   → fundo da tela principal
-//  assets/ui/team-select.png    → fundo da seleção de times
+//  assets/ui/tela-inicial.png   → tela principal completa
+//  assets/ui/team-select.png    → tela de seleção de times
 //  assets/teams/ifma.png        → logo IFMA
 //  assets/teams/iema.png        → logo IEMA
 //  assets/teams/cmcb.png        → logo CMCB
@@ -363,7 +426,6 @@ const IFMA_PLAYERS = {
 
 // ═══════════════════════════════════════════════════════
 //  PERSONAGENS POR IMAGEM
-//  Coloque os PNGs nestas pastas para trocar o visual real
 // ═══════════════════════════════════════════════════════
 const PLAYER_IMAGE_ASSETS = {
   ifma: {
@@ -415,9 +477,6 @@ const PLAYER_IMAGE_ASSETS = {
   }
 };
 
-// ═══════════════════════════════════════════════════════
-//  BOLA — PNG (deixe null para usar a bola desenhada por canvas)
-// ═══════════════════════════════════════════════════════
 const BALL_IMAGE = 'assets/ball/ball.png';
 
 function getPlayerImageAsset(teamId, playerId){
@@ -429,7 +488,6 @@ function getPlayerImageAsset(teamId, playerId){
 // ═══════════════════════════════════════════════════════
 let game=null, gameScene=null, isFullscreen=false;
 let currentGameSettings={difficulty:'medium',challenge:null,multiplayer:false,gameMode:'1v1',team1:'ifma',team2:'cmcb',selectedPlayer:'luis',selectedPlayer2:'pedro'};
-// Global player selection state (outside DOMContentLoaded so it's truly global)
 let _selPlayer='luis', _selPlayer2='pedro';
 let GW=1000, GH=700, BORDER=28;
 let GOAL_HEIGHT=160, GOAL_DEPTH=22;
@@ -466,7 +524,7 @@ function resizeGameToViewport(){
 }
 
 // ═══════════════════════════════════════════════════════
-//  FUNÇÕES DE DESENHO STANDALONE (usadas em Phaser + HTML)
+//  FUNÇÕES DE DESENHO STANDALONE
 // ═══════════════════════════════════════════════════════
 function _clHex(hex,amt){
   if(!hex||hex[0]!=='#') return hex||'#888';
@@ -506,7 +564,6 @@ function _drawHairOnCtx(ctx, hx, hy, hr, color, style){
       ctx.lineTo(hx+x2,hy+y2); ctx.closePath(); ctx.fill();
     });
     if(style==='streak_spiky'){
-      // Mecha dourada (traço do craque)
       ctx.fillStyle='#FFD700';
       ctx.beginPath(); ctx.moveTo(hx+2,hy-5); ctx.lineTo(hx+6,hy-12); ctx.lineTo(hx+14,hy-26); ctx.lineTo(hx+10,hy-22); ctx.lineTo(hx+4,hy-10); ctx.closePath(); ctx.fill();
       ctx.fillStyle='rgba(255,220,0,.4)';
@@ -516,22 +573,17 @@ function _drawHairOnCtx(ctx, hx, hy, hr, color, style){
       ctx.beginPath(); ctx.arc(hx+2,hy-14,6,0,Math.PI*2); ctx.fill();
     }
   } else if(style==='swept'){
-    // Cabelo penteado para o lado
     ctx.beginPath(); ctx.arc(hx,hy-1,hr*.7,Math.PI,0); ctx.fill();
     ctx.fillRect(hx-hr*.7,hy-5,hr*1.4,8);
-    // Camada inclinada para a direita
     ctx.beginPath();
     ctx.moveTo(hx-hr*.7,hy-5); ctx.lineTo(hx+hr*.9,hy-5);
     ctx.lineTo(hx+hr*.6,hy-14); ctx.lineTo(hx-hr*.5,hy-12);
     ctx.closePath(); ctx.fill();
-    // Destaque do penteado
     ctx.fillStyle=_clHex(color,35);
     ctx.beginPath(); ctx.ellipse(hx+5,hy-11,6,3,.5,0,Math.PI*2); ctx.fill();
   } else if(style==='afro'){
-    // Afro grande e redondo
     const afroR=hr*.92;
     ctx.beginPath(); ctx.arc(hx,hy-6,afroR,0,Math.PI*2); ctx.fill();
-    // Textura de cachos na superfície
     ctx.fillStyle=_clHex(color,18);
     for(let i=0;i<12;i++){
       const ang=(i/12)*Math.PI*2;
@@ -542,15 +594,12 @@ function _drawHairOnCtx(ctx, hx, hy, hr, color, style){
     ctx.fillStyle=_clHex(color,8);
     ctx.beginPath(); ctx.arc(hx,hy-10,afroR*.4,0,Math.PI*2); ctx.fill();
   } else if(style==='lowfade'){
-    // Corte bem baixo, quase raspado nas laterais
     const topR=hr*.5;
     ctx.beginPath(); ctx.arc(hx,hy-1,topR,Math.PI,0); ctx.fill();
     ctx.fillRect(hx-topR,hy-3,topR*2,5);
-    // Topo ligeiramente mais alto
     ctx.fillStyle=_clHex(color,10);
     ctx.beginPath(); ctx.arc(hx,hy-3,topR*.7,Math.PI,0); ctx.fill();
   } else {
-    // short (padrão)
     ctx.beginPath(); ctx.arc(hx,hy-1,hr*.7,Math.PI,0); ctx.fill();
     ctx.fillRect(hx-hr*.7,hy-5,hr*1.4,8);
   }
@@ -562,14 +611,12 @@ function drawCharToCanvas(canvas, o){
   ctx.clearRect(0,0,W,H);
   const mx=W/2;
 
-  // Sombra no chão
   ctx.save(); ctx.globalAlpha=.22;
   const sg=ctx.createRadialGradient(mx,H-3,1,mx,H-3,16);
   sg.addColorStop(0,'#000'); sg.addColorStop(1,'transparent');
   ctx.fillStyle=sg; ctx.beginPath(); ctx.ellipse(mx,H-3,16,4,0,0,Math.PI*2); ctx.fill();
   ctx.restore();
 
-  // Chuteiras
   const shY=H-12;
   for(let s=0;s<2;s++){
     const sx=mx+(s===0?-9:9);
@@ -584,7 +631,6 @@ function drawCharToCanvas(canvas, o){
     ctx.beginPath(); ctx.moveTo(sx-4,shY+1); ctx.lineTo(sx+4,shY+1); ctx.stroke();
   }
 
-  // Meias
   const mkY=shY-16;
   for(let s=0;s<2;s++){
     const sx=mx+(s===0?-9:2);
@@ -593,7 +639,6 @@ function drawCharToCanvas(canvas, o){
     ctx.fillStyle='rgba(255,255,255,.15)'; ctx.fillRect(sx+1,mkY,2,16);
   }
 
-  // Shorts
   const shrtY=mkY-2, shrtH=19;
   const shg=ctx.createLinearGradient(mx-14,shrtY,mx+14,shrtY);
   shg.addColorStop(0,o.shorts||'#145520'); shg.addColorStop(.5,_clHex(o.shorts||'#145520',22)); shg.addColorStop(1,o.shorts||'#145520');
@@ -603,28 +648,22 @@ function drawCharToCanvas(canvas, o){
   ctx.fillStyle='rgba(255,255,255,.7)'; ctx.font='bold 8px Arial';
   ctx.textAlign='center'; ctx.fillText(o.number||'10', mx+5, shrtY+13);
 
-  // Camisa
   const shirtY=shrtY-25, shirtH=28;
   const cg=ctx.createLinearGradient(mx-16,shirtY,mx+16,shirtY);
   const baseShirt=o.shirt||'#1a7a2e';
   cg.addColorStop(0,_clHex(baseShirt,-10)); cg.addColorStop(.4,_clHex(baseShirt,18)); cg.addColorStop(1,_clHex(baseShirt,-10));
   ctx.fillStyle=cg;
   ctx.beginPath(); ctx.roundRect(mx-16,shirtY,32,shirtH+2,[4]); ctx.fill();
-  // Faixa de acento
   ctx.fillStyle=o.shirtStripe||'#FFD700'; ctx.globalAlpha=.38;
   ctx.fillRect(mx-16,shirtY+9,32,4); ctx.globalAlpha=1;
-  // Gola V
   ctx.fillStyle=o.skin;
   ctx.beginPath(); ctx.moveTo(mx-5,shirtY); ctx.lineTo(mx,shirtY+7); ctx.lineTo(mx+5,shirtY); ctx.closePath(); ctx.fill();
-  // Nome do time
   ctx.fillStyle='#ffffff'; ctx.font='bold 7px Arial Black';
   ctx.textAlign='center'; ctx.shadowColor='rgba(0,0,0,.5)'; ctx.shadowBlur=2;
   ctx.fillText(o.teamName||'IFMA',mx,shirtY+21); ctx.shadowBlur=0;
-  // Brilho 3D
   ctx.fillStyle='rgba(255,255,255,.18)';
   ctx.beginPath(); ctx.ellipse(mx-3,shirtY+6,8,4,-.3,0,Math.PI*2); ctx.fill();
 
-  // Braços
   for(let s=0;s<2;s++){
     const side=s===0?-1:1;
     const ax=mx+side*15, ay=shirtY+3;
@@ -636,10 +675,8 @@ function drawCharToCanvas(canvas, o){
     ctx.beginPath(); ctx.ellipse(ax,ay+18,5,4,.2,0,Math.PI*2); ctx.fill();
   }
 
-  // Pescoço
   ctx.fillStyle=o.skin; ctx.fillRect(mx-3,shirtY-5,6,7);
 
-  // Cabeça
   const hR=19, hX=mx, hY=shirtY-hR-3;
   ctx.save();
   ctx.shadowColor='rgba(0,0,0,.28)'; ctx.shadowBlur=7; ctx.shadowOffsetY=4;
@@ -649,14 +686,12 @@ function drawCharToCanvas(canvas, o){
   ctx.beginPath(); ctx.arc(hX,hY,hR,0,Math.PI*2); ctx.fill();
   ctx.restore();
 
-  // Orelhas
   for(let s=0;s<2;s++){
     const side=s===0?-1:1;
     ctx.fillStyle=o.skin;
     ctx.beginPath(); ctx.ellipse(hX+side*hR,hY+1,3.5,4.5,0,0,Math.PI*2); ctx.fill();
   }
 
-  // Olhos
   const eyY=hY+1;
   for(let s=0;s<2;s++){
     const ex=hX+(s===0?-6.5:6.5);
@@ -670,7 +705,6 @@ function drawCharToCanvas(canvas, o){
     ctx.beginPath(); ctx.arc(ex+1.3,eyY-1,1,0,Math.PI*2); ctx.fill();
   }
 
-  // Sobrancelhas (mais espessas = mais expressivas)
   ctx.save(); ctx.strokeStyle=_clHex(o.hair,0); ctx.lineWidth=1.8; ctx.lineCap='round';
   for(let s=0;s<2;s++){
     const ex=hX+(s===0?-6.5:6.5);
@@ -678,7 +712,6 @@ function drawCharToCanvas(canvas, o){
   }
   ctx.restore();
 
-  // Óculos
   if(o.glasses){
     ctx.save(); ctx.strokeStyle='#2a2a2a'; ctx.lineWidth=1.8;
     for(let s=0;s<2;s++){
@@ -691,30 +724,23 @@ function drawCharToCanvas(canvas, o){
     ctx.restore();
   }
 
-  // Nariz
   ctx.fillStyle=_clHex(o.skin,-12);
   ctx.beginPath(); ctx.ellipse(hX,eyY+6,2.5,1.8,0,0,Math.PI); ctx.fill();
 
-  // Boca / sorriso
   ctx.strokeStyle=_clHex(o.skin,-20); ctx.lineWidth=1.4; ctx.lineCap='round';
   ctx.beginPath(); ctx.arc(hX,eyY+8,5,.15,Math.PI-.15); ctx.stroke();
 
-  // Barba (para Pedro G e Paulo R)
   if(o.beard){
     ctx.save();
     ctx.fillStyle=_clHex(o.hair,20);
     ctx.globalAlpha=.72;
-    // Bigode
     ctx.beginPath(); ctx.ellipse(hX,eyY+5.5,4.5,2,.1,0,Math.PI); ctx.fill();
-    // Cavanhaque
     ctx.beginPath(); ctx.ellipse(hX,eyY+11,5,4,0,0,Math.PI*2); ctx.fill();
-    // Costeletas
     ctx.beginPath(); ctx.ellipse(hX-hR*.6,eyY+4,2.5,5,.2,0,Math.PI*2); ctx.fill();
     ctx.beginPath(); ctx.ellipse(hX+hR*.6,eyY+4,2.5,5,-.2,0,Math.PI*2); ctx.fill();
     ctx.restore();
   }
 
-  // Cabelo (por cima de tudo na cabeça)
   _drawHairOnCtx(ctx, hX, hY, hR, o.hair, o.hairStyle||'short');
 }
 
@@ -743,7 +769,6 @@ class GameScene extends Phaser.Scene {
   }[this.difficulty]; }
 
   preload(){
-    // Bola PNG (se definida, substitui a bola desenhada por canvas)
     if(BALL_IMAGE){
       this.load.image('soccer_ball', BALL_IMAGE);
     }
@@ -752,7 +777,6 @@ class GameScene extends Phaser.Scene {
         if(data.sprite){
           this.load.image(`player_${teamId}_${playerId}`, data.sprite);
         }
-        // Carrega variantes de estado do sprite
         ['running','kicking','dribbling','side','back'].forEach(state=>{
           if(data[state]){
             this.load.image(`player_${teamId}_${playerId}_${state}`, data[state]);
@@ -771,7 +795,7 @@ class GameScene extends Phaser.Scene {
     this.zones=[]; this.showZones=false;
     this.p1acd=0;this.p2acd=0;this.p1scd=0;this.p2scd=0;this.g1acd=0;this.g2acd=0;
     this.p1dcd=0; this.p2dcd=0;
-    this.p1slcd=0; this.p2slcd=0; // slide/carrinho cooldown
+    this.p1slcd=0; this.p2slcd=0;
     this.ai_fcd=0; this.ai_scd=0; this.ai_dcd=0;
     this._slidePlayer=null; this._slideEndTime=0;
     this.lastSuperShot=false;
@@ -802,7 +826,6 @@ class GameScene extends Phaser.Scene {
     if(el){ el.style.display='block'; this.time.delayedCall(4000,()=>{ if(el) el.style.display='none'; }); }
   }
 
-  // ── CAMPO ─────────────────────────────────────────
   drawField(){
     const g=this.add.graphics();
     g.fillStyle(0x2d9e56); g.fillRect(0,0,GW,GH);
@@ -820,7 +843,7 @@ class GameScene extends Phaser.Scene {
     g.fillStyle(0xffffff); g.fillCircle(BORDER+100,GH/2,4); g.fillCircle(GW-BORDER-100,GH/2,4);
     g.lineStyle(3,0xffffff,.85);
     g.beginPath(); g.arc(BORDER+100,GH/2,80,-0.93,0.93,false); g.strokePath();
-    g.beginPath(); g.arc(GW-BORDER-100,GH/2,80,Math.PI-.93,Math.PI+.93,false); g.strokePath();
+    g.beginPath(); g.arc(GW-BORDER-100,GH/2,Math.PI-.93,Math.PI+.93,false); g.strokePath();
     g.lineStyle(3,0xffffff,1);
     const cr=18;
     [[BORDER,BORDER,0,Math.PI/2],[GW-BORDER,BORDER,Math.PI/2,Math.PI],[BORDER,GH-BORDER,-Math.PI/2,0],[GW-BORDER,GH-BORDER,Math.PI,3*Math.PI/2]]
@@ -838,17 +861,14 @@ class GameScene extends Phaser.Scene {
     gR.setDisplaySize(goalW, goalH);
   }
 
-  // ── TEXTURAS ──────────────────────────────────────
   _makeTextures(){
     this._makeBallTexture();
-    // Texturas base dos times
     this._makeCharTex('player_ifma',{shirt:'#1a7a2e',shirtStripe:'#FFD700',shorts:'#145520',sock:'#1a7a2e',sockStripe:'#FFD700',shoe:'#222',skin:'#c68642',hair:'#2a1a00',hairStyle:'short',glasses:false,teamName:'IFMA',number:'10',beard:false});
     this._makeCharTex('player_iema',{shirt:'#1a3bbf',shirtStripe:'#CC0000',shorts:'#CC0000',sock:'#CC0000',sockStripe:'#1a3bbf',shoe:'#aa1100',skin:'#5c3317',hair:'#111111',hairStyle:'curly',glasses:false,teamName:'IEMA',number:'10',beard:false});
     this._makeCharTex('player_cmcb',{shirt:'#BB0000',shirtStripe:'#ffffff',shorts:'#880000',sock:'#BB0000',sockStripe:'#ffffff',shoe:'#333',skin:'#c68642',hair:'#2a1a00',hairStyle:'short',glasses:false,teamName:'CMCB',number:'7',beard:false});
     this._makeCharTex('player_cmt',{shirt:'#D4500A',shirtStripe:'#FFD700',shorts:'#a33b00',sock:'#D4500A',sockStripe:'#FFD700',shoe:'#333',skin:'#c68642',hair:'#1a1a1a',hairStyle:'short',glasses:false,teamName:'CMT',number:'7',beard:false});
     this._makeCharTex('player_j2',{shirt:'#2255ff',shirtStripe:'#ffffff',shorts:'#1133cc',sock:'#2255ff',sockStripe:'#ffffff',shoe:'#111188',skin:'#c68642',hair:'#5c3317',hairStyle:'short',glasses:false,teamName:'J2',number:'2',beard:false});
 
-    // Texturas individuais dos jogadores do IFMA
     Object.values(IFMA_PLAYERS).forEach(p=>{
       this._makeCharTex(`player_ifma_${p.id}`,{
         shirt:'#1a7a2e', shirtStripe:p.shirtAccent,
@@ -859,7 +879,6 @@ class GameScene extends Phaser.Scene {
       });
     });
 
-    // Gols 3D
     this._makeGoalCanvas('goal_left',  true);
     this._makeGoalCanvas('goal_right', false);
   }
@@ -943,7 +962,6 @@ class GameScene extends Phaser.Scene {
     this.timerText=this.add.text(cx,50,'02:00',{fontSize:'14px',fontFamily:'Arial',color:'#FFD700',stroke:'#000',strokeThickness:3,fontStyle:'bold'}).setOrigin(.5,0).setDepth(20);
     this.add.text(cx-88,19,this.T1.name,{fontSize:'11px',fontFamily:'Arial',color:this.T1.hex,stroke:'#000',strokeThickness:2}).setOrigin(1,0).setDepth(20);
     this.add.text(cx+88,19,this.T2.name,{fontSize:'11px',fontFamily:'Arial',color:this.T2.hex,stroke:'#000',strokeThickness:2}).setOrigin(0,0).setDepth(20);
-    // Mostrar nome do jogador selecionado
     if(this.T1.id==='ifma'&&IFMA_PLAYERS[this.selectedPlayer]){
       const p=IFMA_PLAYERS[this.selectedPlayer];
       let txt=`${p.name} #${p.number}`;
@@ -975,31 +993,24 @@ class GameScene extends Phaser.Scene {
   }
 
   createObjects(){
-    // Determinar texturas
     const p1TexKey=this.T1.id==='ifma'?`player_ifma_${this.selectedPlayer}`:`player_${this.T1.id}`;
     const p2TexKey=this.T1.id==='ifma'?`player_ifma_${this.selectedPlayer2}`:`player_${this.T1.id}`;
 
     this.p1 = this.mkPlayer(145,GH/2, p1TexKey);
-    this.teammate = null; // aliado IFMA (IA ou player 2)
+    this.teammate = null;
     this.ai  = this.mkPlayer(GW-145,GH/2, `player_${this.T2.id}`);
     this.ai2 = this.mkPlayer(GW-220,GH/2+60, `player_${this.T2.id}`);
     this.p2 = null;
-    this.g1=null; this.g2=null;
 
     if(this.fourPlayers){
-      // Modo 2v2: criar aliado IFMA
       this.teammate = this.mkPlayer(200,GH/2+60, p2TexKey);
-      // ai2 visível como segundo oponente
       this.ai2.setVisible(true);
       this.ai.setVisible(true);
-      // Mostrar ai2 como adversário extra
     } else if(this.twoPlayers){
-      // 1v1 multiplayer: segundo humano
       this.p2 = this.mkPlayer(GW-145,GH/2, 'player_j2');
       this.ai.setVisible(false);
       this.ai2.setVisible(false);
     } else {
-      // 1v1 single player
       this.ai.setVisible(true);
       this.ai2.setVisible(false);
     }
@@ -1025,9 +1036,9 @@ class GameScene extends Phaser.Scene {
     c.body.setSize(24,40).setCollideWorldBounds(true);
     c.setDepth(5);
     c._lk=0;
-    c._sprite=sprite;    // referência ao sprite interno para troca de textura
-    c._texBase=texKey;   // textura padrão (idle)
-    c._kickTimer=0;      // timestamp do último chute (para exibir sprite de chute)
+    c._sprite=sprite;
+    c._texBase=texKey;
+    c._kickTimer=0;
     return c;
   }
 
@@ -1042,8 +1053,8 @@ class GameScene extends Phaser.Scene {
     this.kF=this.input.keyboard.addKey(k.F); this.kL=this.input.keyboard.addKey(k.L);
     this.kG=this.input.keyboard.addKey(k.G); this.kH=this.input.keyboard.addKey(k.H);
     this.kE=this.input.keyboard.addKey(k.E); this.kO=this.input.keyboard.addKey(k.O);
-    this.kQ=this.input.keyboard.addKey(k.Q); // slide p1
-    this.kZ=this.input.keyboard.addKey(k.Z); // slide p2
+    this.kQ=this.input.keyboard.addKey(k.Q);
+    this.kZ=this.input.keyboard.addKey(k.Z);
   }
 
   setupPhysics(){
@@ -1066,9 +1077,7 @@ class GameScene extends Phaser.Scene {
     this.time.addEvent({delay:500,loop:true,callback:()=>{if(this._tmr)this.updTimer(this._tmr.getRemainingSeconds());}});
   }
 
-  // ── TROCA DE SPRITES DOS JOGADORES DO IFMA ────────
   _updatePlayerSprites(){
-    // Só atua se o time for IFMA
     if(!this.p1||!this.p1._sprite||this.T1.id!=='ifma') return;
     this._applySprite(this.p1, this.selectedPlayer);
     if(this.teammate&&this.teammate._sprite&&this.fourPlayers){
@@ -1089,7 +1098,7 @@ class GameScene extends Phaser.Scene {
     const ballDist=this.ball?Phaser.Math.Distance.Between(p.x,p.y,this.ball.x,this.ball.y):999;
     const nearBall=ballDist<68;
 
-    let newKey=p._texBase; // padrão: idle/principal.png
+    let newKey=p._texBase;
 
     if(isKicking){
       const k=`player_ifma_${playerId}_kicking`;
@@ -1152,7 +1161,7 @@ class GameScene extends Phaser.Scene {
     this.checkKeys();
     this.checkEnd();
     this.checkChallenge();
-    this._updatePlayerSprites(); // troca sprite do Luís por estado
+    this._updatePlayerSprites();
   }
 
   moveP(p,u,d,l,r){
@@ -1190,7 +1199,6 @@ class GameScene extends Phaser.Scene {
     if(!this.ai||this.twoPlayers||this._gc) return;
     const dt=16;
     if(this.ai_fcd>0)this.ai_fcd-=dt; if(this.ai_scd>0)this.ai_scd-=dt; if(this.ai_dcd>0)this.ai_dcd-=dt;
-    const s=this.DS;
     const dist=Phaser.Math.Distance.Between(this.ai.x,this.ai.y,this.ball.x,this.ball.y);
     const distP1=Phaser.Math.Distance.Between(this.ai.x,this.ai.y,this.p1.x,this.p1.y);
     const ballOnAISide=this.ball.x>GW*.45;
@@ -1206,19 +1214,14 @@ class GameScene extends Phaser.Scene {
   }
 
   moveAITeammate(){
-    // IA do aliado: apoia o p1, tenta ficar perto da bola mas não no mesmo lugar
     if(!this.teammate||this.frozenP===this.teammate){if(this.teammate)this.teammate.body.setVelocity(0);return;}
     const s=this.DS;
     const bx=this.ball.x, by=this.ball.y;
-    const tx_p1=this.p1.x, ty_p1=this.p1.y;
-    const dist=Phaser.Math.Distance.Between(this.teammate.x,this.teammate.y,bx,by);
-    const distToP1=Phaser.Math.Distance.Between(this.teammate.x,this.teammate.y,tx_p1,ty_p1);
+    const ty_p1=this.p1.y;
     let tx,ty;
-    // Se a bola está no lado adversário, avança junto
     if(bx > GW*0.5){
       tx=bx+40; ty=by+(ty_p1<by?50:-50);
     } else {
-      // Fica numa posição de apoio
       tx=bx-60; ty=GH/2+(by<GH/2?80:-80);
     }
     tx=Phaser.Math.Clamp(tx,BORDER+10,GW-BORDER-10);
@@ -1234,12 +1237,10 @@ class GameScene extends Phaser.Scene {
   }
 
   moveAI2(){
-    // Segundo adversário IA — mais defensivo, fica entre a bola e o gol direito
     if(!this.ai2||!this.ai2.active){return;}
     if(this.frozenP===this.ai2){this.ai2.body.setVelocity(0);return;}
     const s=this.DS;
     const bx=this.ball.x, by=this.ball.y;
-    // Defende o lado direito
     let tx=Phaser.Math.Clamp(bx+80,GW*0.45,GW-BORDER-10);
     let ty=Phaser.Math.Clamp(by+(this.p1.y<by?-40:40),BORDER+10,GH-BORDER-10);
     const d=Phaser.Math.Distance.Between(this.ai2.x,this.ai2.y,tx,ty);
@@ -1252,23 +1253,16 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-  // ═══════════════════════════════════════════════════
-  //  CARRINHO / BOTE (Slide Tackle)
-  // ═══════════════════════════════════════════════════
   _slide(player){
     if(!player||!player.active||!player.body) return;
     const cdKey=player===this.p1?'p1slcd':'p2slcd';
     if(this[cdKey]>0) return;
     this[cdKey]=3200;
-    // Direção: em direção à bola
     const dx=this.ball.x-player.x, dy=this.ball.y-player.y;
     const ang=Math.atan2(dy,dx);
-    // Boost de velocidade no carrinho
     player.body.setVelocity(Math.cos(ang)*520, Math.sin(ang)*520);
-    // Inclinação visual durante o carrinho
     const targetAngle=Math.cos(ang)>0?30:-30;
     this.tweens.add({targets:player,angle:targetAngle,duration:120,yoyo:true,repeat:1,ease:'Sine.easeInOut',onComplete:()=>player.setAngle(0)});
-    // Trilha branca no chão
     for(let i=0;i<8;i++){
       this.time.delayedCall(i*25,()=>{
         if(!player.active) return;
@@ -1276,15 +1270,12 @@ class GameScene extends Phaser.Scene {
         this.tweens.add({targets:trail,alpha:0,scaleX:0.3,duration:380,ease:'Power2',onComplete:()=>trail.destroy()});
       });
     }
-    // Poeira/faíscas
     for(let i=0;i<6;i++){
       const spark=this.add.circle(player.x+(Math.random()-.5)*16,player.y+10,Phaser.Math.Between(3,7),0xdddddd,0.7).setDepth(4);
       this.tweens.add({targets:spark,x:spark.x+(Math.random()-.5)*40,y:spark.y+Phaser.Math.Between(5,18),alpha:0,duration:Phaser.Math.Between(200,400),ease:'Power2',onComplete:()=>spark.destroy()});
     }
-    // Label
     const tag=this.add.text(player.x,player.y-55,'🦵 CARRINHO!',{fontSize:'15px',fontFamily:'Arial Black',color:'#ffffff',stroke:'#000',strokeThickness:3}).setOrigin(.5).setDepth(35);
     this.tweens.add({targets:tag,y:tag.y-32,alpha:0,duration:900,ease:'Power2',onComplete:()=>tag.destroy()});
-    // Marcar estado de slide
     this._slidePlayer=player;
     this._slideEndTime=this.time.now+260;
   }
@@ -1297,15 +1288,12 @@ class GameScene extends Phaser.Scene {
       this._slidePlayer=null;
       return;
     }
-    // Verificar contato com bola durante o carrinho
     if(this.ball&&this.ball.body&&this.ball.body.enable){
       const dist=Phaser.Math.Distance.Between(this._slidePlayer.x,this._slidePlayer.y,this.ball.x,this.ball.y);
       if(dist<38){
-        // Chute forte na direção contrária aos adversários
         const ang=Math.atan2(this.ball.y-this._slidePlayer.y,this.ball.x-this._slidePlayer.x);
         this.ball.body.setVelocity(Math.cos(ang)*560, Math.sin(ang)*560);
         this._slidePlayer._lk=this.time.now;
-        // Efeito de impacto
         for(let i=0;i<10;i++){
           const p=this.add.circle(this.ball.x+(Math.random()-.5)*8,this.ball.y+(Math.random()-.5)*8,Phaser.Math.Between(3,7),0xffffff,0.8).setDepth(12);
           this.tweens.add({targets:p,x:p.x+(Math.random()-.5)*35,y:p.y+(Math.random()-.5)*35,alpha:0,scale:0,duration:280,ease:'Power2',onComplete:()=>p.destroy()});
@@ -1321,7 +1309,6 @@ class GameScene extends Phaser.Scene {
     const now=this.time.now;
     if(now-player._lk<270) return;
     player._lk=now; this.lastTouch=player;
-    // Marca o timer de chute para troca de sprite
     if(player._kickTimer!==undefined) player._kickTimer=now+420;
     const ang=Math.atan2(this.ball.y-player.y,this.ball.x-player.x);
     let force=320;
@@ -1366,9 +1353,6 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-  // ═══════════════════════════════════════════════════
-  //  GOL + COMEMORAÇÕES
-  // ═══════════════════════════════════════════════════
   goal(scorer){
     if(this._gc) return;
     this._gc=true;
@@ -1387,7 +1371,6 @@ class GameScene extends Phaser.Scene {
     if(scorer==='p1'){
       this.pScore++;
       this.cameras.main.shake(280,.012).flash(400,0,200,0);
-      // Comemoração personalizada do jogador
       const playerData=this.T1.id==='ifma'?IFMA_PLAYERS[this.selectedPlayer]:null;
       const celebType=playerData?playerData.celebrate:'generic';
       const playerName=playerData?playerData.name:this.T1.name;
@@ -1404,35 +1387,18 @@ class GameScene extends Phaser.Scene {
     this.checkEnd();
   }
 
-  // ── COMEMORAÇÕES PERSONALIZADAS ────────────────────
   _celebratePlayer(player, type, name, playerData){
     switch(type){
-
-      // ⭐ Luis — BRAÇOS PRA CIMA (estrelas douradas + salto)
       case 'arms_up':{
-        // Salto duplo
         this.tweens.add({targets:player,y:player.y-55,duration:220,yoyo:true,repeat:1,ease:'Power2'});
-        // Explosão de estrelas douradas
         for(let i=0;i<24;i++){
           const ang=(i/24)*Math.PI*2;
-          const star=this.add.star(
-            player.x+Math.cos(ang)*15, player.y+Math.sin(ang)*10,
-            5, 5, 12, 0xFFD700
-          ).setAlpha(.95).setDepth(28);
-          this.tweens.add({
-            targets:star,
-            x:player.x+Math.cos(ang)*Phaser.Math.Between(70,140),
-            y:player.y+Math.sin(ang)*Phaser.Math.Between(60,120)-30,
-            angle:360, alpha:0, scale:.15,
-            duration:Phaser.Math.Between(700,1100), ease:'Power2',
-            onComplete:()=>star.destroy()
-          });
+          const star=this.add.star(player.x+Math.cos(ang)*15, player.y+Math.sin(ang)*10,5, 5, 12, 0xFFD700).setAlpha(.95).setDepth(28);
+          this.tweens.add({targets:star,x:player.x+Math.cos(ang)*Phaser.Math.Between(70,140),y:player.y+Math.sin(ang)*Phaser.Math.Between(60,120)-30,angle:360, alpha:0, scale:.15,duration:Phaser.Math.Between(700,1100), ease:'Power2',onComplete:()=>star.destroy()});
         }
-        // Círculo de luz pulsante
         const glow=this.add.circle(player.x,player.y,8,0xFFD700,.8).setDepth(27);
         this.tweens.add({targets:glow,radius:50,alpha:0,duration:600,ease:'Power2',onComplete:()=>glow.destroy()});
         this.showBanner(`⭐ GOLAÇO DE ${name.toUpperCase()}! ⭐`,'#FFD700');
-        // Confete dourado caindo
         for(let i=0;i<16;i++){
           this.time.delayedCall(i*55,()=>{
             const c=this.add.circle(Phaser.Math.Between(100,GW-100),Phaser.Math.Between(-20,50),Phaser.Math.Between(4,7),[0xFFD700,0xFFA500,0xFFFF00][Phaser.Math.Between(0,2)]).setDepth(29);
@@ -1441,158 +1407,53 @@ class GameScene extends Phaser.Scene {
         }
         break;
       }
-
-      // 🔥 Pedro G — CORRIDA (vai ao gol + rastro de chamas)
       case 'run':{
         const originalX=player.x;
-        // Correr para o gol
-        this.tweens.add({
-          targets:player, x:GW*.2, duration:420, ease:'Power3.out',
-          onUpdate:()=>{
-            // Rastro de fogo na corrida
-            if(Math.random()<.5){
-              const f=this.add.circle(player.x+(Math.random()-.5)*8,player.y+12,Phaser.Math.Between(4,8),0xff4400,.85).setDepth(27);
-              this.tweens.add({targets:f,y:f.y-15,alpha:0,duration:250,onComplete:()=>f.destroy()});
-            }
-          },
+        this.tweens.add({targets:player, x:GW*.2, duration:420, ease:'Power3.out',
+          onUpdate:()=>{if(Math.random()<.5){const f=this.add.circle(player.x+(Math.random()-.5)*8,player.y+12,Phaser.Math.Between(4,8),0xff4400,.85).setDepth(27);this.tweens.add({targets:f,y:f.y-15,alpha:0,duration:250,onComplete:()=>f.destroy()});}},
           onComplete:()=>{
-            // Voltar comemorando
             this.tweens.add({targets:player,x:originalX,duration:500,ease:'Power2.in'});
-            // Explosão de fogo no ponto final
-            for(let i=0;i<16;i++){
-              const ang=(i/16)*Math.PI*2;
-              const f=this.add.circle(player.x+Math.cos(ang)*20,player.y+Math.sin(ang)*14,6,0xff5500).setDepth(28);
-              this.tweens.add({targets:f,x:f.x+Math.cos(ang)*50,y:f.y+Math.sin(ang)*50-10,alpha:0,duration:400,ease:'Power2',onComplete:()=>f.destroy()});
-            }
+            for(let i=0;i<16;i++){const ang=(i/16)*Math.PI*2;const f=this.add.circle(player.x+Math.cos(ang)*20,player.y+Math.sin(ang)*14,6,0xff5500).setDepth(28);this.tweens.add({targets:f,x:f.x+Math.cos(ang)*50,y:f.y+Math.sin(ang)*50-10,alpha:0,duration:400,ease:'Power2',onComplete:()=>f.destroy()});}
           }
         });
-        // Linhas de velocidade
-        for(let i=0;i<8;i++){
-          this.time.delayedCall(i*40,()=>{
-            const line=this.add.rectangle(player.x+20,player.y+(Math.random()-.5)*24,Phaser.Math.Between(20,45),2,0xff8800,.8).setDepth(26);
-            this.tweens.add({targets:line,x:line.x+40,alpha:0,duration:200,onComplete:()=>line.destroy()});
-          });
-        }
+        for(let i=0;i<8;i++){this.time.delayedCall(i*40,()=>{const line=this.add.rectangle(player.x+20,player.y+(Math.random()-.5)*24,Phaser.Math.Between(20,45),2,0xff8800,.8).setDepth(26);this.tweens.add({targets:line,x:line.x+40,alpha:0,duration:200,onComplete:()=>line.destroy()});});}
         this.showBanner(`🔥 ARTILHEIRO ${name.toUpperCase()}! 🔥`,'#ff6600');
         break;
       }
-
-      // ⚡ Pedro L — GIRO ARCO-ÍRIS (spin 720°)
       case 'spin':{
-        // Giro duplo
         this.tweens.add({targets:player,angle:player.angle+720,duration:750,ease:'Sine.easeInOut'});
-        // Arco-íris orbital
         const rainColors=[0xff0000,0xff6600,0xffdd00,0x00cc00,0x0088ff,0x8800ff,0xff00cc,0xffffff];
-        for(let i=0;i<8;i++){
-          this.time.delayedCall(i*35,()=>{
-            const ang=(i/8)*Math.PI*2+(this.time.now*.003);
-            const orb=this.add.circle(
-              player.x+Math.cos(ang)*38, player.y+Math.sin(ang)*28,
-              7, rainColors[i], .9
-            ).setDepth(28);
-            this.tweens.add({
-              targets:orb,
-              x:orb.x+Math.cos(ang+Math.PI/2)*60,
-              y:orb.y+Math.sin(ang+Math.PI/2)*60,
-              alpha:0, scale:.2, duration:500, ease:'Power2',
-              onComplete:()=>orb.destroy()
-            });
-          });
-        }
-        // Anel de luz
-        for(let r=20;r<=70;r+=18){
-          this.time.delayedCall((r-20)*6,()=>{
-            const ring=this.add.circle(player.x,player.y,r,0xffffff,0).setDepth(27);
-            ring.setStrokeStyle(2,0xffffff,.7);
-            this.tweens.add({targets:ring,alpha:0,scale:1.5,duration:400,ease:'Power2',onComplete:()=>ring.destroy()});
-          });
-        }
+        for(let i=0;i<8;i++){this.time.delayedCall(i*35,()=>{const ang=(i/8)*Math.PI*2+(this.time.now*.003);const orb=this.add.circle(player.x+Math.cos(ang)*38, player.y+Math.sin(ang)*28,7, rainColors[i], .9).setDepth(28);this.tweens.add({targets:orb,x:orb.x+Math.cos(ang+Math.PI/2)*60,y:orb.y+Math.sin(ang+Math.PI/2)*60,alpha:0, scale:.2, duration:500, ease:'Power2',onComplete:()=>orb.destroy()});});}
+        for(let r=20;r<=70;r+=18){this.time.delayedCall((r-20)*6,()=>{const ring=this.add.circle(player.x,player.y,r,0xffffff,0).setDepth(27);ring.setStrokeStyle(2,0xffffff,.7);this.tweens.add({targets:ring,alpha:0,scale:1.5,duration:400,ease:'Power2',onComplete:()=>ring.destroy()});});}
         this.showBanner(`🌈 GOL DE ${name.toUpperCase()}! 🌈`,'#00ffee');
         break;
       }
-
-      // 💨 Italo — SLIDE ELÉTRICO (deslize lateral + raios)
       case 'slide':{
         const dir=player.x<GW/2?1:-1;
-        // Deslize rápido
-        this.tweens.add({
-          targets:player, x:player.x+dir*110, y:player.y+10,
-          duration:280, ease:'Power3.out',
-          onUpdate:()=>{
-            // Faíscas elétricas durante o slide
-            if(Math.random()<.6){
-              const spark=this.add.text(player.x,player.y+20,'⚡',{fontSize:'13px'}).setDepth(28);
-              this.tweens.add({targets:spark,x:spark.x+(Math.random()-.5)*40,y:spark.y+20,alpha:0,duration:200,onComplete:()=>spark.destroy()});
-            }
-          },
-          onComplete:()=>{
-            // Slide de volta
-            this.tweens.add({targets:player,x:player.x-dir*110,y:player.y-10,duration:400,ease:'Power2.in'});
-          }
+        this.tweens.add({targets:player, x:player.x+dir*110, y:player.y+10,duration:280, ease:'Power3.out',
+          onUpdate:()=>{if(Math.random()<.6){const spark=this.add.text(player.x,player.y+20,'⚡',{fontSize:'13px'}).setDepth(28);this.tweens.add({targets:spark,x:spark.x+(Math.random()-.5)*40,y:spark.y+20,alpha:0,duration:200,onComplete:()=>spark.destroy()});}},
+          onComplete:()=>{this.tweens.add({targets:player,x:player.x-dir*110,y:player.y-10,duration:400,ease:'Power2.in'});}
         });
-        // Raios ao redor do jogador
-        for(let i=0;i<12;i++){
-          this.time.delayedCall(i*30,()=>{
-            const bolt=this.add.text(
-              player.x+(Math.random()-.5)*60, player.y+(Math.random()-.5)*40,
-              '⚡', {fontSize:'18px'}
-            ).setDepth(29);
-            this.tweens.add({targets:bolt,y:bolt.y-30,alpha:0,rotation:.5,duration:350,onComplete:()=>bolt.destroy()});
-          });
-        }
-        // Trilha de luz azul
-        for(let i=0;i<8;i++){
-          this.time.delayedCall(i*35,()=>{
-            const t=this.add.circle(player.x,player.y+15,5,0x00ddff,.8).setDepth(26);
-            this.tweens.add({targets:t,x:t.x-dir*30,alpha:0,duration:300,onComplete:()=>t.destroy()});
-          });
-        }
+        for(let i=0;i<12;i++){this.time.delayedCall(i*30,()=>{const bolt=this.add.text(player.x+(Math.random()-.5)*60, player.y+(Math.random()-.5)*40,'⚡', {fontSize:'18px'}).setDepth(29);this.tweens.add({targets:bolt,y:bolt.y-30,alpha:0,rotation:.5,duration:350,onComplete:()=>bolt.destroy()});});}
+        for(let i=0;i<8;i++){this.time.delayedCall(i*35,()=>{const t=this.add.circle(player.x,player.y+15,5,0x00ddff,.8).setDepth(26);this.tweens.add({targets:t,x:t.x-dir*30,alpha:0,duration:300,onComplete:()=>t.destroy()});});}
         this.showBanner(`⚡ VELOZ ${name.toUpperCase()}! ⚡`,'#00ddff');
         break;
       }
-
-      // 💪 Paulo R — MUSCULAÇÃO (tremida + explosão de poder)
       case 'flex':{
-        // Tremida intensa de câmera
         this.cameras.main.shake(550,.022);
         this.cameras.main.flash(300,0,80,0);
-        // Onda de choque expandindo
-        for(let r=10;r<=90;r+=16){
-          this.time.delayedCall(r*3,()=>{
-            const wave=this.add.circle(player.x,player.y,r,0x006B35,0).setDepth(27);
-            wave.setStrokeStyle(3,0x00ff44,.8);
-            this.tweens.add({targets:wave,radius:r+30,alpha:0,duration:380,ease:'Power2',onComplete:()=>wave.destroy()});
-          });
-        }
-        // Explosão de partículas verde/dourado
-        for(let i=0;i<28;i++){
-          const ang=(i/28)*Math.PI*2;
-          const color=[0x006B35,0xFFD700,0x00ff44,0xffffff][Phaser.Math.Between(0,3)];
-          const p=this.add.circle(player.x+Math.cos(ang)*12,player.y+Math.sin(ang)*12,Phaser.Math.Between(5,10),color).setDepth(28);
-          this.tweens.add({
-            targets:p,
-            x:p.x+Math.cos(ang)*Phaser.Math.Between(80,160),
-            y:p.y+Math.sin(ang)*Phaser.Math.Between(70,140),
-            alpha:0,scale:0,duration:Phaser.Math.Between(600,900),ease:'Power2',
-            onComplete:()=>p.destroy()
-          });
-        }
-        // Texto de força pulsante
+        for(let r=10;r<=90;r+=16){this.time.delayedCall(r*3,()=>{const wave=this.add.circle(player.x,player.y,r,0x006B35,0).setDepth(27);wave.setStrokeStyle(3,0x00ff44,.8);this.tweens.add({targets:wave,radius:r+30,alpha:0,duration:380,ease:'Power2',onComplete:()=>wave.destroy()});});}
+        for(let i=0;i<28;i++){const ang=(i/28)*Math.PI*2;const color=[0x006B35,0xFFD700,0x00ff44,0xffffff][Phaser.Math.Between(0,3)];const p=this.add.circle(player.x+Math.cos(ang)*12,player.y+Math.sin(ang)*12,Phaser.Math.Between(5,10),color).setDepth(28);this.tweens.add({targets:p,x:p.x+Math.cos(ang)*Phaser.Math.Between(80,160),y:p.y+Math.sin(ang)*Phaser.Math.Between(70,140),alpha:0,scale:0,duration:Phaser.Math.Between(600,900),ease:'Power2',onComplete:()=>p.destroy()});}
         const fist=this.add.text(player.x,player.y-40,'💪',{fontSize:'40px'}).setOrigin(.5).setDepth(30);
-        this.tweens.add({targets:fist,scaleX:1.8,scaleY:1.8,yoyo:true,duration:180,repeat:1,onComplete:()=>{
-          this.tweens.add({targets:fist,y:fist.y-50,alpha:0,duration:500,onComplete:()=>fist.destroy()});
-        }});
+        this.tweens.add({targets:fist,scaleX:1.8,scaleY:1.8,yoyo:true,duration:180,repeat:1,onComplete:()=>{this.tweens.add({targets:fist,y:fist.y-50,alpha:0,duration:500,onComplete:()=>fist.destroy()});}});
         this.showBanner(`💪 ${name.toUpperCase()} DEMONIU! 💪`,'#00ff44');
         break;
       }
-
-      // Genérica (outros times)
       default:{
         this.celebrate(player, this.T1.color);
         this.showBanner('⚽ GOOOL!','#00ff88');
       }
     }
-    // Brilho na bola para qualquer gol do jogador
     if(type!=='generic'){
       const ballGlow=this.add.circle(GW/2,GH/2,22,0xffffff,.5).setDepth(11);
       this.tweens.add({targets:ballGlow,radius:50,alpha:0,duration:500,ease:'Power2',onComplete:()=>ballGlow.destroy()});
@@ -1611,13 +1472,9 @@ class GameScene extends Phaser.Scene {
     }
   }
 
-  // ═══════════════════════════════════════════════════
-  //  SISTEMA DE MENSAGENS
-  // ═══════════════════════════════════════════════════
   _showGameMessage(type){
     if(this._msgCooldown>0) return;
     this._msgCooldown=2500;
-
     const msgs={
       bizarro: { text:'😵 B I Z A R R O !', color:'#ff44ff', size:'46px', shake:true, particles:0xcc00ff },
       horrivel:{ text:'😱 H O R R Í V E L !', color:'#ff2222', size:'46px', shake:true, particles:0xff0000 },
@@ -1625,29 +1482,16 @@ class GameScene extends Phaser.Scene {
     };
     const m=msgs[type];
     if(!m) return;
-
     if(m.shake) this.cameras.main.shake(320,.01);
-
-    // Banner principal
-    const banner=this.add.text(GW/2,GH/2-30,m.text,{
-      fontSize:m.size, fontFamily:'Arial Black',
-      color:m.color, stroke:'#000', strokeThickness:7
-    }).setOrigin(.5).setDepth(55);
+    const banner=this.add.text(GW/2,GH/2-30,m.text,{fontSize:m.size, fontFamily:'Arial Black',color:m.color, stroke:'#000', strokeThickness:7}).setOrigin(.5).setDepth(55);
     this.tweens.add({targets:banner,y:GH/2-140,alpha:0,duration:2000,ease:'Power2',onComplete:()=>banner.destroy()});
-
-    // Partículas específicas por mensagem
     const count=type==='freguesia'?25:14;
     for(let i=0;i<count;i++){
       this.time.delayedCall(i*50,()=>{
-        const p=this.add.circle(
-          Phaser.Math.Between(80,GW-80), Phaser.Math.Between(80,GH-80),
-          Phaser.Math.Between(4,9), m.particles, .85
-        ).setDepth(54);
+        const p=this.add.circle(Phaser.Math.Between(80,GW-80), Phaser.Math.Between(80,GH-80),Phaser.Math.Between(4,9), m.particles, .85).setDepth(54);
         this.tweens.add({targets:p,y:p.y-Phaser.Math.Between(40,90),alpha:0,duration:600,ease:'Power2',onComplete:()=>p.destroy()});
       });
     }
-
-    // Coroa para "freguesia eterna"
     if(type==='freguesia'){
       for(let i=0;i<6;i++){
         this.time.delayedCall(i*80,()=>{
@@ -1655,14 +1499,9 @@ class GameScene extends Phaser.Scene {
           this.tweens.add({targets:crown,y:crown.y-60,angle:Phaser.Math.Between(-30,30),alpha:0,duration:900,ease:'Power2',onComplete:()=>crown.destroy()});
         });
       }
-      // Sub-texto
-      const sub=this.add.text(GW/2,GH/2+30,'sempre foi, sempre será!',{
-        fontSize:'16px',fontFamily:'Arial',color:'rgba(255,215,0,.8)',stroke:'#000',strokeThickness:3
-      }).setOrigin(.5).setDepth(55);
+      const sub=this.add.text(GW/2,GH/2+30,'sempre foi, sempre será!',{fontSize:'16px',fontFamily:'Arial',color:'rgba(255,215,0,.8)',stroke:'#000',strokeThickness:3}).setOrigin(.5).setDepth(55);
       this.tweens.add({targets:sub,y:sub.y-60,alpha:0,duration:2000,ease:'Power2',onComplete:()=>sub.destroy()});
     }
-
-    // Atualizar cooldown visual dos botões
     document.querySelectorAll('.msg-btn').forEach(btn=>{
       btn.classList.add('on-cd');
       setTimeout(()=>btn.classList.remove('on-cd'),2500);
@@ -1706,7 +1545,6 @@ class GameScene extends Phaser.Scene {
     this.p2scd=this._tk(this.p2scd,'player2-super-shot','J2:CHUTE FOGO(L)');
     this.p1dcd=this._tk(this.p1dcd,'player1-dribble','J1:DRIBLE(E)');
     this.p2dcd=this._tk(this.p2dcd,'player2-dribble','J2:DRIBLE(O)');
-    // Slide
     const sl1=document.getElementById('goalie1-ability');
     const sl2=document.getElementById('goalie2-ability');
     if(sl1){if(this.p1slcd>0){sl1.textContent=`J1:CARRINHO(Q) — ${Math.ceil(this.p1slcd/1000)}s`;sl1.className='ability cooldown';}else{sl1.textContent='J1:CARRINHO(Q) — Pronto!';sl1.className='ability';}}
@@ -1728,7 +1566,6 @@ class GameScene extends Phaser.Scene {
     if((this.twoPlayers||this.fourPlayers)&&this.p2&&JD(this.kL)&&this.p2scd<=0){this._superShot(this.p2);this.p2scd=45000;this.lastSuperShot=true;}
     if(JD(this.kE)&&!this._dribblePlayer) this._dribble(this.p1);
     if((this.twoPlayers||this.fourPlayers)&&this.p2&&JD(this.kO)&&!this._dribblePlayer) this._dribble(this.p2);
-    // Carrinho / Bote
     if(JD(this.kQ)) this._slide(this.p1);
     if((this.twoPlayers||this.fourPlayers)&&this.p2&&JD(this.kZ)) this._slide(this.p2);
   }
@@ -1756,9 +1593,6 @@ class GameScene extends Phaser.Scene {
     this.time.delayedCall(1800,()=>{if(g.active)g.setAlpha(1);});
   }
 
-  // ═══════════════════════════════════════════════════
-  //  DRIBLES — 7 tipos aleatórios
-  // ═══════════════════════════════════════════════════
   _getDribbleTypes(){
     return [
       {id:'nutmeg',   name:'🦵 CANETA!',    color:'#ff4444', duration:350},
@@ -1990,7 +1824,6 @@ class GameScene extends Phaser.Scene {
     panel.style.display='flex';
     const self=this;
     document.querySelectorAll('.msg-btn').forEach(btn=>{
-      // Clone to remove old listeners
       const newBtn=btn.cloneNode(true);
       btn.parentNode.replaceChild(newBtn,btn);
       newBtn.addEventListener('click',()=>self._showGameMessage(newBtn.getAttribute('data-msg')));
@@ -2069,7 +1902,6 @@ function initGame(){
 document.addEventListener('DOMContentLoaded',function(){
   let pending={difficulty:'medium',challenge:null,multiplayer:false,gameMode:'1v1'};
   let sel1=null, sel2=null;
-  // Use global _selPlayer and _selPlayer2 for selection (defined outside DOMContentLoaded)
 
   function hideAll(){
     ['main-menu','team-select-screen','player-select-screen','challenges-screen','game-screen'].forEach(id=>{
@@ -2097,16 +1929,11 @@ document.addEventListener('DOMContentLoaded',function(){
         card.className='team-card';
         card.setAttribute('data-team-id', t.id);
 
-        // ── LOGO DO TIME ─────────────────────────────────────────────────
-        // Se assets/teams/{id}.png NÃO existir → o card SOME completamente
-        // Só aparecem os times que tiverem logo PNG na pasta assets/teams/
-        // ─────────────────────────────────────────────────────────────────
         const logo = document.createElement('img');
         logo.className = 'team-logo';
         logo.src = `assets/teams/${t.id}.png`;
         logo.alt = t.name;
         logo.onerror = function(){
-          // Sem PNG → esconde o card inteiro
           card.style.display = 'none';
         };
 
@@ -2116,13 +1943,10 @@ document.addEventListener('DOMContentLoaded',function(){
         card.appendChild(logo);
         card.appendChild(info);
 
-        // ── SELEÇÃO ───────────────────────────────────────────────────────
         card.onclick = () => {
-          // Remove seleção anterior nesta coluna
           cont.querySelectorAll('.team-card').forEach(c => c.classList.remove('selected'));
           card.classList.add('selected');
           if(si === 0) sel1 = t.id; else sel2 = t.id;
-          // Impede selecionar o mesmo time nos dois lados
           const otherCid = si === 0 ? 'team2-cards' : 'team1-cards';
           document.querySelectorAll(`#${otherCid} .team-card`).forEach(c => {
             if(c.getAttribute('data-team-id') === t.id){
@@ -2142,6 +1966,7 @@ document.addEventListener('DOMContentLoaded',function(){
     pending={...opts};sel1=null;sel2=null;
     buildTeamCards();
     document.getElementById('ts-start-btn').disabled=true;
+    // Labels mantidos no DOM mas invisíveis — JS os seta, mas não aparecem visualmente
     const lbl2=document.getElementById('team2-col-label'),sub=document.getElementById('ts-subtitle');
     if(opts.multiplayer){if(lbl2)lbl2.textContent='🔵 Jogador 2';if(sub)sub.textContent='Selecione um time para cada jogador';}
     else{if(lbl2)lbl2.textContent='🔴 Adversário (IA)';if(sub)sub.textContent='Selecione um time para cada lado';}
@@ -2154,7 +1979,7 @@ document.addEventListener('DOMContentLoaded',function(){
     const asset=getPlayerImageAsset('ifma',p.id);
     if(asset&&(asset.portrait||asset.sprite)){
       const img=document.createElement('img');
-      img.src=asset.portrait||asset.sprite; // usa retrato se disponível
+      img.src=asset.portrait||asset.sprite;
       img.alt=p.name;
       img.className='pcard-canvas';
       img.onerror=()=>{
@@ -2190,7 +2015,6 @@ document.addEventListener('DOMContentLoaded',function(){
       _selPlayer='luis'; _selPlayer2='pedro';
 
       if(is2v2){
-        // Dois grupos de seleção lado a lado
         const container=document.createElement('div');
         container.style.cssText='display:flex;gap:30px;align-items:flex-start;';
 
@@ -2235,7 +2059,6 @@ document.addEventListener('DOMContentLoaded',function(){
         container.appendChild(makePlayerColumn('🤝 Aliado (IA/Setas)','pedro',2));
         row.appendChild(container);
       } else {
-        // Seleção normal — 1 jogador
         Object.values(IFMA_PLAYERS).forEach(p=>{
           const card=document.createElement('div');
           card.className='player-card-sel'+(p.id==='luis'?' selected':'');
@@ -2339,9 +2162,7 @@ async function enterPageFullscreen(){
     try{
       const fn=el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen;
       if(fn) await fn.call(el);
-    }catch(e){
-      // Se o navegador bloquear a API de fullscreen, o jogo ainda usa 100vw/100dvh.
-    }
+    }catch(e){}
   }
   isFullscreen=!!(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement);
   resizeGameToViewport();
