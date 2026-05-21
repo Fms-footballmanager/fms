@@ -963,8 +963,8 @@ class GameScene extends Phaser.Scene {
     }
 
     this.ball=this.physics.add.image(GW/2,GH/2,'soccer_ball').setDepth(10);
-    this.ball.setDisplaySize(42,42);
-    this.ball.body.setSize(42,42).setBounce(.68,.68).setCollideWorldBounds(false).setDrag(38,38).setMaxVelocity(660,660);
+    this.ball.setDisplaySize(84,84);
+    this.ball.body.setSize(84,84).setBounce(.68,.68).setCollideWorldBounds(false).setDrag(38,38).setMaxVelocity(660,660);
     const gd=GOAL_DEPTH;
     this.goalL=this.add.rectangle(gd/2,GH/2,gd,GOAL_HEIGHT,0xffffff,0);
     this.physics.add.existing(this.goalL,true);
