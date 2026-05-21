@@ -12,7 +12,7 @@ body{font-family:'Arial',sans-serif;background:linear-gradient(135deg,#1e3c72,#2
 #game-container{position:relative;width:1000px;height:700px;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.5);}
 body.game-playing{display:block;background:#000;}
 body.game-playing #game-container,#game-container.fullscreen{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;border-radius:0;box-shadow:none;}
-.screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;}
+.screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;z-index:1;}
 
 /* ══════════════════════════════════════════════════
    TELA INICIAL — PNG como visual principal
@@ -26,6 +26,7 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   padding-top: 0;
   padding-bottom: 32px;
   overflow: hidden;
+  z-index: 2;
 }
 .main-menu-content{
   display: flex;
@@ -41,39 +42,42 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
 .game-mode-buttons{display:flex;gap:10px;margin:4px 0;}
 .mode-btn{
   padding:8px 18px;font-size:13px;font-weight:bold;
-  background:transparent !important;
+  background:rgba(0,0,0,0.01) !important;
   color:transparent !important;
   border:none !important;
   border-radius:20px;cursor:pointer;transition:none;
   pointer-events:auto;
 }
-.mode-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
-.mode-btn.active{background:transparent !important;border:none !important;color:transparent !important;}
+.mode-btn:hover{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
+.mode-btn.active{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
 
 /* Botões principais — hotspot */
 .menu-btn{
   padding:10px 28px;font-size:14px;font-weight:bold;
-  background:transparent !important;
+  background:rgba(0,0,0,0.01) !important;
   color:transparent !important;
   border:none !important;
   border-radius:50px;cursor:pointer;transition:none;
   box-shadow:none;margin:3px;width:210px;
   text-align:center;
   pointer-events:auto;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  min-height: 40px;
 }
-.menu-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
+.menu-btn:hover{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
 
 /* Botões de dificuldade — hotspot */
 .difficulty-menu{display:flex;gap:8px;margin:4px 0;}
 .difficulty-btn{
   padding:7px 16px;font-size:12px;
-  background:transparent !important;
+  background:rgba(0,0,0,0.01) !important;
   color:transparent !important;
   border:none !important;
   border-radius:20px;cursor:pointer;transition:none;
   pointer-events:auto;
 }
-.difficulty-btn:hover{background:transparent !important;border:none !important;color:transparent !important;}
+.difficulty-btn:hover{background:rgba(0,0,0,0.01) !important;border:none !important;color:transparent !important;}
 
 
 /* ══════════════════════════════════════════════════
@@ -90,6 +94,7 @@ body.game-playing #game-container,#game-container.fullscreen{position:fixed;inse
   padding:14px 20px 26px;
   gap:0;
   position:relative;
+  z-index:5;
 }
 
 /* Ocultar texto que já está na PNG */
@@ -1916,7 +1921,8 @@ document.addEventListener('DOMContentLoaded',function(){
 
   function hideAll(){
     ['main-menu','team-select-screen','player-select-screen','challenges-screen','game-screen'].forEach(id=>{
-      const el=document.getElementById(id);if(el)el.style.display='none';
+      const el=document.getElementById(id);
+      if(el){ el.style.display='none'; el.style.zIndex=''; }
     });
   }
 
@@ -1982,7 +1988,9 @@ document.addEventListener('DOMContentLoaded',function(){
     if(opts.multiplayer){if(lbl2)lbl2.textContent='🔵 Jogador 2';if(sub)sub.textContent='Selecione um time para cada jogador';}
     else{if(lbl2)lbl2.textContent='🔴 Adversário (IA)';if(sub)sub.textContent='Selecione um time para cada lado';}
     hideAll();
-    document.getElementById('team-select-screen').style.display='flex';
+    const tss=document.getElementById('team-select-screen');
+    tss.style.display='flex';
+    tss.style.zIndex='50';
   }
 
   // ── TELA DE SELEÇÃO DE JOGADOR ─────────────────────
@@ -2129,6 +2137,7 @@ document.addEventListener('DOMContentLoaded',function(){
       document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
       this.classList.add('active');
       currentGameSettings.gameMode=this.getAttribute('data-mode');
+      pending.gameMode=this.getAttribute('data-mode');
     };
   });
 
