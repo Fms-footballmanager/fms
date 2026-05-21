@@ -312,11 +312,11 @@ const TEAMS = {
 //  JOGADORES DO IFMA
 // ═══════════════════════════════════════════════════════
 const IFMA_PLAYERS = {
-  luis:  { id:'luis',   name:'Luís',    number:'10', skin:'#f0c8a0', hair:'#3a2200', hairStyle:'streak_spiky', shoe:'#111',    shirtAccent:'#FFD700', beard:false, traitIcon:'⭐', trait:'Técnico',    posicao:'Meia', pe:'Direito', estilo:'Técnico / Criativo', celebrate:'arms_up' },
-  pedrog:{ id:'pedrog', name:'Pedro G', number:'9',  skin:'#b87a3a', hair:'#2a1200', hairStyle:'curly_short',  shoe:'#4a2200', shirtAccent:'#ffffff', beard:true,  traitIcon:'🔥', trait:'Artilheiro', celebrate:'run'     },
-  pedrol:{ id:'pedrol', name:'Pedro L', number:'7',  skin:'#d4956a', hair:'#3d1a00', hairStyle:'swept',        shoe:'#222',    shirtAccent:'#aaffcc', beard:false, traitIcon:'⚡', trait:'Driblador',  celebrate:'spin'    },
-  italo: { id:'italo',  name:'Italo',   number:'11', skin:'#2d1408', hair:'#0a0402', hairStyle:'afro',         shoe:'#111',    shirtAccent:'#00ff88', beard:false, traitIcon:'💨', trait:'Veloz',      celebrate:'slide'   },
-  paulor:{ id:'paulor', name:'Paulo R', number:'5',  skin:'#8b5a2b', hair:'#1a0800', hairStyle:'lowfade',      shoe:'#333',    shirtAccent:'#ffffff', beard:true,  traitIcon:'💪', trait:'Defensor',   celebrate:'flex'    },
+  luis:  { id:'luis',  name:'Luís',  number:'10', skin:'#f0c8a0', hair:'#3a2200', hairStyle:'streak_spiky', shoe:'#111',    shirtAccent:'#FFD700', beard:false, traitIcon:'⭐', trait:'Técnico',   posicao:'Meia',       pe:'Direito',   estilo:'Técnico / Criativo', celebrate:'arms_up' },
+  pedro: { id:'pedro', name:'Pedro', number:'9',  skin:'#b87a3a', hair:'#2a1200', hairStyle:'curly_short',  shoe:'#4a2200', shirtAccent:'#ffffff', beard:true,  traitIcon:'🔥', trait:'Artilheiro', posicao:'Atacante',   pe:'Direito',   estilo:'Raça / Gol',         celebrate:'run'     },
+  lucas: { id:'lucas', name:'Lucas', number:'7',  skin:'#d4956a', hair:'#3d1a00', hairStyle:'swept',        shoe:'#222',    shirtAccent:'#aaffcc', beard:false, traitIcon:'⚡', trait:'Driblador',  posicao:'Meia',       pe:'Esquerdo',  estilo:'Drible / Velocidade', celebrate:'spin'    },
+  italo: { id:'italo', name:'Italo', number:'11', skin:'#2d1408', hair:'#0a0402', hairStyle:'afro',         shoe:'#111',    shirtAccent:'#00ff88', beard:false, traitIcon:'💨', trait:'Veloz',      posicao:'Lateral',    pe:'Direito',   estilo:'Velocidade',          celebrate:'slide'   },
+  paulo: { id:'paulo', name:'Paulo', number:'5',  skin:'#8b5a2b', hair:'#1a0800', hairStyle:'lowfade',      shoe:'#333',    shirtAccent:'#ffffff', beard:true,  traitIcon:'💪', trait:'Defensor',   posicao:'Zagueiro',   pe:'Direito',   estilo:'Força / Marcação',    celebrate:'flex'    },
 };
 
 // ═══════════════════════════════════════════════════════
@@ -333,9 +333,50 @@ const PLAYER_IMAGE_ASSETS = {
       dribbling: 'assets/characters/luis/drible.png',
       side:      'assets/characters/luis/lado.png',
       back:      'assets/characters/luis/costas.png',
-    }
+    },
+    pedro: {
+      sprite:    'assets/characters/pedro/principal.png',
+      portrait:  'assets/characters/pedro/principal.png',
+      running:   'assets/characters/pedro/corrida.png',
+      kicking:   'assets/characters/pedro/chute.png',
+      dribbling: 'assets/characters/pedro/drible.png',
+      side:      'assets/characters/pedro/lado.png',
+      back:      'assets/characters/pedro/costas.png',
+    },
+    lucas: {
+      sprite:    'assets/characters/lucas/principal.png',
+      portrait:  'assets/characters/lucas/principal.png',
+      running:   'assets/characters/lucas/corrida.png',
+      kicking:   'assets/characters/lucas/chute.png',
+      dribbling: 'assets/characters/lucas/drible.png',
+      side:      'assets/characters/lucas/lado.png',
+      back:      'assets/characters/lucas/costas.png',
+    },
+    italo: {
+      sprite:    'assets/characters/italo/principal.png',
+      portrait:  'assets/characters/italo/principal.png',
+      running:   'assets/characters/italo/corrida.png',
+      kicking:   'assets/characters/italo/chute.png',
+      dribbling: 'assets/characters/italo/drible.png',
+      side:      'assets/characters/italo/lado.png',
+      back:      'assets/characters/italo/costas.png',
+    },
+    paulo: {
+      sprite:    'assets/characters/paulo/principal.png',
+      portrait:  'assets/characters/paulo/principal.png',
+      running:   'assets/characters/paulo/corrida.png',
+      kicking:   'assets/characters/paulo/chute.png',
+      dribbling: 'assets/characters/paulo/drible.png',
+      side:      'assets/characters/paulo/lado.png',
+      back:      'assets/characters/paulo/costas.png',
+    },
   }
 };
+
+// ═══════════════════════════════════════════════════════
+//  BOLA — PNG (deixe null para usar a bola desenhada por canvas)
+// ═══════════════════════════════════════════════════════
+const BALL_IMAGE = 'assets/ball/ball.png';
 
 function getPlayerImageAsset(teamId, playerId){
   return PLAYER_IMAGE_ASSETS?.[teamId]?.[playerId] || null;
@@ -345,9 +386,9 @@ function getPlayerImageAsset(teamId, playerId){
 //  GLOBALS
 // ═══════════════════════════════════════════════════════
 let game=null, gameScene=null, isFullscreen=false;
-let currentGameSettings={difficulty:'medium',challenge:null,multiplayer:false,gameMode:'1v1',team1:'ifma',team2:'cmcb',selectedPlayer:'luis',selectedPlayer2:'pedrog'};
+let currentGameSettings={difficulty:'medium',challenge:null,multiplayer:false,gameMode:'1v1',team1:'ifma',team2:'cmcb',selectedPlayer:'luis',selectedPlayer2:'pedro'};
 // Global player selection state (outside DOMContentLoaded so it's truly global)
-let _selPlayer='luis', _selPlayer2='pedrog';
+let _selPlayer='luis', _selPlayer2='pedro';
 let GW=1000, GH=700, BORDER=28;
 let GOAL_HEIGHT=160, GOAL_DEPTH=22;
 let GOAL_Y_TOP=(GH-GOAL_HEIGHT)/2, GOAL_Y_BOT=GOAL_Y_TOP+GOAL_HEIGHT;
@@ -650,7 +691,7 @@ class GameScene extends Phaser.Scene {
     this.T1 = TEAMS[d.team1] || TEAMS.ifma;
     this.T2 = TEAMS[d.team2] || TEAMS.cmcb;
     this.selectedPlayer  = d.selectedPlayer  || 'luis';
-    this.selectedPlayer2 = d.selectedPlayer2 || 'pedrog';
+    this.selectedPlayer2 = d.selectedPlayer2 || 'pedro';
   }
 
   get DS(){ return {
@@ -660,6 +701,10 @@ class GameScene extends Phaser.Scene {
   }[this.difficulty]; }
 
   preload(){
+    // Bola PNG (se definida, substitui a bola desenhada por canvas)
+    if(BALL_IMAGE){
+      this.load.image('soccer_ball', BALL_IMAGE);
+    }
     Object.entries(PLAYER_IMAGE_ASSETS).forEach(([teamId, players])=>{
       Object.entries(players).forEach(([playerId, data])=>{
         if(data.sprite){
@@ -932,10 +977,6 @@ class GameScene extends Phaser.Scene {
   mkPlayer(x, y, texKey){
     const c=this.add.container(x,y);
     const sprite=this.add.image(0,0,texKey).setOrigin(.5,.5);
-    // Sprites PNG reais (Luís e futuros personagens) chegam já recortados em 300×500.
-    // Usamos o mesmo displaySize visual dos personagens gerados por canvas (46×70).
-    // A diferença é que os PNGs têm fundo transparente e proporção já correta,
-    // então o tamanho visual final é idêntico ao personagem vermelho.
     sprite.setDisplaySize(46,70);
     c.add(sprite);
     this.physics.add.existing(c);
@@ -946,14 +987,6 @@ class GameScene extends Phaser.Scene {
     c._texBase=texKey;   // textura padrão (idle)
     c._kickTimer=0;      // timestamp do último chute (para exibir sprite de chute)
     return c;
-  }
-
-  // Aplica o tamanho de display correto num sprite já existente.
-  // Sprites PNG reais do Luís (300×500 px, fundo transparente) → mesma escala visual.
-  // Sprites canvas (72×110 px, gerados internamente) → mesma escala visual.
-  // Ambos resultam em setDisplaySize(46,70) no Phaser.
-  _resizeSprite(sprite){
-    sprite.setDisplaySize(46,70);
   }
 
   setupKeys(){
@@ -991,15 +1024,20 @@ class GameScene extends Phaser.Scene {
     this.time.addEvent({delay:500,loop:true,callback:()=>{if(this._tmr)this.updTimer(this._tmr.getRemainingSeconds());}});
   }
 
-  // ── TROCA DE SPRITES DO LUÍS ──────────────────────
+  // ── TROCA DE SPRITES DOS JOGADORES DO IFMA ────────
   _updatePlayerSprites(){
-    // Só atua se o time for IFMA e o jogador tiver _sprite (PNG)
+    // Só atua se o time for IFMA
     if(!this.p1||!this.p1._sprite||this.T1.id!=='ifma') return;
-    const playerId=this.selectedPlayer;
+    this._applySprite(this.p1, this.selectedPlayer);
+    if(this.teammate&&this.teammate._sprite&&this.fourPlayers){
+      this._applySprite(this.teammate, this.selectedPlayer2);
+    }
+  }
+
+  _applySprite(p, playerId){
     const assets=PLAYER_IMAGE_ASSETS?.ifma?.[playerId];
     if(!assets) return;
 
-    const p=this.p1;
     const vx=p.body?p.body.velocity.x:0;
     const vy=p.body?p.body.velocity.y:0;
     const spd=Math.sqrt(vx*vx+vy*vy);
@@ -1021,32 +1059,24 @@ class GameScene extends Phaser.Scene {
     } else if(isMoving){
       const absVx=Math.abs(vx), absVy=Math.abs(vy);
       if(absVx>absVy*1.2){
-        // Movimento lateral → lado.png, espelhado se for para a esquerda
         const k=`player_ifma_${playerId}_side`;
         if(this.textures.exists(k)){
           newKey=k;
           p._sprite.setFlipX(vx<0);
         }
       } else if(vy<-20){
-        // Subindo na tela (costas para o espectador) → costas.png
         const k=`player_ifma_${playerId}_back`;
         if(this.textures.exists(k)){ newKey=k; p._sprite.setFlipX(false); }
       } else {
-        // Correndo para baixo / diagonal → corrida.png
         const k=`player_ifma_${playerId}_running`;
         if(this.textures.exists(k)){ newKey=k; p._sprite.setFlipX(false); }
       }
     } else {
-      // Parado → reseta flip
       p._sprite.setFlipX(false);
     }
 
     if(p._sprite.texture&&p._sprite.texture.key!==newKey){
       p._sprite.setTexture(newKey);
-      // IMPORTANTE: após trocar a textura o Phaser reseta o displaySize para
-      // as dimensões originais do novo frame. Reaplicamos o tamanho padrão para
-      // que o Luís continue do mesmo tamanho visual dos outros personagens.
-      p._sprite.setDisplaySize(46,70);
     }
   }
 
@@ -2084,7 +2114,7 @@ document.addEventListener('DOMContentLoaded',function(){
     if(team1Id==='ifma'){
       if(locked) locked.style.display='none';
       if(badge){ badge.style.display='inline-flex'; badge.textContent='🟢 IFMA — Escola de Campeões'; }
-      _selPlayer='luis'; _selPlayer2='pedrog';
+      _selPlayer='luis'; _selPlayer2='pedro';
 
       if(is2v2){
         // Dois grupos de seleção lado a lado
@@ -2129,7 +2159,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
         container.appendChild(makePlayerColumn('🎮 Seu Jogador (WASD)','luis',1));
         container.appendChild(vs);
-        container.appendChild(makePlayerColumn('🤝 Aliado (IA/Setas)','pedrog',2));
+        container.appendChild(makePlayerColumn('🤝 Aliado (IA/Setas)','pedro',2));
         row.appendChild(container);
       } else {
         // Seleção normal — 1 jogador
@@ -2167,7 +2197,7 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 
   async function startGame(){
-    currentGameSettings={...pending,team1:sel1||'ifma',team2:sel2||'cmcb',selectedPlayer:_selPlayer||'luis',selectedPlayer2:_selPlayer2||'pedrog'};
+    currentGameSettings={...pending,team1:sel1||'ifma',team2:sel2||'cmcb',selectedPlayer:_selPlayer||'luis',selectedPlayer2:_selPlayer2||'pedro'};
     hideAll();
     document.body.classList.add('game-playing');
     document.getElementById('game-container').classList.add('fullscreen');
