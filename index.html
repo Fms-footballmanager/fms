@@ -8,10 +8,9 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{width:100%;height:100%;overflow:hidden;}
-body{font-family:'Arial',sans-serif;background:linear-gradient(135deg,#1e3c72,#2a5298);display:flex;justify-content:center;align-items:center;min-height:100vh;min-height:100dvh;color:white;overflow:hidden;}
-#game-container{position:relative;width:1000px;height:700px;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.5);}
-body.game-playing{display:block;background:#000;}
-body.game-playing #game-container,#game-container.fullscreen{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;border-radius:0;box-shadow:none;}
+body{font-family:'Arial',sans-serif;background:#000;min-height:100vh;min-height:100dvh;color:white;overflow:hidden;}
+#game-container{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;border-radius:0;overflow:hidden;box-shadow:none;}
+body.game-playing{background:#000;}
 .screen{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;z-index:1;}
 
 .main-menu{
@@ -437,9 +436,7 @@ function updateViewportConstants(){
 
 function resizeGameToViewport(){
   updateViewportConstants();
-  const container=document.getElementById('game-container');
   const phaserBox=document.getElementById('phaser-game');
-  if(container&&document.body.classList.contains('game-playing')) container.classList.add('fullscreen');
   if(phaserBox){
     phaserBox.style.width='100vw';
     phaserBox.style.height='100dvh';
@@ -2030,7 +2027,6 @@ document.addEventListener('DOMContentLoaded',function(){
     };
     hideAll();
     document.body.classList.add('game-playing');
-    document.getElementById('game-container').classList.add('fullscreen');
     document.getElementById('game-screen').style.display='block';
     document.getElementById('game-ui').style.display='block';
     document.getElementById('final-screen').style.display='none';
